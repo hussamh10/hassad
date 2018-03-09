@@ -16,37 +16,21 @@ public class Info {
         this.location = location;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public Date getDOB() {
-        return DOB;
-    }
+    public Date getDOB() { return DOB; }
 
-    public void setDOB(Date DOB) {
-        this.DOB = DOB;
-    }
+    public void setDOB(Date DOB) { this.DOB = DOB;    }
 
-    public String getLocation() {
-        return location;
-    }
+    public String getLocation() { return location; }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    public void setLocation(String location) { this.location = location; }
 
     @Override
     public String toString() {
