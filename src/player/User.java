@@ -5,7 +5,7 @@ public class User {
     private int points;
     private int coins;
 
-    public User(int id, int points, int coins) {
+    public User(int id, int points, int coins){
         this.id = id;
         this.points = points;
         this.coins = coins;
@@ -33,6 +33,18 @@ public class User {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public void addCoins(int amount){
+        this.coins += amount;
+    }
+
+    public void removeCoins(int amount){
+        this.coins -= amount;
+    }
+
+    public void addPoints(int amount){
+        this.points += amount;
     }
 
     @Override
