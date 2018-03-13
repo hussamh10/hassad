@@ -1,0 +1,10 @@
+1,Messi,ATT,8,null
+2,Ronaldo,ATT,9,null
+3,Neymar,ATT,3,null
+4,Coutinho,MID,3,null
+5,Pogba,MID,7,null
+6,Dembele,ATT,7,null
+7,Muller,ATT,6,null
+8,Robben,ATT,5,null
+9,Buffon,GK,2,null
+10,De Gea,GK,1,null

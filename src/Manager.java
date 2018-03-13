@@ -26,7 +26,7 @@ public class Manager {
         this.player = player;
     }
 
-    public User getPlauer() {
+    public User getPlayer() {
         return player;
     }
 
@@ -45,8 +45,8 @@ public class Manager {
 
     public Prediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
         Result result = new MatchResult(home_score, away_score, winner, match);
-        Prediction  prediction = new Prediction(UUID.randomUUID(), result, this.player);
-
+        Prediction  prediction = new Prediction(0, result, this.player);
+        //TODO : Change this 0
         return prediction;
     }
 
