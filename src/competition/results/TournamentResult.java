@@ -11,14 +11,16 @@ public class TournamentResult extends Result{
     private Team gold;
     private Team silver;
     private Team bronze;
+    private Team wood;
 
-    public TournamentResult(Player golden_ball, Player golden_boot, Player golden_glove, Team gold, Team silver, Team bronze) {
+    public TournamentResult(Player golden_ball, Player golden_boot, Player golden_glove, Team gold, Team silver, Team bronze, Team wood) {
         this.golden_ball = golden_ball;
         this.golden_boot = golden_boot;
         this.golden_glove = golden_glove;
         this.gold = gold;
         this.silver = silver;
         this.bronze = bronze;
+        this.wood = wood;
     }
 
 
@@ -49,7 +51,7 @@ public class TournamentResult extends Result{
     }
 
     public Team getGold() {
-        return gold;
+        return this.gold;
     }
 
     public void setGold(Team gold) {
@@ -57,7 +59,7 @@ public class TournamentResult extends Result{
     }
 
     public Team getSilver() {
-        return silver;
+        return this.silver;
     }
 
     public void setSilver(Team silver) {
@@ -65,11 +67,19 @@ public class TournamentResult extends Result{
     }
 
     public Team getBronze() {
-        return bronze;
+        return this.bronze;
     }
 
     public void setBronze(Team bronze) {
         this.bronze = bronze;
+    }
+
+    public Team getWood(){
+        return this.wood;
+    }
+
+    public void setWood(Team wood){
+        this.wood = wood;
     }
 
     @Override

@@ -5,6 +5,7 @@ import competition.results.Result;
 import java.util.ArrayList;
 
 public class Group {
+
     int id;
 
     ArrayList<Team> teams; // sorted with points
