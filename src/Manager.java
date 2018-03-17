@@ -15,11 +15,14 @@
 
  */
 
+import competition.Group;
 import competition.Match;
 import competition.Team;
+import competition.results.GroupResult;
 import competition.results.MatchResult;
 import competition.results.Result;
 import player.Info;
+import player.predictions.GroupPrediction;
 import player.predictions.MatchPrediction;
 import player.predictions.Prediction;
 import player.User;
@@ -73,14 +76,14 @@ public class Manager {
 
     public void submitMatchPrediction(MatchPrediction prediction) throws Exception{
         /*
-        TODO DAL.submitPrediction(predicion) @usman
+        TODO DAL.submitMatchPrediction(predicion) @usman
         This will create a new entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction already made
          */
-        if (this.player.getCoins() < Constants.PREDICTION_COST){
-            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.PREDICTION_COST + ".");
+        if (this.player.getCoins() < Constants.GROUP_PREDICTION_COST){
+            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.MATCH_PREDICTION_COST + ".");
         }
-        this.player.removeCoins(Constants.PREDICTION_COST);
+        this.player.removeCoins(Constants.MATCH_PREDICTION_COST);
     }
 
     public void editMatchPrediciton(MatchPrediction prediction)throws Exception{
@@ -89,6 +92,32 @@ public class Manager {
         This will update entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction not already made
          */
+    }
+
+    public GroupPrediction createGroupPredicrtion(String team1_name , String team2_name, String group_name){
+        //  TODO Group grp = db.getGroupByName(group_name)
+        Group grp = null;
+        // TODO Team t1 = db.getTeamByName(team1_name);
+        // TODO Team t2 = db.getTeamByName(team2_name);
+
+        Team t1 = null;
+        Team t2 = null;
+
+        GroupResult gr = new GroupResult(t1, t2, grp);
+        GroupPrediction gp = new GroupPrediction(UUID.randomUUID(), gr, player);
+
+        return gp;
+    }
+
+    public void submitGroupPrediction(GroupPrediction prediction)throws Exception{
+        /*
+        TODO DAL.submitGroupPrediction(predicion) @usman
+        */
+
+        if (this.player.getCoins() < Constants.GROUP_PREDICTION_COST){
+            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.GROUP_PREDICTION_COST + ".");
+        }
+        this.player.removeCoins(Constants.GROUP_PREDICTION_COST);
     }
 
     public void register(String name, String email, Date DOB, String location, int timezone) throws Exception{

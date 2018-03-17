@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Group {
 
     int id;
+    String name;
 
     ArrayList<Team> teams; // sorted with points
     ArrayList<Integer> pts; // sorted with points
@@ -15,17 +16,26 @@ public class Group {
     boolean ended;
     Result result;
 
-    public Group(int id, ArrayList<Team> teams, ArrayList<Integer> pts, ArrayList<Integer> pld, boolean ended, Result result) {
+    public Group(int id, String name, ArrayList<Team> teams, ArrayList<Integer> pts, ArrayList<Integer> pld, boolean ended, Result result) {
         this.id = id;
         this.teams = teams;
         this.pts = pts;
         this.pld = pld;
         this.ended = ended;
         this.result = result;
+        this.name = name;
     }
 
-    public int getId() {
+    public int get() {
         return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setId(int id) {
