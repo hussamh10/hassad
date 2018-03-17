@@ -1,23 +1,25 @@
 package player;
 
+import java.util.UUID;
+
 public class User {
-    private int id;
+    private UUID id;
     private int points;
     private int coins;
     private Info info;
 
-    public User(int id, int points, int coins, Info info) {
+    public User(UUID id, int points, int coins, Info info) {
         this.id = id;
         this.points = points;
         this.coins = coins;
         this.info = info;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
