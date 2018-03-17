@@ -1,3 +1,22 @@
+/* NOTES:
+
+    Manager Notes
+    - Use throw exception when an error occurs
+    - Exception must have appropriate message since that message will be displayed to the user
+
+    - Make all utility methods private
+    - All constants must be used from the Constant static class
+    - All public methods must take either primitive data types
+        or
+    - All public methods must take in data types that are returned by some other Manager method
+
+    Project Notes
+    - All classes must have a to_string method
+
+ */
+
+
+
 import competition.Match;
 import competition.Team;
 import competition.results.MatchResult;
