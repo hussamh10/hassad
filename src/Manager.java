@@ -99,8 +99,9 @@ public class Manager {
         if (userExists(email)){
             throw new Exception("User with email address: " + email + " already exists.");
         }
-        Info info = new Info(name, email, DOB, location, timezone);
-        User u = new User(UUID.randomUUID(), Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
+        UUID id = UUID.randomUUID();
+        Info info = new Info(id, name, email, DOB, location, timezone);
+        User u = new User(id, Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
 
         /*

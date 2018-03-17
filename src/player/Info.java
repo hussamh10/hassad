@@ -1,17 +1,18 @@
 package player;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Info {
 
-    private int userID;
+    private UUID userID;
     private String name;
     private String email;
     private Date DOB;
     private String location;
     private int timezone;
 
-    public Info(int userID, String name, String email, Date DOB, String location, int timezone) {
+    public Info(UUID userID, String name, String email, Date DOB, String location, int timezone) {
         this.userID = userID;
         this.name = name;
         this.email = email;
@@ -20,12 +21,8 @@ public class Info {
         this.timezone = timezone;
     }
 
-    public int getUserID() {
+    public UUID getUserID() {
         return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public String getName() { return name; }
