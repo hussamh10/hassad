@@ -16,6 +16,8 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    android.app.FragmentManager fragmentManager = getFragmentManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (savedInstanceState == null)
+        {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();
+        }
     }
 
     @Override
@@ -80,18 +87,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_home) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment()).commit();
+        } else if (id == R.id.nav_friends) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new FriendsFragment()).commit();
+        } else if (id == R.id.nav_table) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
+        } else if (id == R.id.nav_leaderboard) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new LeaderboardFragment()).commit();
+        } else if (id == R.id.nav_profile) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new ProfileFragment()).commit();
+        } else if (id == R.id.nav_settings) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new SettingsFragment()).commit();
+        } else if (id == R.id.nav_about) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new AboutFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

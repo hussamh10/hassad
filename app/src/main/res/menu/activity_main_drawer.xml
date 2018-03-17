@@ -7,19 +7,19 @@
 		android:id="@+id/menu_top"
 		android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_friends"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Friends" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_table"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Table" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_leaderboard"
             android:icon="@drawable/ic_menu_manage"
             android:title="Leaderboard" />
     </group>
@@ -27,13 +27,17 @@
     <group
 		android:id="@+id/menu_bottom"
 		android:checkableBehavior="single">
+		<item
+			android:id="@+id/nav_profile"
+			android:icon="@drawable/profile"
+			android:title="Profile" />
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings"
             android:title="Settings" />
         <item
-            android:id="@+id/nav_send"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Send" />
+            android:id="@+id/nav_about"
+            android:icon="@drawable/about"
+            android:title="About" />
     </group>
 </menu>
