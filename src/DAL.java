@@ -54,7 +54,7 @@ public class DAL {
 
     }
 
-    public DAL getInstance(){
+    public static DAL getInstance(){
         if(instance == null)
             instance = new DAL();
         return instance;
@@ -183,7 +183,7 @@ public class DAL {
         }
     }
 
-    private Player getPlayerByID(int i) {
+    public Player getPlayerByID(int i) {
         for(Player player : this.players){
             if(player.getId() == i)
                 return player;
@@ -216,7 +216,7 @@ public class DAL {
         }
     }
 
-    private Match getMatchByID(int i) {
+    public Match getMatchByID(int i) {
         for(Match match : this.matches){
             if(match.getId() == i)
                 return match;
@@ -248,7 +248,7 @@ public class DAL {
         }
     }
 
-    private Group getGroupByID(int i) {
+    public Group getGroupByID(int i) {
         for(Group group : this.groups){
             if(group.getId() == i)
                 return group;
@@ -316,7 +316,7 @@ public class DAL {
         }
     }
 
-    private Info getInfoByID(int i) {
+    public Info getInfoByID(int i) {
         for(Info info : this.infoArrayList){
             if(info.getUserID() == UUID.fromString(String.valueOf(i)))
                 return info;
@@ -401,12 +401,31 @@ public class DAL {
     private void getResultByID(int i) {
     }
 
-    private User getUserByID(int i) {
+    public User getUserByID(int i) {
         for(User user : this.users){
             if(user.getId() == UUID.fromString(String.valueOf(i)))
                 return user;
         }
         return null;
+    }
+
+    public User getUserByEmail(String email){
+        for(User user : this.users){
+            if(user.getInfo().getEmail().equalsIgnoreCase(email))
+                return user;
+        }
+        return null;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
+    }
+
+    public void updateUser(User user){
+        for(int i = 0; i < this.users.size(); ++i){
+            if(this.users.get(i).getId() == user.getId())
+                this.users.set(i, user);
+        }
     }
 
     private void initArrayLists() {
