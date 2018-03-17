@@ -1,3 +1,5 @@
+import player.User;
+
 import java.util.Date;
 
 public class Test {
@@ -23,7 +25,9 @@ public class Test {
 
     public static void main(String arg[]){
         init();
-
         register("Hussam", "hussamh10@gmail.com", new Date("18-12-1995"), "Pakistan", +5);
+        User u = manager.getUser("hussamh10@gmail.com");
+
+        print(u);
     }
 }

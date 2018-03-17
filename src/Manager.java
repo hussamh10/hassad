@@ -30,10 +30,12 @@ import java.util.UUID;
 
 public class Manager {
 
+    private static DAL db;
     private static Manager instance;
     private User player;
 
     private Manager(){
+        db = DAL.getInstance();
     }
 
     public static Manager getInstance() {
@@ -58,16 +60,10 @@ public class Manager {
      */
 
     public User getUser(String email){
-        return null;
+        return db.getUserByEmail(email);
         // TODO make DAL get user for email @usman
         //return DAL.getUser(String email);
     }
-
-    /*
-        TODO
-        Create serach___ functions for each class that
-        takes a query and returns array of possible matches
-     */
 
     public MatchPrediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
         MatchResult result = new MatchResult(home_score, away_score, winner, match);
@@ -103,11 +99,7 @@ public class Manager {
         Info info = new Info(id, name, email, DOB, location, timezone);
         User u = new User(id, Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
-
-        /*
-            TODO
-            DAL.addUser(u)
-         */
+        db.addUser(u);
     }
 
     public void addFriend(String email)throws Exception{
