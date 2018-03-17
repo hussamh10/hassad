@@ -20,14 +20,13 @@ import competition.Team;
 import competition.results.MatchResult;
 import competition.results.Result;
 import player.Info;
-import player.Prediction;
+import player.predictions.MatchPrediction;
+import player.predictions.Prediction;
 import player.User;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-
-import static java.awt.SystemColor.info;
 
 public class Manager {
 
@@ -70,13 +69,13 @@ public class Manager {
         takes a query and returns array of possible matches
      */
 
-    public Prediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
-        Result result = new MatchResult(home_score, away_score, winner, match);
-        Prediction  prediction = new Prediction(UUID.randomUUID(), result, this.player);
+    public MatchPrediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
+        MatchResult result = new MatchResult(home_score, away_score, winner, match);
+        MatchPrediction prediction = new MatchPrediction(UUID.randomUUID(), result, this.player);
         return prediction;
     }
 
-    public void submitPrediction(Prediction prediction) throws Exception{
+    public void submitMatchPrediction(MatchPrediction prediction) throws Exception{
         /*
         TODO DAL.submitPrediction(predicion) @usman
         This will create a new entry in the table with prediction id, match info, result info and user info
@@ -88,7 +87,7 @@ public class Manager {
         this.player.removeCoins(Constants.PREDICTION_COST);
     }
 
-    public void editPrediciton(Prediction prediction)throws Exception{
+    public void editMatchPrediciton(MatchPrediction prediction)throws Exception{
         /*
         TODO DAL.submitPrediction(predicion) @usman
         This will update entry in the table with prediction id, match info, result info and user info
@@ -129,12 +128,12 @@ public class Manager {
          */
     }
 
-    public void compareMatchPrediction(Prediction prediction) throws Exception{
+    public void compareMatchPrediction(MatchPrediction prediction) throws Exception{
         MatchResult predicted_result;
         Match match;
 
         try{
-            predicted_result = ((MatchResult) prediction.getPredicted_result());
+            predicted_result = prediction.getPredicted_result();
             match = predicted_result.getMatch();
         }
         catch (Exception e){
@@ -155,6 +154,10 @@ public class Manager {
 
         player.addCoins(coins);
         player.addPoints(points);
+
+        /*
+        TODO Update User in DAL?
+         */
     }
 
     // ------------------------------------- Utility ------------------------------------------
@@ -186,5 +189,4 @@ public class Manager {
         }
         return true;
     }
-
 }
