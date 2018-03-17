@@ -23,25 +23,33 @@
         android:layout_weight="5"
         android:padding="5dp">
 
-        <ImageView
-            android:id="@+id/home_team_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/manchester_united"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/home_team_name"
-            android:textSize="15sp"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="Manchester United"
-            android:layout_weight="1"/>
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/home_team_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/manchester_united"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_team_name"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="Manchester United"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,12 +66,13 @@
                 android:layout_weight="3">
 
                 <TextView
+                    android:id="@+id/pred_home_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/pred_home_score"
-                    android:textSize="15sp"
+                    android:layout_weight="1"
                     android:text="1"
-                    android:layout_weight="1"/>
+                    android:textAlignment="textEnd"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -74,13 +83,14 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/pred_away_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/pred_away_score"
-                    android:textSize="15sp"
+                    android:layout_weight="1"
                     android:gravity="right"
                     android:text="2"
-                    android:layout_weight="1"/>
+                    android:textAlignment="viewStart"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -93,12 +103,13 @@
                 android:layout_weight="3">
 
                 <TextView
+                    android:id="@+id/home_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/home_score"
-                    android:textSize="25sp"
+                    android:layout_weight="1"
                     android:text="1"
-                    android:layout_weight="1"/>
+                    android:textAlignment="center"
+                    android:textSize="25sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -109,44 +120,54 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/away_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/away_score"
-                    android:textSize="25sp"
+                    android:layout_weight="1"
                     android:gravity="right"
                     android:text="2"
-                    android:layout_weight="1"/>
+                    android:textAlignment="center"
+                    android:textSize="25sp" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/match_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/match_time"
-                android:gravity="center"
-                android:text="12:45 AM"/>
+                android:layout_gravity="center"
+                android:text="12:45 AM"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/away_team_name"
-            android:textSize="15sp"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="Chelsea"
-            android:layout_weight="1"/>
+            android:orientation="vertical"
+            >
 
-        <ImageView
-            android:id="@+id/away_team_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/chelsea"
-            android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/away_team_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/chelsea"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/away_team_name"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="Chelsea"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
