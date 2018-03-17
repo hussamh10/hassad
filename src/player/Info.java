@@ -4,30 +4,18 @@ import java.util.Date;
 
 public class Info {
 
-    private int userID;
     private String name;
     private String email;
     private Date DOB;
     private String location;
+    private int timezone;
 
-
-    public Info(int userID, String name, String email, Date DOB, String location) {
-        this.userID = userID;
+    public Info(String name, String email, Date DOB, String location, int timezone) {
         this.name = name;
         this.email = email;
         this.DOB = DOB;
         this.location = location;
-    }
-
-    public Info(String name, String email, Date DOB, String location) {
-        this.name = name;
-        this.email = email;
-        this.DOB = DOB;
-        this.location = location;
-    }
-
-    public int getUserID() {
-        return userID;
+        this.timezone = timezone;
     }
 
     public String getName() { return name; }
@@ -46,6 +34,9 @@ public class Info {
 
     public void setLocation(String location) { this.location = location; }
 
+    public int getTimezone() { return timezone; }
+
+    public void setTimezone(int timezone) { this.timezone = timezone; }
 
     @Override
     public String toString() {
@@ -54,6 +45,7 @@ public class Info {
                 ", email='" + email + '\'' +
                 ", DOB=" + DOB +
                 ", location='" + location + '\'' +
+                ", timezone=" + timezone +
                 '}';
     }
 }
