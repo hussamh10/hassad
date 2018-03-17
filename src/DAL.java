@@ -10,5 +10,4 @@ public class DAL {
     private ArrayList<Team> teams;
     private ArrayList<Player> players;
     private ArrayList<Group> groups;
-
 }

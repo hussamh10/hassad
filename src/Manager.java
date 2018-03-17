@@ -129,7 +129,56 @@ public class Manager {
          */
     }
 
+    public void compareMatchPrediction(Prediction prediction) throws Exception{
+        MatchResult predicted_result;
+        Match match;
+
+        try{
+            predicted_result = ((MatchResult) prediction.getPredicted_result());
+            match = predicted_result.getMatch();
+        }
+        catch (Exception e){
+            throw e;
+        }
+
+        if (!match.isEnded()){
+            throw new Exception("Match has not ended yet.");
+        }
+
+        int score = 0;
+
+        score = compareScoreline(match, predicted_result) * Constants.SCORE_PREDICTION_POINTS_WEIGHT;
+        score  += compareWinner(match, predicted_result) * Constants.WINNER_PREDICTION_POINTS_WEIGHT;
+
+        int coins = score * Constants.SCORE_TO_COIN_RATIO;
+        int points = score * Constants.SCORE_TO_POINT_RATIO;
+
+        player.addCoins(coins);
+        player.addPoints(points);
+    }
+
     // ------------------------------------- Utility ------------------------------------------
+
+    private int compareScoreline(Match m, MatchResult mr){
+        int similarity = 0;
+
+        if (m.getResult().getAway_score() == mr.getAway_score()){
+            similarity ++;
+        }
+
+        if (m.getResult().getHome_score() == mr.getHome_score()){
+            similarity ++;
+        }
+
+        return similarity;
+    }
+
+    private int compareWinner(Match m, MatchResult mr){
+        if (m.getResult().getWinner().getId() == mr.getWinner().getId()){
+            return 1;
+        }
+        return 0;
+    }
 
     private boolean userExists(String email){
         if (getUser(email) == null){
