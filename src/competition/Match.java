@@ -1,6 +1,6 @@
 package competition;
 
-import competition.results.MatchResult;
+import competition.results.Result;
 
 import java.util.Date;
 
@@ -13,12 +13,12 @@ public class Match {
     private String venue;
     private Date kickoff_time;
 
-    private MatchResult result;
+    private Result result;
     private boolean ended;
 
     private int stage; // higher points for winning higher stage bets
 
-    public Match(int id, boolean ended, Team home, Team away, String venue, Date kickoff_time, MatchResult result, int stage) {
+    public Match(int id, Team home, Team away, String venue, Date kickoff_time, Result result, boolean ended, int stage) {
         this.id = id;
         this.ended = ended;
         this.home = home;
@@ -77,11 +77,11 @@ public class Match {
         this.kickoff_time = kickoff_time;
     }
 
-    public MatchResult getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(MatchResult result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 
