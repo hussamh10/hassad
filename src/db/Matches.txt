@@ -1,0 +1,7 @@
+1,1,2,Camp Nou,2018/08/21,1,1,0
+2,4,3,Santiago Bernabeu,2018/08/27,2,1,0
+3,3,5,Old Trafford,2018/09/22,3,1,0
+4,6,3,Wembley,2018/09/25,null,0,0
+5,1,8,Allianz Arena,2018/09/30,null,0,0
+6,8,9,Stamford Bridge,2018/10/08,null,0,0
+7,9,7,Wanda Metropolina,2018/10/17,null,0,0
