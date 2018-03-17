@@ -442,4 +442,8 @@ public class DAL {
         matchResults = new ArrayList<>();
         tournamentResults = new ArrayList<>();
     }
+
+    public void storeData(){
+        //TODO: @Usman store updated data
+    }
 }
