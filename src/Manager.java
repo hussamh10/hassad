@@ -15,16 +15,19 @@
 
  */
 
-
-
 import competition.Match;
 import competition.Team;
 import competition.results.MatchResult;
 import competition.results.Result;
+import player.Info;
 import player.Prediction;
 import player.User;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
+
+import static java.awt.SystemColor.info;
 
 public class Manager {
 
@@ -34,18 +37,18 @@ public class Manager {
     private Manager(){
     }
 
-    public static Manager getInstance() {
+    private static Manager getInstance() {
         if (instance != null){
             return instance;
         }
         return new Manager();
     }
 
-    public void setPlayer(User player){
+    public void setPlayingUser(User player){
         this.player = player;
     }
 
-    public User getPlayer() {
+    public User getPlayingUser() {
         return player;
     }
 
@@ -54,6 +57,12 @@ public class Manager {
         Create get___ functions for each class that
         takes a unique identifier as input
      */
+
+    public User getUser(String email){
+        return null;
+        // TODO make DAL get user for email @usman
+        //return DAL.getUser(String email);
+    }
 
     /*
         TODO
@@ -69,21 +78,54 @@ public class Manager {
 
     public void submitPrediction(Prediction prediction) throws Exception{
         /*
-        TODO DAL.submitPrediction(predicion)
+        TODO DAL.submitPrediction(predicion) @usman
         This will create a new entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction already made
          */
         if (this.player.getCoins() < Constants.PREDICTION_COST){
-            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.PREDICTION_COST);
+            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.PREDICTION_COST + ".");
         }
         this.player.removeCoins(Constants.PREDICTION_COST);
     }
 
     public void editPrediciton(Prediction prediction)throws Exception{
         /*
-        TODO DAL.submitPrediction(predicion)
+        TODO DAL.submitPrediction(predicion) @usman
         This will update entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction not already made
          */
     }
+
+    public void register(String name, String email, Date DOB, String location, int timezone) throws Exception{
+        if (userExists(email)){
+            throw new Exception("User with email address: " + email + " already exists.");
+        }
+        Info info = new Info(name, email, DOB, location, timezone);
+        User u = new User(UUID.randomUUID(), Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
+        setPlayingUser(u);
+    }
+
+    public void addFriend(String email)throws Exception{
+        if (!userExists(email)){
+            throw new Exception("User with email address:" + email + " does not exist.");
+        }
+        ArrayList<UUID> friends = player.getFriends();
+        User friend = getUser(email);
+
+        if (friends.contains(friend.getId())){
+            throw new Exception("Already following " + friend.getInfo().getName() + ".");
+        }
+
+        player.addFriend(friend.getId());
+    }
+
+    // ------------------------------------- Utility ------------------------------------------
+
+    private boolean userExists(String email){
+        if (getUser(email) == null){
+            return false;
+        }
+        return true;
+    }
+
 }
