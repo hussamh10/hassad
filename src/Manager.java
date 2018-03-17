@@ -37,7 +37,7 @@ public class Manager {
     private Manager(){
     }
 
-    private static Manager getInstance() {
+    public static Manager getInstance() {
         if (instance != null){
             return instance;
         }
@@ -103,6 +103,11 @@ public class Manager {
         Info info = new Info(name, email, DOB, location, timezone);
         User u = new User(UUID.randomUUID(), Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
+
+        /*
+            TODO
+            DAL.addUser(u)
+         */
     }
 
     public void addFriend(String email)throws Exception{
@@ -117,6 +122,11 @@ public class Manager {
         }
 
         player.addFriend(friend.getId());
+
+        /*
+            TODO
+            update user in DAL
+         */
     }
 
     // ------------------------------------- Utility ------------------------------------------
