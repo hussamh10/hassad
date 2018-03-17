@@ -3,23 +3,25 @@ package player;
 import player.User;
 import competition.results.Result;
 
+import java.util.UUID;
+
 public class Prediction {
 
-    private int id;
+    private UUID id;
     private Result predicted_result;
     private User predictor;
 
-    public Prediction(int id, Result predicted_result, User predictor) {
+    public Prediction(UUID id, Result predicted_result, User predictor) {
         this.id = id;
         this.predicted_result = predicted_result;
         this.predictor = predictor;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -42,11 +42,9 @@ public class Manager {
         takes a query and returns array of possible matches
      */
 
-
     public Prediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
         Result result = new MatchResult(home_score, away_score, winner, match);
-        Prediction  prediction = new Prediction(0, result, this.player);
-        //TODO : Change this 0
+        Prediction  prediction = new Prediction(UUID.randomUUID(), result, this.player);
         return prediction;
     }
 

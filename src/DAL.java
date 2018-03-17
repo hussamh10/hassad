@@ -1,6 +1,7 @@
 import competition.Group;
 import competition.Player;
 import competition.Team;
+import player.Prediction;
 
 import java.util.ArrayList;
 
