@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public class DAL {
 
+    private static DAL instance = null;
+
     private ArrayList<Group> groups;
     private ArrayList<Match> matches;
     private ArrayList<Team> teams;
@@ -33,7 +35,7 @@ public class DAL {
     private ArrayList<TournamentResult> tournamentResults;
 
 
-    public DAL(){
+    private DAL(){
 
         initArrayLists();
 
@@ -50,6 +52,12 @@ public class DAL {
         readTournamentResults();
 //        readPredictions();
 
+    }
+
+    public DAL getInstance(){
+        if(instance == null)
+            instance = new DAL();
+        return instance;
     }
 
     public ArrayList<Group> getGroups() {
@@ -261,7 +269,7 @@ public class DAL {
 
 
                 this.infoArrayList.add(new Info(
-                        Integer.parseInt(obj[0]),
+                        UUID.fromString(obj[0]),
                         obj[1],
                         obj[2],
 //                    new Date(java.lang.String.valueOf(df.parse(obj[3]))),
@@ -310,7 +318,7 @@ public class DAL {
 
     private Info getInfoByID(int i) {
         for(Info info : this.infoArrayList){
-            if(info.getUserID() == i)
+            if(info.getUserID() == UUID.fromString(String.valueOf(i)))
                 return info;
         }
         return null;
