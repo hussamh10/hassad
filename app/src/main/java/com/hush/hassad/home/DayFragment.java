@@ -1,4 +1,4 @@
-package com.hush.hassad;
+package com.hush.hassad.home;
 
 
 import android.os.Bundle;
@@ -7,11 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hush.hassad.R;
 
-public class HomeSubFragment extends Fragment {
+public class DayFragment extends Fragment {
 
 
-	public HomeSubFragment() {
+	public DayFragment() {
 
 	}
 
