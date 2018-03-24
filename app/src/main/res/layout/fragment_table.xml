@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
 	android:layout_margin="10dp"
 	android:layout_gravity="center"
->
-	<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="10dp"
-		android:layout_gravity="center"
-		android:background="@android:color/darker_gray">
 		>
 
 		<include
-			layout="@layout/card_group_header"
+			layout="@layout/card_group"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent"/>
+			android:layout_margin="13dp" />
 
 		<include
-			layout="@layout/card_group_team"
+			layout="@layout/card_group"
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent"/>
+			android:layout_width="match_parent"
+			android:layout_margin="13dp"
+			/>
+
 		<include
-			layout="@layout/card_group_team"
+			layout="@layout/card_group"
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent"/>
+			android:layout_width="match_parent"
+			android:layout_margin="13dp"
+			/>
+
 		<include
-			layout="@layout/card_group_team"
+			layout="@layout/card_group"
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent"/>
-		<include
-			layout="@layout/card_group_team"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"/>
+			android:layout_width="match_parent"
+			android:layout_margin="13dp"
+			/>
 
 	</LinearLayout>
-</LinearLayout>
+
+</ScrollView>
