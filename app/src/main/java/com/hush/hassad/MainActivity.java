@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
         } else if (id == R.id.nav_leaderboard) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new LeaderboardFragment()).commit();
+        } else if (id == R.id.nav_predictions) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new PredictionsFragment()).commit();
         } else if (id == R.id.nav_profile) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new ProfileFragment()).commit();
         } else if (id == R.id.nav_settings) {
