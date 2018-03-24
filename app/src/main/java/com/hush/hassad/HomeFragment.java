@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class HomeFragment extends Fragment {
 	@Nullable
@@ -28,8 +29,9 @@ public class HomeFragment extends Fragment {
 
 	private static class HomePagerAdapter extends FragmentPagerAdapter {
 
-		HomePagerAdapter(FragmentManager fm) {
+		HomePagerAdapter(Date[] dates, FragmentManager fm) {
 			super(fm);
+			this.dates = dates;
 		}
 
 		@Override
@@ -47,6 +49,6 @@ public class HomeFragment extends Fragment {
 			return "hello";
 		}
 
+		private Date[] dates;
 	}
-
 }
