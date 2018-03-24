@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_weight="6">
+
+
+    <TextView
+        android:layout_width = "1dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_team_positition"
+        android:text="1"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:layout_weight="1"
+        />
+
+    <ImageView
+        android:id="@+id/team_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:layout_weight="1"
+        android:src="@drawable/manchester_united"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/team_name"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:text="Manchester United"
+        android:layout_weight="2.5"/>
+
+
+    <TextView
+        android:layout_width = "2dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_team_played"
+        android:paddingRight="5dp"
+        android:paddingLeft="10dp"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        android:text="2"
+        android:layout_weight="1"
+        />
+
+    <TextView
+        android:layout_width = "2dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_team_points"
+        android:paddingRight="5dp"
+        android:paddingLeft="10dp"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        android:text="6"
+        android:layout_weight="1"
+        />
+
+
+</LinearLayout>
