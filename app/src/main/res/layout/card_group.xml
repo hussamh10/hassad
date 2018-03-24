@@ -14,21 +14,56 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#868686"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
     <include
         layout="@layout/card_group_team"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:id="@+id/team1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#868686"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
     <include
         layout="@layout/card_group_team"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:id="@+id/team2"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#868686"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
     <include
         layout="@layout/card_group_team"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:id="@+id/team3"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#868686"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
     <include
         layout="@layout/card_group_team"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:id="@+id/team4"/>
 
 </LinearLayout>
