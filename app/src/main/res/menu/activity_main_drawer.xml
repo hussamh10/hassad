@@ -22,10 +22,6 @@
             android:id="@+id/nav_leaderboard"
             android:icon="@drawable/ic_menu_manage"
             android:title="Leaderboard" />
-		<item
-			android:id="@+id/nav_predictions"
-			android:icon="@drawable/ic_menu_manage"
-			android:title="Predictions" />
     </group>
 
     <group
