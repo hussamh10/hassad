@@ -1,6 +1,6 @@
 package competition;
 
-import competition.results.Result;
+import competition.results.GroupResult;
 
 import java.util.ArrayList;
 
@@ -14,9 +14,9 @@ public class Group {
     ArrayList<Integer> pld; // sorted with points
 
     boolean ended;
-    Result result;
+    GroupResult result;
 
-    public Group(int id, String name, ArrayList<Team> teams, ArrayList<Integer> pts, ArrayList<Integer> pld, boolean ended, Result result) {
+    public Group(int id, String name, ArrayList<Team> teams, ArrayList<Integer> pts, ArrayList<Integer> pld, boolean ended, GroupResult result) {
         this.id = id;
         this.teams = teams;
         this.pts = pts;
@@ -74,11 +74,11 @@ public class Group {
         this.ended = ended;
     }
 
-    public Result getResult() {
+    public GroupResult getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(GroupResult result) {
         this.result = result;
     }
 
