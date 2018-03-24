@@ -17,22 +17,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
-    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,10 +33,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();
-            fab.hide();
         }
     }
 
@@ -65,13 +53,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        fab.hide();
 
         if (id == R.id.nav_home) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment()).commit();
         } else if (id == R.id.nav_friends) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new FriendsFragment()).commit();
-            fab.show();
         } else if (id == R.id.nav_table) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
         } else if (id == R.id.nav_leaderboard) {
