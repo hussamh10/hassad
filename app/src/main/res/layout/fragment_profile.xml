@@ -1,9 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:layout_weight="6"
 	tools:context="com.hush.hassad.ProfileFragment">
 
-</android.support.constraint.ConstraintLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="150dp"
+		android:orientation="horizontal"
+		android:paddingTop="30dp"
+		android:layout_weight="4"
+		android:background="@drawable/back">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:textAlignment="viewEnd"
+			android:text="$100"
+			android:textColor="#ffffff"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="2">
+			<ImageView
+				android:layout_width="50dp"
+				android:layout_height="50dp"
+				android:id="@+id/profile_img"
+				android:layout_gravity="center"
+				android:src="@drawable/manchester_united"/>
+			<TextView
+				android:id="@+id/profile_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="#ffffff"
+				android:layout_gravity="center"
+				android:text="Saaad Mujeeb" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/profile_email"
+				android:textColor="#ffffff"
+				android:layout_gravity="center"
+				android:text="saadmujeeb@gmail.com"/>
+		</LinearLayout>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:text="5000"
+			android:textColor="#ffffff"/>
+
+	</LinearLayout>
+
+	<ListView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+	</ListView>
+
+</LinearLayout>
