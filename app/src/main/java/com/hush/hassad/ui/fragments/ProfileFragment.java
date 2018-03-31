@@ -69,11 +69,11 @@ public class ProfileFragment extends Fragment {
 		public Fragment getItem(int position) {
 			switch (position){
 				case 0:
-					return new DayFragment();
+					return new MatchesFragment();
 				case 1:
-					return new DayFragment();
+					return new GroupFragment();
 				case 2:
-					return new DayFragment();
+					return new TournamentFragment();
 				default:
 					return null;
 			}
