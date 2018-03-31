@@ -1,4 +1,4 @@
-package com.hush.hassad;
+package com.hush.hassad.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,6 +8,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.hush.hassad.ui.fragments.ProfileFragment;
+import com.hush.hassad.R;
+import com.hush.hassad.ui.fragments.SettingsFragment;
+import com.hush.hassad.ui.fragments.TableFragment;
+import com.hush.hassad.ui.fragments.AboutFragment;
+import com.hush.hassad.ui.fragments.FriendsFragment;
+import com.hush.hassad.ui.fragments.HomeFragment;
+import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

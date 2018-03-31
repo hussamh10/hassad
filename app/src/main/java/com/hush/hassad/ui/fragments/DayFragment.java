@@ -1,4 +1,4 @@
-package com.hush.hassad.home;
+package com.hush.hassad.ui.fragments;
 
 
 import android.os.Bundle;
