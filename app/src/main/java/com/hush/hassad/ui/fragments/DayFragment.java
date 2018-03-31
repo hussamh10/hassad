@@ -27,13 +27,14 @@ public class DayFragment extends Fragment {
     ArrayList<Match> matches;
 
     public DayFragment(){
-
     }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_home_sub, container, false);
+
+		// FIXME shouldnt the matches be populd
 
 		Bundle bundle = this.getArguments();
 
@@ -46,7 +47,7 @@ public class DayFragment extends Fragment {
 			matches = Manager.getInstance().getMatches(date);
 		}
 		catch (Exception e){
-			Toast.makeText(getActivity(), "Masla in oncreate, getmatches", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Problem with get matches", Toast.LENGTH_SHORT).show();
 		}
 
 		ListView matchList = (ListView) view.findViewById(R.id.match_list);

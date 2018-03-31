@@ -25,7 +25,7 @@ public class DAL {
                 new Team(1, "Brasil", ""),
                 new Team(2, "Italy", ""),
                 "Old Trafford",
-                new Date(),
+                date,
                 null,
                 false,
                 1);
@@ -38,7 +38,7 @@ public class DAL {
                 new Team(1, "Brasil", ""),
                 new Team(2, "Italy", ""),
                 "Old Trafford",
-                new Date(),
+                date,
                 null,
                 false,
                 1);
