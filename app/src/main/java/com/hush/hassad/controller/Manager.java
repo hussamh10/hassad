@@ -15,15 +15,16 @@ package com.hush.hassad.controller;/* NOTES:
 
  */
 
-import com.hush.hassad.controller.competition.Group;
-import com.hush.hassad.controller.competition.Match;
-import com.hush.hassad.controller.competition.Team;
-import com.hush.hassad.controller.competition.results.GroupResult;
-import com.hush.hassad.controller.competition.results.MatchResult;
-import com.hush.hassad.controller.player.Info;
-import com.hush.hassad.controller.player.predictions.GroupPrediction;
-import com.hush.hassad.controller.player.predictions.MatchPrediction;
-import com.hush.hassad.controller.player.User;
+import com.hush.hassad.competition.Group;
+import com.hush.hassad.competition.Match;
+import com.hush.hassad.competition.Team;
+import com.hush.hassad.competition.results.GroupResult;
+import com.hush.hassad.competition.results.MatchResult;
+import com.hush.hassad.player.Info;
+import com.hush.hassad.predictions.GroupPrediction;
+import com.hush.hassad.predictions.MatchPrediction;
+import com.hush.hassad.player.User;
+import com.hush.hassad.dal.DAL;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,8 +63,8 @@ public class Manager {
 
     public User getUser(String email){
         return db.getUserByEmail(email);
-        // TODO make com.hush.hassad.controller.DAL get user for email @usman
-        //return com.hush.hassad.controller.DAL.getUser(String email);
+        // TODO make com.hush.hassad.dal.DAL get user for email @usman
+        //return com.hush.hassad.dal.DAL.getUser(String email);
     }
 
     public MatchPrediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
@@ -74,7 +75,7 @@ public class Manager {
 
     public void submitMatchPrediction(MatchPrediction prediction) throws Exception{
         /*
-        TODO com.hush.hassad.controller.DAL.submitMatchPrediction(predicion) @usman
+        TODO com.hush.hassad.dal.DAL.submitMatchPrediction(predicion) @usman
         This will create a new entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction already made
          */
@@ -86,7 +87,7 @@ public class Manager {
 
     public void editMatchPrediciton(MatchPrediction prediction)throws Exception{
         /*
-        TODO com.hush.hassad.controller.DAL.submitPrediction(predicion) @usman
+        TODO com.hush.hassad.dal.DAL.submitPrediction(predicion) @usman
         This will update entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction not already made
          */
@@ -109,7 +110,7 @@ public class Manager {
 
     public void submitGroupPrediction(GroupPrediction prediction)throws Exception{
         /*
-        TODO com.hush.hassad.controller.DAL.submitGroupPrediction(predicion) @usman
+        TODO com.hush.hassad.dal.DAL.submitGroupPrediction(predicion) @usman
         */
 
         if (this.player.getCoins() < Constants.GROUP_PREDICTION_COST){
@@ -144,7 +145,7 @@ public class Manager {
 
         /*
             TODO
-            update user in com.hush.hassad.controller.DAL
+            update user in com.hush.hassad.dal.DAL
          */
     }
 
@@ -176,7 +177,7 @@ public class Manager {
         player.addPoints(points);
 
         /*
-        TODO Update User in com.hush.hassad.controller.DAL?
+        TODO Update User in com.hush.hassad.dal.DAL?
          */
     }
 

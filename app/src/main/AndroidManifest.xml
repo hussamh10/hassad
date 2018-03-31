@@ -10,7 +10,7 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 		<activity
-			android:name=".MainActivity"
+			android:name=".ui.activities.MainActivity"
 			android:label="@string/title_activity_main"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
@@ -20,7 +20,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".Home" />
-		<activity android:name=".GroupPredictionActivity" />
+		<activity android:name=".ui.activities.GroupPredictionActivity" />
 	</application>
 
 </manifest>

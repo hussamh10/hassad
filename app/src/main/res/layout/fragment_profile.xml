@@ -6,7 +6,7 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:layout_weight="6"
-	tools:context="com.hush.hassad.ProfileFragment">
+	tools:context="com.hush.hassad.ui.fragments.ProfileFragment">
 
 	<LinearLayout
 		android:layout_width="match_parent"
