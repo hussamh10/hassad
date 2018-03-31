@@ -12,7 +12,10 @@ public class Utils {
 	}
 
 	public static String getTimeString(Date date){
-		// FIXME
-		return "11:45 pm";
+		int hour = date.getHours();
+		int minutes = date.getMinutes();
+
+		String time = hour + ":" + minutes;
+		return time;
 	}
 }
