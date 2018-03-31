@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hush.hassad.home.DayFragment;
+import com.hush.hassad.view.home.DayFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
