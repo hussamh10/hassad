@@ -51,6 +51,15 @@ public class Manager {
         this.player = player;
     }
 
+    // ------------------------- Funs ---------------------------------
+
+    public ArrayList<Match> getMatches(Date date) throws Exception{
+        return db.getMatches(date);
+    }
+
+    // -------------------------- End ---------------------------------
+
+
     public User getPlayingUser() {
         return player;
     }

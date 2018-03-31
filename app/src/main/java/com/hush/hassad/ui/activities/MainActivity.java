@@ -8,7 +8,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.ui.fragments.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
@@ -18,10 +21,13 @@ import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

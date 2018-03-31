@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Saad Mujeeb on 31/3/2018.
@@ -56,6 +58,9 @@ public class MatchAdapter extends ArrayAdapter {
 			convertView = activity.getLayoutInflater().inflate(resource, parent, false);
 		}
 
+		matchHolder = new MatchHolder();
+
+
 		matchHolder.home_team_img = (ImageView) convertView.findViewById(R.id.home_team_img);
 		matchHolder.home_team_name = (TextView) convertView.findViewById(R.id.home_team_name);
 		matchHolder.pred_home_score = (TextView) convertView.findViewById(R.id.pred_home_score);
@@ -76,8 +81,10 @@ public class MatchAdapter extends ArrayAdapter {
 		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
 
-		if(!match.isEnded())
-			matchHolder.match_time.setText(match.getKickoff_time().toString());
+		if(!match.isEnded()) {
+			String time = Utils.getTimeString(match.getKickoff_time());
+			matchHolder.match_time.setText(time);
+		}
 
 		return convertView;
 	}

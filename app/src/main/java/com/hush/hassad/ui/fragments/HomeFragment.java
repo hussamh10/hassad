@@ -17,11 +17,47 @@ import com.hush.hassad.ui.fragments.DayFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
+
+ 	private ArrayList<DayFragment> days;
+
+	public HomeFragment(){
+        ArrayList<Date> dates = getDates(-2, 2);
+        days = new ArrayList<>();
+		for (Date d: dates) {
+			Bundle bundle = new Bundle();
+			DayFragment fragment = new DayFragment();
+
+			bundle.putSerializable("date", d);
+			fragment.setArguments(bundle);
+			days.add(fragment);
+		}
+	}
+
+
+	//FIXME
+	private ArrayList<Date> getDates(int min, int max){
+		ArrayList<Date> dates = new ArrayList<>();
+
+	    for (int i = min; i <= max; i++){
+			dates.add(getDay(i));
+		}
+		return dates;
+	}
+
+
+	// FIXME move to utils
+	private Date getDay(int i) {
+		final Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, i);
+		return cal.getTime();
+	}
+
 	@Nullable
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_home, container,false);
@@ -30,6 +66,7 @@ public class HomeFragment extends Fragment {
 
 		ViewPager viewPager = view.findViewById(R.id.viewpager);
 		homePagerAdapter = new HomePagerAdapter(generateDates(), getChildFragmentManager());
+		homePagerAdapter.days = days;
 		viewPager.setAdapter(homePagerAdapter);
 		viewPager.setCurrentItem(2);
 
@@ -59,6 +96,7 @@ public class HomeFragment extends Fragment {
 
 	private static class HomePagerAdapter extends FragmentPagerAdapter {
 
+		private ArrayList<DayFragment> days;
 		private static DateFormat dateFormat = new SimpleDateFormat("E, d MMM", Locale.ENGLISH);
 
 		HomePagerAdapter(Date[] dates, FragmentManager fm) {
@@ -68,7 +106,7 @@ public class HomeFragment extends Fragment {
 
 		@Override
 		public Fragment getItem(int position) {
-			return new DayFragment();
+			return days.get(position);
 		}
 
 		@Override
