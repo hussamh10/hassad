@@ -3,17 +3,16 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:layout_weight="6"
-	tools:context="com.hush.hassad.ProfileFragment">
+	tools:context="com.hush.hassad.ui.fragments.ProfileFragment">
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="150dp"
 		android:orientation="horizontal"
-		android:paddingTop="30dp"
-		android:layout_weight="4"
+		android:gravity="center"
 		android:background="@drawable/back">
 
 		<TextView
@@ -21,6 +20,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:layout_gravity="center"
+			android:paddingTop="50dp"
 			android:textAlignment="viewEnd"
 			android:text="$100"
 			android:textColor="#ffffff"/>
@@ -31,8 +31,8 @@
 			android:orientation="vertical"
 			android:layout_weight="2">
 			<ImageView
-				android:layout_width="50dp"
-				android:layout_height="50dp"
+				android:layout_width="80dp"
+				android:layout_height="80dp"
 				android:id="@+id/profile_img"
 				android:layout_gravity="center"
 				android:src="@drawable/manchester_united"/>
@@ -57,15 +57,25 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:layout_gravity="center"
+			android:paddingTop="50dp"
 			android:text="5000"
 			android:textColor="#ffffff"/>
 
 	</LinearLayout>
 
-	<ListView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
+	<android.support.design.widget.TabLayout
+		android:id="@+id/tabLayoutProfile"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorPrimary"
+		app:tabGravity="fill"
+		app:tabMode="fixed"
+		app:tabMaxWidth="0dp"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-	</ListView>
+	<android.support.v4.view.ViewPager
+		android:id="@+id/pagerProfile"
+		android:layout_width="match_parent"
+		android:layout_height="fill_parent"/>
 
 </LinearLayout>
