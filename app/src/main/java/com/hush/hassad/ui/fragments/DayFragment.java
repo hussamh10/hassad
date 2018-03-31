@@ -23,40 +23,47 @@ import java.util.Date;
 
 public class DayFragment extends Fragment {
 
-	MatchAdapter matchAdapter;
-    ArrayList<Match> matches;
+	private MatchAdapter matchAdapter;
+    private ArrayList<Match> matches;
+    private Date date;
 
-    public DayFragment(){
-    }
+    public DayFragment(){ }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View createView(LayoutInflater inflater, ViewGroup container){
 		View view = inflater.inflate(R.layout.fragment_home_sub, container, false);
-
-		// FIXME shouldnt the matches be populd
-
-		Bundle bundle = this.getArguments();
-
-		Date date = new Date();
-		if (bundle != null) {
-			date = (Date) bundle.getSerializable("date");
-		}
-
-		try{
-			matches = Manager.getInstance().getMatches(date);
-		}
-		catch (Exception e){
-			Toast.makeText(getActivity(), "Problem with get matches", Toast.LENGTH_SHORT).show();
-		}
-
 		ListView matchList = (ListView) view.findViewById(R.id.match_list);
-
 
 		matchAdapter = new MatchAdapter(getActivity(), R.layout.card_match, matches ,null);
 		matchList.setAdapter(matchAdapter);
 
-
 		return view;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return createView(inflater, container);
+	}
+
+	public void updateMatches(Date date){
+		this.date = date;
+		try{
+			matches = Manager.getInstance().getMatches(date);
+		}
+		catch (Exception e){
+			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void updateMatches(){
+		try{
+			matches = Manager.getInstance().getMatches(date);
+		}
+		catch (Exception e){
+			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void setDate(Date date){
+    	this.date = date;
 	}
 }

@@ -30,11 +30,8 @@ public class HomeFragment extends Fragment {
         ArrayList<Date> dates = getDates(-2, 2);
         days = new ArrayList<>();
 		for (Date d: dates) {
-			Bundle bundle = new Bundle();
 			DayFragment fragment = new DayFragment();
-
-			bundle.putSerializable("date", d);
-			fragment.setArguments(bundle);
+			fragment.updateMatches(d);
 			days.add(fragment);
 		}
 	}
