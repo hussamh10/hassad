@@ -15,15 +15,15 @@ package com.hush.hassad.controller;/* NOTES:
 
  */
 
-import com.hush.hassad.competition.Group;
-import com.hush.hassad.competition.Match;
-import com.hush.hassad.competition.Team;
-import com.hush.hassad.competition.results.GroupResult;
-import com.hush.hassad.competition.results.MatchResult;
-import com.hush.hassad.player.Info;
-import com.hush.hassad.predictions.GroupPrediction;
-import com.hush.hassad.predictions.MatchPrediction;
-import com.hush.hassad.player.User;
+import com.hush.hassad.controller.competition.Group;
+import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.competition.Team;
+import com.hush.hassad.controller.competition.results.GroupResult;
+import com.hush.hassad.controller.competition.results.MatchResult;
+import com.hush.hassad.controller.player.Info;
+import com.hush.hassad.controller.predictions.GroupPrediction;
+import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
 
 import java.util.ArrayList;
@@ -62,7 +62,8 @@ public class Manager {
      */
 
     public User getUser(String email){
-        return db.getUserByEmail(email);
+        return null;
+        //return db.getUserByEmail(email);
         // TODO make com.hush.hassad.dal.DAL get user for email @usman
         //return com.hush.hassad.dal.DAL.getUser(String email);
     }
@@ -127,7 +128,7 @@ public class Manager {
         Info info = new Info(id, name, email, DOB, location, timezone);
         User u = new User(id, Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
-        db.addUser(u);
+        //db.addUser(u);
     }
 
     public void addFriend(String email)throws Exception{
