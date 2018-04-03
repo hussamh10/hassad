@@ -2,6 +2,7 @@ package com.hush.hassad.ui.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hush.hassad.R;
@@ -69,6 +69,9 @@ public class GroupPredictionsAdapter extends ArrayAdapter {
 		View predictedTeam3 = convertView.findViewById(R.id.predicted_team3);
 		View predictedTeam4 = convertView.findViewById(R.id.predicted_team4);
 
+		predictedTeam1.setBackgroundColor(Color.GREEN);
+		predictedTeam2.setBackgroundColor(Color.GREEN);
+
 		groupHolder.predictedGroupNum = (TextView) convertView.findViewById(R.id.predicted_group_num);
 		groupHolder.team1Img = (ImageView) predictedTeam1.findViewById(R.id.team_img);
 		groupHolder.team1Name = (TextView) predictedTeam1.findViewById((R.id.team_name));
@@ -107,6 +110,10 @@ public class GroupPredictionsAdapter extends ArrayAdapter {
 
 		String t3 = "";
 		String t4 = "";
+
+		for(Team t : group.getTeams()){
+
+		}
 
 		if(!team1.equals(qualifying1) && !team1.equals(qualifying2))
 			t3 = team1;
