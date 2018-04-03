@@ -229,4 +229,12 @@ public class Manager {
 	public ArrayList<MatchPrediction> getPredictedMatches(User user) {
         return db.getPredictedMatches(user);
 	}
+
+    public ArrayList<GroupPrediction> getPredictedGroups(User user) {
+        return db.getPredictedGroups(user);
+    }
+
+	public Group getGroup(int group) {
+        return db.getGroup(group);
+	}
 }

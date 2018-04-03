@@ -1,9 +1,12 @@
 package com.hush.hassad.dal;
 
+import com.hush.hassad.controller.competition.Group;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
+import com.hush.hassad.controller.competition.results.GroupResult;
 import com.hush.hassad.controller.competition.results.MatchResult;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 
 import java.util.ArrayList;
@@ -16,10 +19,18 @@ public class DAL {
 
     private ArrayList<Match> matches;
 	private ArrayList<Team> teams;
+	private ArrayList<Group> groups;
 
     private DAL(){
 		Team brasil = new Team(111, "Brasil", "");
 		Team italy = new Team(112, "Italy", "");
+		Team eng = new Team(113, "England", "");
+		Team fra = new Team(114, "France", "");
+		Team arg = new Team(115, "Argentina", "");
+		Team por = new Team(116, "Portugal", "");
+		Team bel = new Team(116, "Belgium", "");
+		Team pak = new Team(116, "Pakistan", "");
+		Team ind = new Team(116, "India", "");
 
 		teams = new ArrayList<>();
 		matches = new ArrayList<>();
@@ -30,9 +41,37 @@ public class DAL {
 
 		teams.add(brasil);
 		teams.add(italy);
+		teams.add(eng);
+		teams.add(fra);
+		teams.add(arg);
+		teams.add(por);
+		teams.add(bel);
+		teams.add(pak);
+		teams.add(ind);
+
 		matches.add(bravita);
 		matches.add(bravita2);
 		matches.add(bravita3);
+
+		ArrayList<Team> grp1 = new ArrayList<>();
+		grp1.add(brasil);
+		grp1.add(italy);
+		grp1.add(eng);
+		grp1.add(fra);
+
+		ArrayList<Team> grp2 = new ArrayList<>();
+		grp2.add(arg);
+		grp2.add(por);
+		grp2.add(bel);
+		grp2.add(pak);
+
+		Group g1 = new Group(0, "Group A", grp1, null, null, false, null);
+		Group g2 = new Group(0, "Group B", grp2, null, null, false, null);
+
+		groups = new ArrayList<>();
+
+		groups.add(g1);
+		groups.add(g2);
 	}
 
     public static DAL getInstance(){
@@ -73,6 +112,22 @@ public class DAL {
         return matches;
     }
 
+    public ArrayList<GroupPrediction> getPredictedGroups(User user){
+		ArrayList<GroupPrediction> gp = new ArrayList<>();
+
+
+		GroupResult gr1 = new GroupResult(teams.get(0), teams.get(1), 0);
+		GroupResult gr2 = new GroupResult(teams.get(5), teams.get(6), 1);
+
+		GroupPrediction gp1 = new GroupPrediction(UUID.randomUUID(), gr1, user);
+		GroupPrediction gp2 = new GroupPrediction(UUID.randomUUID(), gr2, user);
+
+		gp.add(gp1);
+		gp.add(gp2);
+
+		return gp;
+	}
+
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
     	// FIXME
 		ArrayList<MatchPrediction> mp = new ArrayList<>();
@@ -107,5 +162,12 @@ public class DAL {
 			return matches.get(id);
 		}
 		return matches.get(0);
+	}
+
+	public Group getGroup(int id) {
+		if (id < groups.size()){
+			return groups.get(id);
+		}
+		return groups.get(0);
 	}
 }

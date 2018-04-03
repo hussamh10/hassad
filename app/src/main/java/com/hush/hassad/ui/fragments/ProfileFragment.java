@@ -20,10 +20,15 @@ public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
 	ProfileViewpager profilePagerAdapter;
 	MatchesFragment predicted_matches;
+	GroupFragment predicted_groups;
 
 	public ProfileFragment(){
 		predicted_matches = new MatchesFragment();
 		predicted_matches.update();
+
+
+		predicted_groups = new GroupFragment();
+		predicted_groups.update();
 	}
 
 	@Nullable
@@ -77,7 +82,7 @@ public class ProfileFragment extends Fragment {
 				case 0:
 					return predicted_matches;
 				case 1:
-					return new GroupFragment();
+					return predicted_groups;
 				case 2:
 					return new TournamentFragment();
 				default:
