@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
-import com.hush.hassad.ui.fragments.DayFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,7 +35,6 @@ public class HomeFragment extends Fragment {
 		}
 	}
 
-
 	//FIXME
 	private ArrayList<Date> getDates(int min, int max){
 		ArrayList<Date> dates = new ArrayList<>();
@@ -53,6 +51,21 @@ public class HomeFragment extends Fragment {
 		final Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, i);
 		return cal.getTime();
+	}
+
+	// FIXME move to utils
+	private Date[] generateDates() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -2);
+
+		Date[] dates = new Date[5];
+
+		for (int i = 0; i < 5; ++i) {
+			dates[i] = calendar.getTime();
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+
+		return dates;
 	}
 
 	@Nullable
@@ -75,19 +88,6 @@ public class HomeFragment extends Fragment {
 		inflater.inflate(R.menu.home_menu, menu);
 	}
 
-	private Date[] generateDates() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -2);
-
-		Date[] dates = new Date[5];
-
-		for (int i = 0; i < 5; ++i) {
-			dates[i] = calendar.getTime();
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-		}
-
-		return dates;
-	}
 
 	HomePagerAdapter homePagerAdapter;
 

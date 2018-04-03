@@ -1,14 +1,13 @@
 package com.hush.hassad.controller.competition.results;
 
-import com.hush.hassad.controller.competition.Group;
 import com.hush.hassad.controller.competition.Team;
 
 public class GroupResult extends Result{
     private Team qualifying_1;
     private Team qualifying_2;
-    private Group group;
+    private int group;
 
-    public GroupResult(Team qualifying_1, Team qualifying_2, Group group) {
+    public GroupResult(Team qualifying_1, Team qualifying_2, int group) {
         this.qualifying_1 = qualifying_1;
         this.qualifying_2 = qualifying_2;
         this.group = group;
@@ -32,11 +31,11 @@ public class GroupResult extends Result{
         this.qualifying_2 = qualifying_2;
     }
 
-    public Group getGroup() {
+    public int getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(int group) {
         this.group = group;
     }
 

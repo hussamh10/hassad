@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.player.Info;
+import com.hush.hassad.controller.player.User;
 import com.hush.hassad.ui.fragments.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
@@ -22,11 +24,20 @@ import com.hush.hassad.ui.fragments.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
+
+    private void initUser(){
+        // FIXME
+		UUID id = UUID.randomUUID();
+        Info info = new Info(id, "Hussam", "hussamh10@gmail.com", new Date(), "lahore", 5);
+        User u = new User(id, 0, 0, info);
+        Manager.getInstance().setPlayingUser(u);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initUser();
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();

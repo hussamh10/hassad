@@ -26,7 +26,7 @@ public class Group {
         this.name = name;
     }
 
-    public int get() {
+    public int getId() {
         return id;
     }
 

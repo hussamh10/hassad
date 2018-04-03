@@ -14,10 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 
 public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
 	ProfileViewpager profilePagerAdapter;
+	MatchesFragment predicted_matches;
+
+	public ProfileFragment(){
+		predicted_matches = new MatchesFragment();
+		predicted_matches.update();
+	}
 
 	@Nullable
 	@Override
@@ -53,7 +60,6 @@ public class ProfileFragment extends Fragment {
 		return view;
 	}
 
-
 	public class ProfileViewpager extends FragmentPagerAdapter {
 
 		final int PAGE_COUNT = 2;
@@ -69,7 +75,7 @@ public class ProfileFragment extends Fragment {
 		public Fragment getItem(int position) {
 			switch (position){
 				case 0:
-					return new MatchesFragment();
+					return predicted_matches;
 				case 1:
 					return new GroupFragment();
 				case 2:

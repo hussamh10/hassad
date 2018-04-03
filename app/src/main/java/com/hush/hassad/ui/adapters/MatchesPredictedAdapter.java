@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.predictions.MatchPrediction;
@@ -72,20 +73,22 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 
 		MatchPrediction predictedMatch = predictedMatches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
-		matchHolder.home_team_name.setText(predictedMatch.getPredicted_result().getMatch().getHome().getName().toString());
-		matchHolder.pred_home_score.setText(predictedMatch.getPredicted_result().getHome_score());
+		Match match = Manager.getInstance().getMatch(predictedMatch.getPredicted_result().getMatch());
+
+		matchHolder.home_team_name.setText(match.getHome().getName().toString());
+		matchHolder.pred_home_score.setText(Integer.toString(predictedMatch.getPredicted_result().getHome_score()));
 
 		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
-		matchHolder.away_team_name.setText(predictedMatch.getPredicted_result().getMatch().getAway().getName().toString());
-		matchHolder.pred_away_score.setText(predictedMatch.getPredicted_result().getAway_score());
+		matchHolder.away_team_name.setText(match.getAway().getName().toString());
+		matchHolder.pred_away_score.setText(Integer.toString(predictedMatch.getPredicted_result().getAway_score()));
 
-		if(!predictedMatch.getPredicted_result().getMatch().isEnded()) {
-			String time = Utils.getTimeString(predictedMatch.getPredicted_result().getMatch().getKickoff_time());
-			matchHolder.match_time.setText(time.toString());
+		if(!match.isEnded()) {
+			String time = Utils.getTimeString(match.getKickoff_time());
+			matchHolder.match_time.setText(time);
 		}
 		else{
-			matchHolder.home_score.setText(predictedMatch.getPredicted_result().getMatch().getResult().getHome_score());
-			matchHolder.away_score.setText(predictedMatch.getPredicted_result().getMatch().getResult().getAway_score());
+			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
+			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
 			matchHolder.home_score.setVisibility(View.VISIBLE);
 			matchHolder.away_score.setVisibility(View.VISIBLE);
 			matchHolder.match_time.setVisibility((View.GONE));

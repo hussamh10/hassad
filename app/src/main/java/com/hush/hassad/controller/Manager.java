@@ -34,7 +34,7 @@ public class Manager {
 
     private static DAL db;
     private static Manager instance;
-    private User player;
+    private static User player;
 
     private Manager(){
         db = DAL.getInstance();
@@ -55,6 +55,10 @@ public class Manager {
 
     public ArrayList<Match> getMatches(Date date) throws Exception{
         return db.getMatches(date);
+    }
+
+    public Match getMatch(int id){
+        return db.getMatch(id);
     }
 
     // -------------------------- End ---------------------------------
@@ -78,7 +82,7 @@ public class Manager {
     }
 
     public MatchPrediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
-        MatchResult result = new MatchResult(home_score, away_score, winner, match);
+        MatchResult result = new MatchResult(home_score, away_score, winner, match.getId());
         MatchPrediction prediction = new MatchPrediction(UUID.randomUUID(), result, this.player);
         return prediction;
     }
@@ -112,7 +116,7 @@ public class Manager {
         Team t1 = null;
         Team t2 = null;
 
-        GroupResult gr = new GroupResult(t1, t2, grp);
+        GroupResult gr = new GroupResult(t1, t2, grp.getId());
         GroupPrediction gp = new GroupPrediction(UUID.randomUUID(), gr, player);
 
         return gp;
@@ -165,7 +169,8 @@ public class Manager {
 
         try{
             predicted_result = prediction.getPredicted_result();
-            match = predicted_result.getMatch();
+            int match_id = predicted_result.getMatch();
+            match = db.getMatch(match_id);
         }
         catch (Exception e){
             throw e;
@@ -220,4 +225,8 @@ public class Manager {
         }
         return true;
     }
+
+	public ArrayList<MatchPrediction> getPredictedMatches(User user) {
+        return db.getPredictedMatches(user);
+	}
 }

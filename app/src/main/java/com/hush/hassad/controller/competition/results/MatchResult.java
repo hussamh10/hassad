@@ -7,9 +7,9 @@ public class MatchResult extends Result{
     private int home_score;
     private int away_score;
     private Team winner;
-    private Match match;
+    private int match;
 
-    public MatchResult(int home_score, int away_score, Team winner, Match match) {
+    public MatchResult(int home_score, int away_score, Team winner, int match) {
         this.home_score = home_score;
         this.away_score = away_score;
         this.winner = winner;
@@ -42,11 +42,11 @@ public class MatchResult extends Result{
         this.winner = winner;
     }
 
-    public Match getMatch() {
+    public int getMatch() {
         return match;
     }
 
-    public void setMatch(Match match) {
+    public void setMatch(int match) {
         this.match = match;
     }
 

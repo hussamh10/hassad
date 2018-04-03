@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.ui.adapters.MatchAdapter;
@@ -34,5 +35,13 @@ public class MatchesFragment extends Fragment {
 		matchList.setAdapter(matchesPredictedAdapter);
 
 		return view;
+	}
+
+	public void setMatchesPredictedAdapter(ArrayList<MatchPrediction> predictedMatches){
+		this.predictedMatches = predictedMatches;
+	}
+
+	public void update(){
+		predictedMatches = Manager.getInstance().getPredictedMatches(Manager.getInstance().getPlayingUser());
 	}
 }
