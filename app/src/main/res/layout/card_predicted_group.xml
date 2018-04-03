@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:layout_gravity="center">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/predicted_group_num"
+		android:text="Group1"
+		android:textSize="20sp"
+		android:padding="5dp" />
+
+	<include
+		layout="@layout/card_group_prediction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="13dp"
+		android:id="@+id/predicted_team1"/>
+
+	<include
+		layout="@layout/card_group_prediction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="13dp"
+		android:id="@+id/predicted_team2"/>
+
+	<include
+		layout="@layout/card_group_prediction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="13dp"
+		android:id="@+id/predicted_team3"/>
+
+	<include
+		layout="@layout/card_group_prediction"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="13dp"
+		android:id="@+id/predicted_team4"/>
+
+</LinearLayout>

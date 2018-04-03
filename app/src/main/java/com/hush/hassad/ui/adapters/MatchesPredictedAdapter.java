@@ -81,7 +81,7 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 
 		if(!predictedMatch.getPredicted_result().getMatch().isEnded()) {
 			String time = Utils.getTimeString(predictedMatch.getPredicted_result().getMatch().getKickoff_time());
-			matchHolder.match_time.setText(time);
+			matchHolder.match_time.setText(time.toString());
 		}
 		else{
 			matchHolder.home_score.setText(predictedMatch.getPredicted_result().getMatch().getResult().getHome_score());
