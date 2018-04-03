@@ -1,6 +1,8 @@
 package com.hush.hassad.ui.adapters;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -66,6 +68,9 @@ public class GroupPredictionsAdapter extends ArrayAdapter {
 		View predictedTeam2 = convertView.findViewById(R.id.predicted_team2);
 		View predictedTeam3 = convertView.findViewById(R.id.predicted_team3);
 		View predictedTeam4 = convertView.findViewById(R.id.predicted_team4);
+
+		predictedTeam1.setBackgroundColor(Color.GREEN);
+		predictedTeam2.setBackgroundColor(Color.GREEN);
 
 		groupHolder.predictedGroupNum = (TextView) convertView.findViewById(R.id.predicted_group_num);
 		groupHolder.team1Img = (ImageView) predictedTeam1.findViewById(R.id.team_img);
