@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
@@ -39,6 +40,7 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 		TextView away_score;
 
 		TextView match_time;
+		LinearLayout result;
 	}
 
 
@@ -70,6 +72,7 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 		matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
 
 		matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
+		matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
 
 		MatchPrediction predictedMatch = predictedMatches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
@@ -89,8 +92,7 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 		else{
 			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
-			matchHolder.home_score.setVisibility(View.VISIBLE);
-			matchHolder.away_score.setVisibility(View.VISIBLE);
+			matchHolder.result.setVisibility(View.VISIBLE);
 			matchHolder.match_time.setVisibility((View.GONE));
 		}
 
