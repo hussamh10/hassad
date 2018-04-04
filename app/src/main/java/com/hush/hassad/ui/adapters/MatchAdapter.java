@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.predictions.MatchPrediction;
+
 import java.util.ArrayList;
 
 /**
@@ -54,6 +59,32 @@ public class MatchAdapter extends ArrayAdapter {
 			convertView = activity.getLayoutInflater().inflate(resource, parent, false);
 		}
 
+		Match match = matches.get(position);
+
+		/*
+			Getting prediction for match if any
+		 */
+
+		MatchPrediction prediction;
+
+		boolean isPredicted = Manager.getInstance().isPredicted(match);
+		if (isPredicted){
+			try{
+				prediction = Manager.getInstance().getPrediction(match);
+			}
+			catch (Exception e){
+				Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		/*
+			Code end
+			Later in file set the predicted store in match card
+		 */
+
+		//TODO @saad add the predcited score to the card
+
+
 		matchHolder = new MatchHolder();
 
 		matchHolder.home_team_img = (ImageView) convertView.findViewById(R.id.home_team_img);
@@ -68,7 +99,6 @@ public class MatchAdapter extends ArrayAdapter {
 
 		matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
 
-		Match match = matches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
 		matchHolder.home_team_name.setText(match.getHome().getName().toString());
 

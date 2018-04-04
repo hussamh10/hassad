@@ -237,4 +237,25 @@ public class Manager {
 	public Group getGroup(int group) {
         return db.getGroup(group);
 	}
+
+	// TODO @hussam TEST
+	public boolean isPredicted(Match match) {
+        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
+        for(MatchPrediction prediction : predictions){
+            if(prediction.getPredicted_result().getMatch() == match.getId()){
+                return true;
+            }
+        }
+        return false;
+	}
+
+	public MatchPrediction getPrediction(Match match)throws Exception{
+        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
+        for(MatchPrediction prediction : predictions){
+            if(prediction.getPredicted_result().getMatch() == match.getId()){
+                return prediction;
+            }
+        }
+        throw new Exception("Match not yet predicted");
+    }
 }
