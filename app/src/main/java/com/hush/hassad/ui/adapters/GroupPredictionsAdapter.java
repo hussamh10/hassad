@@ -111,10 +111,6 @@ public class GroupPredictionsAdapter extends ArrayAdapter {
 		String t3 = "";
 		String t4 = "";
 
-		for(Team t : group.getTeams()){
-
-		}
-
 		if(!team1.equals(qualifying1) && !team1.equals(qualifying2))
 			t3 = team1;
 		else if(!team2.equals(qualifying1) && !team2.equals(qualifying2))
