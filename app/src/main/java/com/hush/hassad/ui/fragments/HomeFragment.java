@@ -26,8 +26,12 @@ public class HomeFragment extends Fragment {
  	private ArrayList<DayFragment> days;
 
 	public HomeFragment(){
-        ArrayList<Date> dates = getDates(-2, 2);
-        days = new ArrayList<>();
+		update();
+	}
+
+	public void update(){
+		ArrayList<Date> dates = getDates(-2, 2);
+		days = new ArrayList<>();
 		for (Date d: dates) {
 			DayFragment fragment = new DayFragment();
 			fragment.updateMatches(d);

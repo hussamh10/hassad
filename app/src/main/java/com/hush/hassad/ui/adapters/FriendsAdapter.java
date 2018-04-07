@@ -25,20 +25,28 @@ public class FriendsAdapter extends ArrayAdapter {
     static class FriendHolder{
         ImageView friend_image;
         TextView friend_name;
+		TextView points;
     }
 
 
     public FriendsAdapter(Activity activity, int resource, ArrayList<User> friends) {
-        super(activity, resource);
+        super(activity, resource,friends);
         this.activity = activity;
         this.resource = resource;
         this.friends = friends;
     }
 
+    /*
+    	TODO @saad
+    	make an onclicklistener for each list item,
+    	when that item is clicked
+    		a
+     */
+
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         if (convertView == null) {
             convertView = activity.getLayoutInflater().inflate(resource, parent, false);
         }
@@ -46,11 +54,13 @@ public class FriendsAdapter extends ArrayAdapter {
         mFriendHolder = new FriendHolder();
 
         mFriendHolder.friend_name = convertView.findViewById(R.id.friend_name);
+		mFriendHolder.points = convertView.findViewById(R.id.friends_points);
         mFriendHolder.friend_image = convertView.findViewById(R.id.friend_img);
 
         User friend = friends.get(position);
 
         mFriendHolder.friend_name.setText(friend.getInfo().getName());
+		mFriendHolder.points.setText(Integer.toString(friend.getPoints()));
         mFriendHolder.friend_image.setImageResource(R.drawable.profile);
 
         return convertView;

@@ -5,6 +5,7 @@ import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.GroupResult;
 import com.hush.hassad.controller.competition.results.MatchResult;
+import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.controller.predictions.MatchPrediction;
@@ -159,5 +160,22 @@ public class DAL {
 			return groups.get(id);
 		}
 		return groups.get(0);
+	}
+
+	public ArrayList<User> getFriends(User player) {
+		ArrayList<User> friends = new ArrayList<>();
+
+		UUID id = UUID.randomUUID();
+		User fn1 = new User(id, 1000, 100, new Info(id, "Haroon Ahmed", "haroon@saad.usman",
+				new Date(), "Washroom", 12));
+
+		id = UUID.randomUUID();
+		User fn2 = new User(id, 1000, 100, new Info(id, "Usman Ahmed", "haripur@saad.usman",
+				new Date(), "Bathroom", 12));
+
+		friends.add(fn1);
+		friends.add(fn2);
+
+		return friends;
 	}
 }

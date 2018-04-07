@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.ui.adapters.FriendsAdapter;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 
 public class FriendsFragment extends Fragment {
 
-	ListView friendsList;
 	FriendsAdapter mFriendsAdapter;
 
 	ArrayList<User> friends;
@@ -27,13 +27,16 @@ public class FriendsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_friends, container,false);
-
-		friendsList = view.findViewById(R.id.friends_list);
+		ListView friendsList = view.findViewById(R.id.friends_list);
 
 		mFriendsAdapter = new FriendsAdapter(getActivity(), R.layout.card_friend, friends);
-
 		friendsList.setAdapter(mFriendsAdapter);
 
+		//matchesPredictedAdapter = new MatchesPredictedAdapter(getActivity(), R.layout.card_match, predictedMatches ,null);
 		return view;
+	}
+
+	public void update(){
+		friends = Manager.getInstance().getFriends();
 	}
 }

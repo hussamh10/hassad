@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.ui.adapters.GroupPredictionsAdapter;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ public class GroupFragment extends Fragment {
 		this.predictedGroups = predictedGroups;
 	}
 
-	public void update(){
-		predictedGroups = Manager.getInstance().getPredictedGroups(Manager.getInstance().getPlayingUser());
+	public void update(User user){
+		predictedGroups = Manager.getInstance().getPredictedGroups(user);
 	}
 
 }

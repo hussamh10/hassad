@@ -19,8 +19,9 @@ public class Manager {
     private static DAL db;
     private static Manager instance;
     private static User player;
+	private ArrayList<User> friends;
 
-    private Manager(){
+	private Manager(){
         db = DAL.getInstance();
     }
 
@@ -101,6 +102,9 @@ public class Manager {
         throw new Exception("Match not yet predicted");
     }
 
+	public ArrayList<User> getFriends() {
+    	return db.getFriends(player);
+	}
     /*
             TODO COMPLETE THE FOLLOWING FUNCTIONS
      */
@@ -240,4 +244,5 @@ public class Manager {
         }
         return false;
 	}
+
 }

@@ -31,13 +31,21 @@ public class MainActivity extends AppCompatActivity
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
 
+    FriendsFragment friends_fragment;
+
     private void initUser(){
         // FIXME
 		UUID id = UUID.randomUUID();
         Info info = new Info(id, "Hussam", "hussamh10@gmail.com", new Date(), "lahore", 5);
         User u = new User(id, 0, 0, info);
         Manager.getInstance().setPlayingUser(u);
+        initFragments();
     }
+
+    public void initFragments(){
+        friends_fragment = new FriendsFragment();
+        friends_fragment.update();
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +87,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (id == R.id.nav_friends) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new FriendsFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
         } else if (id == R.id.nav_table) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
         } else if (id == R.id.nav_leaderboard) {

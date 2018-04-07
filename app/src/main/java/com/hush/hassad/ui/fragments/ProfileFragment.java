@@ -24,11 +24,11 @@ public class ProfileFragment extends Fragment {
 
 	public ProfileFragment(){
 		predicted_matches = new MatchesFragment();
-		predicted_matches.update();
+		predicted_matches.update(Manager.getInstance().getPlayingUser());
 
 
 		predicted_groups = new GroupFragment();
-		predicted_groups.update();
+		predicted_groups.update(Manager.getInstance().getPlayingUser());
 	}
 
 	@Nullable
