@@ -8,61 +8,6 @@
 	android:layout_weight="6"
 	tools:context="com.hush.hassad.ui.fragments.ProfileFragment">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="150dp"
-		android:orientation="horizontal"
-		android:gravity="center"
-		android:background="@color/colorPrimaryDark">
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_gravity="center"
-			android:paddingTop="50dp"
-			android:textAlignment="viewEnd"
-			android:text="$100"
-			android:textColor="#ffffff"/>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_weight="2">
-			<ImageView
-				android:layout_width="80dp"
-				android:layout_height="80dp"
-				android:id="@+id/profile_img"
-				android:layout_gravity="center"
-				android:src="@drawable/manchester_united"/>
-			<TextView
-				android:id="@+id/profile_name"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="#ffffff"
-				android:layout_gravity="center"
-				android:text="Saaad Mujeeb" />
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/profile_email"
-				android:textColor="#ffffff"
-				android:layout_gravity="center"
-				android:text="saadmujeeb@gmail.com"/>
-		</LinearLayout>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_gravity="center"
-			android:paddingTop="50dp"
-			android:text="5000"
-			android:textColor="#ffffff"/>
-
-	</LinearLayout>
-
 	<android.support.design.widget.TabLayout
 		android:id="@+id/tabLayoutProfile"
 		android:layout_width="match_parent"
