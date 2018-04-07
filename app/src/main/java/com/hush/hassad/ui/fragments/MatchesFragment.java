@@ -29,7 +29,7 @@ public class MatchesFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_matches_sub, container, false);
-		ListView matchList = (ListView) view.findViewById(R.id.predicted_matches_list);
+		ListView matchList = view.findViewById(R.id.predicted_matches_list);
 
 		matchesPredictedAdapter = new MatchesPredictedAdapter(getActivity(), R.layout.card_match, predictedMatches ,null);
 		matchList.setAdapter(matchesPredictedAdapter);
