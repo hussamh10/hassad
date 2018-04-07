@@ -20,6 +20,7 @@ public class DAL {
     private ArrayList<Match> matches;
 	private ArrayList<Team> teams;
 	private ArrayList<Group> groups;
+	private ArrayList<MatchPrediction> mp;
 
     private DAL(){
 		Team brasil = new Team(111, "Brasil", "");
@@ -72,6 +73,9 @@ public class DAL {
 
 		groups.add(g1);
 		groups.add(g2);
+
+
+		mp = new ArrayList<>();
 	}
 
     public static DAL getInstance(){
@@ -128,27 +132,13 @@ public class DAL {
 		return gp;
 	}
 
-	public ArrayList<MatchPrediction> getPredictedMatches(User user){
-    	// FIXME
-		ArrayList<MatchPrediction> mp = new ArrayList<>();
-
-		MatchResult result_ended = new MatchResult(10, 1, teams.get(0), 0);
-
-		matches.get(0).setEnded(true);
-		matches.get(0).setResult(result_ended);
-
-		MatchResult presult_ended = new MatchResult(10, 23, teams.get(1), 0);
-		MatchResult presult_to_play = new MatchResult(10, 22, teams.get(1), 1);
-
-		MatchPrediction mp1 = new MatchPrediction(UUID.randomUUID(), presult_ended, user);
-		MatchPrediction mp2 = new MatchPrediction(UUID.randomUUID(), presult_to_play, user);
-
-		mp.add(mp1);
-		mp.add(mp2);
-
-		return mp;
+	public void addPrediction(MatchPrediction m){
+    	mp.add(m);
 	}
 
+	public ArrayList<MatchPrediction> getPredictedMatches(User user){
+		return mp;
+	}
 
 	public Team getTeam(int id) {
 		if (id < teams.size()){

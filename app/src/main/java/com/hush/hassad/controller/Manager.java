@@ -1,19 +1,4 @@
-package com.hush.hassad.controller;/* NOTES:
-
-    com.hush.hassad.controller.Manager Notes
-    - Use throw exception when an error occurs
-    - Exception must have appropriate message since that message will be displayed to the user
-
-    - Make all utility methods private
-    - All constants must be used from the Constant static class
-    - All public methods must take either primitive data types
-        or
-    - All public methods must take in data types that are returned by some other com.hush.hassad.controller.Manager method
-
-    Project Notes
-    - All classes must have a to_string method
-
- */
+package com.hush.hassad.controller;
 
 import com.hush.hassad.controller.competition.Group;
 import com.hush.hassad.controller.competition.Match;
@@ -26,8 +11,7 @@ import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.ArrayList; import java.util.Date;
 import java.util.UUID;
 
 public class Manager {
@@ -51,28 +35,30 @@ public class Manager {
         this.player = player;
     }
 
-    // ------------------------- Funs ---------------------------------
+    // ================================ Creators ==============================
 
-    public ArrayList<Match> getMatches(Date date) throws Exception{
-        return db.getMatches(date);
+
+    public MatchPrediction createMatchPrediction(Match match, int home_score, int away_score, Team winner){
+        MatchResult predicted_result = new MatchResult(home_score, away_score, winner, match.getId());
+        MatchPrediction prediction = new MatchPrediction(UUID.randomUUID(), predicted_result, player);
+
+        return prediction;
     }
 
-    public Match getMatch(int id){
-        return db.getMatch(id);
+    public GroupPrediction createGroupPrediction(int team1_id , int team2_id, int grp_id){
+        Team t1 = getTeam(team1_id);
+        Team t2 = getTeam(team2_id);
+
+        GroupResult gr = new GroupResult(t1, t2, grp_id);
+        GroupPrediction gp = new GroupPrediction(UUID.randomUUID(), gr, player);
+        return gp;
     }
 
-    // -------------------------- End ---------------------------------
-
+    // =============================== GETTERS ============================
 
     public User getPlayingUser() {
         return player;
     }
-
-    /*
-        TODO
-        Create get___ functions for each class that
-        takes a unique identifier as input
-     */
 
     public User getUser(String email){
         return null;
@@ -81,11 +67,45 @@ public class Manager {
         //return com.hush.hassad.dal.DAL.getUser(String email);
     }
 
-    public MatchPrediction createMatchPrediction (Match match, int home_score, int away_score, Team winner){
-        MatchResult result = new MatchResult(home_score, away_score, winner, match.getId());
-        MatchPrediction prediction = new MatchPrediction(UUID.randomUUID(), result, this.player);
-        return prediction;
+    public Team getTeam(int id){
+        return db.getTeam(id);
     }
+
+    public Group getGroup(int group) {
+        return db.getGroup(group);
+    }
+
+    public Match getMatch(int id){
+    	return db.getMatch(id);
+    }
+
+    public ArrayList<Match> getMatches(Date date) throws Exception{
+        return db.getMatches(date);
+    }
+
+    public ArrayList<MatchPrediction> getPredictedMatches(User user) {
+        return db.getPredictedMatches(user);
+    }
+
+    public ArrayList<GroupPrediction> getPredictedGroups(User user) {
+        return db.getPredictedGroups(user);
+    }
+
+    public MatchPrediction getPrediction(Match match)throws Exception{
+        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
+        for(MatchPrediction prediction : predictions){
+            if(prediction.getPredicted_result().getMatch() == match.getId()){
+                return prediction;
+            }
+        }
+        throw new Exception("Match not yet predicted");
+    }
+
+    /*
+            TODO COMPLETE THE FOLLOWING FUNCTIONS
+     */
+
+    // ============================= DAL entries ==============================
 
     public void submitMatchPrediction(MatchPrediction prediction) throws Exception{
         /*
@@ -105,21 +125,6 @@ public class Manager {
         This will update entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction not already made
          */
-    }
-
-    public GroupPrediction createGroupPredicrtion(String team1_name , String team2_name, String group_name){
-        //  TODO Group grp = db.getGroupByName(group_name)
-        Group grp = null;
-        // TODO Team t1 = db.getTeamByName(team1_name);
-        // TODO Team t2 = db.getTeamByName(team2_name);
-
-        Team t1 = null;
-        Team t2 = null;
-
-        GroupResult gr = new GroupResult(t1, t2, grp.getId());
-        GroupPrediction gp = new GroupPrediction(UUID.randomUUID(), gr, player);
-
-        return gp;
     }
 
     public void submitGroupPrediction(GroupPrediction prediction)throws Exception{
@@ -226,19 +231,6 @@ public class Manager {
         return true;
     }
 
-	public ArrayList<MatchPrediction> getPredictedMatches(User user) {
-        return db.getPredictedMatches(user);
-	}
-
-    public ArrayList<GroupPrediction> getPredictedGroups(User user) {
-        return db.getPredictedGroups(user);
-    }
-
-	public Group getGroup(int group) {
-        return db.getGroup(group);
-	}
-
-	// TODO @hussam TEST
 	public boolean isPredicted(Match match) {
         ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
         for(MatchPrediction prediction : predictions){
@@ -248,14 +240,4 @@ public class Manager {
         }
         return false;
 	}
-
-	public MatchPrediction getPrediction(Match match)throws Exception{
-        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
-        for(MatchPrediction prediction : predictions){
-            if(prediction.getPredicted_result().getMatch() == match.getId()){
-                return prediction;
-            }
-        }
-        throw new Exception("Match not yet predicted");
-    }
 }
