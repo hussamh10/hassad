@@ -15,6 +15,7 @@ import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.predictions.Prediction;
 
 import java.util.ArrayList;
 
@@ -77,12 +78,7 @@ public class MatchAdapter extends ArrayAdapter {
 			}
 		}
 
-		/*
-			Code end
-			Later in file set the predicted store in match card
-		 */
-
-		//TODO @saad add the predcited score to the card
+		//TODO @hussam test the predcited score in card
 
 
 		matchHolder = new MatchHolder();
@@ -105,9 +101,25 @@ public class MatchAdapter extends ArrayAdapter {
 		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
 
+		if(Manager.getInstance().isPredicted(match)){
+			MatchPrediction pred = null;
+			try {
+				pred = Manager.getInstance().getPrediction(match);
+			} catch (Exception e) {
+				Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+
+			matchHolder.pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
+			matchHolder.pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
+		}
+
 		if(!match.isEnded()) {
 			String time = Utils.getTimeString(match.getKickoff_time());
 			matchHolder.match_time.setText(time);
+		}
+		else {
+			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
+			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
 		}
 
 		return convertView;
