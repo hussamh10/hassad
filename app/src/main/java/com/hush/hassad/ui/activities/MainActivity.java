@@ -11,10 +11,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.hush.hassad.controller.Manager;
-import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
-import com.hush.hassad.ui.fragments.ProfileFragment;
+import com.hush.hassad.ui.fragments.Profile.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
 import com.hush.hassad.ui.fragments.TableFragment;
@@ -95,7 +94,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_leaderboard) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new LeaderboardFragment()).commit();
         }  else if (id == R.id.nav_profile) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new ProfileFragment()).commit();
+			//ProfileFragment profileFragment = new ProfileFragment();
+			//profileFragment.update(Manager.getInstance().getPlayingUser());
+			fragmentManager.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
+
         } else if (id == R.id.nav_settings) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new SettingsFragment()).commit();
         } else if (id == R.id.nav_about) {

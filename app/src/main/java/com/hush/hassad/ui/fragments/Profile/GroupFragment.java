@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments;
+package com.hush.hassad.ui.fragments.Profile;
 
 
 import android.app.Fragment;
@@ -19,10 +19,6 @@ public class GroupFragment extends Fragment {
 	GroupPredictionsAdapter groupPredictionsAdapter;
 	private ArrayList<GroupPrediction> predictedGroups;
 
-	public GroupFragment() {
-
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_group_sub, container, false);
@@ -34,12 +30,7 @@ public class GroupFragment extends Fragment {
 		return view;
 	}
 
-	public void setGroupPredictions(){
-		this.predictedGroups = predictedGroups;
-	}
-
 	public void update(User user){
 		predictedGroups = Manager.getInstance().getPredictedGroups(user);
 	}
-
 }

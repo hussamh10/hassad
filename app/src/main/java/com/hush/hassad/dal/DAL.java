@@ -60,9 +60,7 @@ public class DAL {
 		grp1.add(italy);
 		grp1.add(eng);
 		grp1.add(fra);
-
-		ArrayList<Team> grp2 = new ArrayList<>();
-		grp2.add(arg);
+ArrayList<Team> grp2 = new ArrayList<>(); grp2.add(arg);
 		grp2.add(por);
 		grp2.add(bel);
 		grp2.add(pak);
@@ -76,7 +74,6 @@ public class DAL {
 		groups.add(g2);
 
 
-		mp = new ArrayList<>();
 	}
 
     public static DAL getInstance(){
@@ -138,6 +135,20 @@ public class DAL {
 	}
 
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
+		mp = new ArrayList<>();
+		MatchResult result_ended = new MatchResult(10, 1, teams.get(0), 0);
+
+		matches.get(0).setEnded(true);
+		matches.get(0).setResult(result_ended);
+
+		MatchResult presult_ended = new MatchResult(10, 23, teams.get(1), 0);
+		MatchResult presult_to_play = new MatchResult(10, 22, teams.get(1), 1);
+
+		MatchPrediction mp1 = new MatchPrediction(UUID.randomUUID(), presult_ended, user);
+		MatchPrediction mp2 = new MatchPrediction(UUID.randomUUID(), presult_to_play, user);
+
+		mp.add(mp1);
+		mp.add(mp2);
 		return mp;
 	}
 

@@ -40,7 +40,9 @@ public class FriendsAdapter extends ArrayAdapter {
     	TODO @saad
     	make an onclicklistener for each list item,
     	when that item is clicked
-    		a
+    		create a profile Fragment as pf
+    		pf.update(friends[getPosition])
+    		and open pf
      */
 
 
@@ -65,5 +67,4 @@ public class FriendsAdapter extends ArrayAdapter {
 
         return convertView;
     }
-
 }

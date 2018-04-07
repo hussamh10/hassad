@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments;
+package com.hush.hassad.ui.fragments.Profile;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
@@ -26,7 +26,6 @@ public class ProfileFragment extends Fragment {
 		predicted_matches = new MatchesFragment();
 		predicted_matches.update(Manager.getInstance().getPlayingUser());
 
-
 		predicted_groups = new GroupFragment();
 		predicted_groups.update(Manager.getInstance().getPlayingUser());
 	}
@@ -40,7 +39,7 @@ public class ProfileFragment extends Fragment {
 		tabLayout = (TabLayout) view.findViewById(R.id.tabLayoutProfile);
 
 		final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pagerProfile);
-		profilePagerAdapter = new ProfileViewpager(getActivity().getFragmentManager(), getActivity());
+		profilePagerAdapter = new ProfileViewpager(getChildFragmentManager(), getActivity());
 		viewPager.setAdapter(profilePagerAdapter);
 
 		tabLayout.setupWithViewPager(viewPager);
@@ -66,8 +65,6 @@ public class ProfileFragment extends Fragment {
 	}
 
 	public class ProfileViewpager extends FragmentPagerAdapter {
-
-		final int PAGE_COUNT = 2;
 		private String tabTitles[] = new String[]{"Matches","Groups","Tournament"};
 		private Context context;
 
@@ -97,7 +94,6 @@ public class ProfileFragment extends Fragment {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-
 			return tabTitles[position];
 		}
 
