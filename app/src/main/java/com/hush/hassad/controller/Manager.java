@@ -210,7 +210,37 @@ public class Manager {
          */
     }
 
+    public void compareGroupPredictions(ArrayList<GroupPrediction> predictions){
+        int amount = 0;
+        for(GroupPrediction prediction : predictions){
+            Group gp = getGroup(prediction.getPredicted_result().getGroup());
+            amount += compareGroupPrediction(prediction, gp);
+        }
+
+        // adding points
+        // TODO make sure that the points are added only once
+
+        Manager.getInstance().getPlayingUser().addPoints(amount);
+		// update user
+    }
+
     // ------------------------------------- Utility ------------------------------------------
+
+    private int compareGroupPrediction(GroupPrediction prediction, Group group){
+        int amount = 0;
+        int q1 = prediction.getPredicted_result().getQualifying_1().getId();
+        int q2 = prediction.getPredicted_result().getQualifying_2().getId();
+
+    	if(q1 == group.getQualifying().get(0).getId() || q1 == group.getQualifying().get(1).getId()){
+    	    amount += Constants.GROUP_PREDICTION_POINTS;
+        }
+
+        if(q2 == group.getQualifying().get(0).getId() || q2 == group.getQualifying().get(1).getId()){
+            amount += Constants.GROUP_PREDICTION_POINTS;
+        }
+
+        return amount;
+    }
 
     private int compareScoreline(Match m, MatchResult mr){
         int similarity = 0;

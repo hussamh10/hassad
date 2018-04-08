@@ -10,4 +10,5 @@ public class Constants {
     public static final int SCORE_PREDICTION_POINTS_WEIGHT = 10;
     public static final int SCORE_TO_COIN_RATIO = 2;
     public static final int SCORE_TO_POINT_RATIO = 1;
+	public static final int GROUP_PREDICTION_POINTS = 1;
 }
