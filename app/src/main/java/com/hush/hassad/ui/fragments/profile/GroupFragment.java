@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments.Profile;
+package com.hush.hassad.ui.fragments.profile;
 
 
 import android.app.Fragment;

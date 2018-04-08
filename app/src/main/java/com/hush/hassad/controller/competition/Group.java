@@ -7,7 +7,7 @@ import com.hush.hassad.controller.competition.results.GroupResult;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Group {
+public class Group{
 
     int id;
     String name;
@@ -41,7 +41,6 @@ public class Group {
     }
 
     ArrayList<Row> rows;
-
     ArrayList<Team> teams;
 
     boolean ended;
@@ -52,11 +51,12 @@ public class Group {
 
         rows = new ArrayList<>();
 
+        this.teams = teams;
+
         for(int i = 0; i < teams.size(); i++){
             rows.add(new Row(teams.get(i), pts.get(i), pld.get(i)));
         }
 
-        this.teams = teams;
 
         this.ended = ended;
         this.result = result;
@@ -136,7 +136,7 @@ public class Group {
     public ArrayList<Team> getQualifying() {
     	// TODO TEST
 
-        Collections.sort(rows);
+		sort();
         ArrayList<Team> q = new ArrayList<>();
 
         q.add(rows.get(0).team);
@@ -144,4 +144,9 @@ public class Group {
 
         return q;
     }
+
+    public void sort() {
+        Collections.sort(rows);
+    }
+
 }

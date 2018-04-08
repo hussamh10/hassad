@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments.Profile;
+package com.hush.hassad.ui.fragments.profile;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,11 +11,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
-import com.hush.hassad.controller.predictions.TournamentPrediction;
+import com.hush.hassad.controller.player.User;
 
 public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
@@ -25,14 +24,17 @@ public class ProfileFragment extends Fragment {
 	TournamentFragment predicted_tournament;
 
 	public ProfileFragment(){
+	}
+
+	public void update(User user){
 		predicted_matches = new MatchesFragment();
-		predicted_matches.update(Manager.getInstance().getPlayingUser());
+		predicted_matches.update(user);
 
 		predicted_groups = new GroupFragment();
-		predicted_groups.update(Manager.getInstance().getPlayingUser());
+		predicted_groups.update(user);
 
 		predicted_tournament = new TournamentFragment();
-		predicted_tournament.update(Manager.getInstance().getPlayingUser());
+		predicted_tournament.update(user);
 	}
 
 	@Nullable

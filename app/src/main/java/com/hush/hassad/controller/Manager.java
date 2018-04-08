@@ -33,6 +33,7 @@ public class Manager {
         return new Manager();
     }
 
+
     public void setPlayingUser(User player){
         this.player = player;
     }
@@ -85,6 +86,10 @@ public class Manager {
         return db.getMatches(date);
     }
 
+    public static ArrayList<Group> getGroups() {
+        return db.getGroups();
+    }
+
     public ArrayList<MatchPrediction> getPredictedMatches(User user) {
         return db.getPredictedMatches(user);
     }
@@ -110,6 +115,8 @@ public class Manager {
 	public ArrayList<User> getFriends() {
     	return db.getFriends(player);
 	}
+
+
     /*
             TODO COMPLETE THE FOLLOWING FUNCTIONS
      */

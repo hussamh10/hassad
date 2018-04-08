@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments;
+package com.hush.hassad.ui.fragments.home;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

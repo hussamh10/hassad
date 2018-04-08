@@ -74,19 +74,29 @@ public class DAL {
 		grp1.add(italy);
 		grp1.add(eng);
 		grp1.add(fra);
-ArrayList<Team> grp2 = new ArrayList<>(); grp2.add(arg);
+
+		ArrayList<Team> grp2 = new ArrayList<>();
+		grp2.add(arg);
 		grp2.add(por);
 		grp2.add(bel);
 		grp2.add(pak);
 
-		Group g1 = new Group(0, "Group A", grp1, null, null, false, null);
-		Group g2 = new Group(0, "Group B", grp2, null, null, false, null);
+
+		ArrayList<Integer> p = new ArrayList<>(); p.add(0);p.add(0);p.add(0);p.add(0);
+
+		Group g1 = new Group(0, "Group A", grp1, p, p, false, null);
+		Group g2 = new Group(0, "Group B", grp2, p, p, false, null);
 
 		groups = new ArrayList<>();
 
 		groups.add(g1);
 		groups.add(g2);
-
+		groups.add(g1);
+		groups.add(g2);
+		groups.add(g1);
+		groups.add(g2);
+		groups.add(g1);
+		groups.add(g2);
 
 	}
 
@@ -208,5 +218,9 @@ ArrayList<Team> grp2 = new ArrayList<>(); grp2.add(arg);
 		TournamentResult result = new TournamentResult(players.get(0), players.get(1), players.get(2), teams.get(1), teams.get(3), teams.get(4), teams.get(0));
 		TournamentPrediction tp = new TournamentPrediction(UUID.randomUUID(), result, user);
 		return tp;
+	}
+
+	public ArrayList<Group> getGroups() {
+		return groups;
 	}
 }

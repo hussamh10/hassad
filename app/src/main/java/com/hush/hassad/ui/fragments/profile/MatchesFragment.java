@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments.Profile;
+package com.hush.hassad.ui.fragments.profile;
 
 
 import android.app.Fragment;
@@ -10,10 +10,8 @@ import android.widget.ListView;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
-import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
-import com.hush.hassad.ui.adapters.MatchAdapter;
 import com.hush.hassad.ui.adapters.MatchesPredictedAdapter;
 
 import java.util.ArrayList;

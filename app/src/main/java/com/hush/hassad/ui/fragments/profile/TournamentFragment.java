@@ -1,4 +1,4 @@
-package com.hush.hassad.ui.fragments.Profile;
+package com.hush.hassad.ui.fragments.profile;
 
 
 import android.app.Fragment;
@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
-import com.hush.hassad.controller.competition.Player;
-import com.hush.hassad.controller.competition.Team;
-import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 
