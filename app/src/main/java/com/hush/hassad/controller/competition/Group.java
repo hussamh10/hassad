@@ -1,26 +1,63 @@
 package com.hush.hassad.controller.competition;
 
+import android.support.annotation.NonNull;
+
 import com.hush.hassad.controller.competition.results.GroupResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Group {
 
     int id;
     String name;
 
-    ArrayList<Team> teams; // sorted with points
-    ArrayList<Integer> pts; // sorted with points
-    ArrayList<Integer> pld; // sorted with points
+    public class Row implements Comparable{
+        public Team team;
+        public int pts;
+        public int pld;
+
+        Row(Team team, int pts, int pld){
+            this.team = team;
+            this.pts = pts;
+            this.pld = pld;
+        }
+
+        @Override
+        public int compareTo(@NonNull Object obj) {
+            Row o = (Row) obj;
+
+        	if (pts == o.pts){
+        	    return 0;
+            }
+            if (pts < o.pts){
+        	    return -1;
+            }
+            if (pts > o.pts){
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    ArrayList<Row> rows;
+
+    ArrayList<Team> teams;
 
     boolean ended;
     GroupResult result;
 
     public Group(int id, String name, ArrayList<Team> teams, ArrayList<Integer> pts, ArrayList<Integer> pld, boolean ended, GroupResult result) {
         this.id = id;
+
+        rows = new ArrayList<>();
+
+        for(int i = 0; i < teams.size(); i++){
+            rows.add(new Row(teams.get(i), pts.get(i), pld.get(i)));
+        }
+
         this.teams = teams;
-        this.pts = pts;
-        this.pld = pld;
+
         this.ended = ended;
         this.result = result;
         this.name = name;
@@ -50,20 +87,24 @@ public class Group {
         this.teams = teams;
     }
 
-    public ArrayList<Integer> getPts() {
-        return pts;
+    public void setPoints(Team t, int pts){
+    	for(Row row : rows){
+    	    if (t.getId() == row.team.getId()){
+    	        row.pts = pts;
+            }
+        }
     }
 
-    public void setPts(ArrayList<Integer> pts) {
-        this.pts = pts;
+    public void setPlayed(Team t, int pld){
+        for(Row row : rows){
+            if (t.getId() == row.team.getId()){
+                row.pld = pld;
+            }
+        }
     }
 
-    public ArrayList<Integer> getPld() {
-        return pld;
-    }
-
-    public void setPld(ArrayList<Integer> pld) {
-        this.pld = pld;
+    public ArrayList<Row> getRows(){
+        return rows;
     }
 
     public boolean isEnded() {
@@ -87,10 +128,20 @@ public class Group {
         return "Group{" +
                 "id=" + id +
                 ", teams=" + teams +
-                ", pts=" + pts +
-                ", pld=" + pld +
                 ", ended=" + ended +
                 ", result=" + result +
                 '}';
+    }
+
+    public ArrayList<Team> getQualifying() {
+    	// TODO TEST
+
+        Collections.sort(rows);
+        ArrayList<Team> q = new ArrayList<>();
+
+        q.add(rows.get(0).team);
+        q.add(rows.get(1).team);
+
+        return q;
     }
 }
