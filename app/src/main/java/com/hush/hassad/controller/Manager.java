@@ -9,6 +9,7 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.dal.DAL;
 
 import java.util.ArrayList; import java.util.Date;
@@ -90,6 +91,10 @@ public class Manager {
 
     public ArrayList<GroupPrediction> getPredictedGroups(User user) {
         return db.getPredictedGroups(user);
+    }
+
+    public TournamentPrediction getTournamentPrediction(User user) {
+        return db.getTournamentPrediction(user);
     }
 
     public MatchPrediction getPrediction(Match match)throws Exception{
@@ -244,5 +249,4 @@ public class Manager {
         }
         return false;
 	}
-
 }

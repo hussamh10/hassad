@@ -2,13 +2,16 @@ package com.hush.hassad.dal;
 
 import com.hush.hassad.controller.competition.Group;
 import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.competition.Player;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.GroupResult;
 import com.hush.hassad.controller.competition.results.MatchResult;
+import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.predictions.TournamentPrediction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +23,7 @@ public class DAL {
 
     private ArrayList<Match> matches;
 	private ArrayList<Team> teams;
+	private ArrayList<Player> players;
 	private ArrayList<Group> groups;
 	private ArrayList<MatchPrediction> mp;
 
@@ -34,8 +38,18 @@ public class DAL {
 		Team pak = new Team(116, "Pakistan", "");
 		Team ind = new Team(116, "India", "");
 
+		Player ronaldo = new Player(1, "Ronaldo", "Forward", por, "");
+		Player messi = new Player(2, "Messi", "Forward", arg, "");
+		Player lingard = new Player(3, "Lingard", "Forward", eng, "");
+
 		teams = new ArrayList<>();
+		players = new ArrayList<>();
 		matches = new ArrayList<>();
+
+		players.add(lingard);
+		players.add(ronaldo);
+		players.add(messi);
+
 
 		Match bravita = new Match(12, brasil, italy, "old trafford", new Date(), null, false, 2);
 		Match bravita2 = new Match(13, brasil, italy, "old trafford", new Date(), null, false, 2);
@@ -188,5 +202,11 @@ ArrayList<Team> grp2 = new ArrayList<>(); grp2.add(arg);
 		friends.add(fn2);
 
 		return friends;
+	}
+
+	public TournamentPrediction getTournamentPrediction(User user) {
+		TournamentResult result = new TournamentResult(players.get(0), players.get(1), players.get(2), teams.get(1), teams.get(3), teams.get(4), teams.get(0));
+		TournamentPrediction tp = new TournamentPrediction(UUID.randomUUID(), result, user);
+		return tp;
 	}
 }

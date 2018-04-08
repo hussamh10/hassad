@@ -15,12 +15,14 @@ import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.predictions.TournamentPrediction;
 
 public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
 	ProfileViewpager profilePagerAdapter;
 	MatchesFragment predicted_matches;
 	GroupFragment predicted_groups;
+	TournamentFragment predicted_tournament;
 
 	public ProfileFragment(){
 		predicted_matches = new MatchesFragment();
@@ -28,6 +30,9 @@ public class ProfileFragment extends Fragment {
 
 		predicted_groups = new GroupFragment();
 		predicted_groups.update(Manager.getInstance().getPlayingUser());
+
+		predicted_tournament = new TournamentFragment();
+		predicted_tournament.update(Manager.getInstance().getPlayingUser());
 	}
 
 	@Nullable
@@ -81,7 +86,7 @@ public class ProfileFragment extends Fragment {
 				case 1:
 					return predicted_groups;
 				case 2:
-					return new TournamentFragment();
+					return predicted_tournament;
 				default:
 					return null;
 			}
