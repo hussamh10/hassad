@@ -9,10 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
+import com.hush.hassad.ui.fragments.TableFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -92,6 +94,20 @@ public class HomeFragment extends Fragment {
 		inflater.inflate(R.menu.home_menu, menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch(item.getItemId()){
+			case R.id.table:
+				TableFragment table_fragment = new TableFragment();
+				table_fragment.update();
+				getFragmentManager().beginTransaction().replace(R.id.content_frame, table_fragment).commit();
+				break;
+			case R.id.view_calendar:
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	HomePagerAdapter homePagerAdapter;
 

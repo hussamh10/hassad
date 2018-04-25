@@ -106,8 +106,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (id == R.id.nav_friends) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
-        } else if (id == R.id.nav_table) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, table_fragment).commit();
         } else if (id == R.id.nav_leaderboard) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new LeaderboardFragment()).commit();
         }  else if (id == R.id.nav_profile) {

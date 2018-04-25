@@ -7,4 +7,10 @@
 		android2:iconTint="@android:color/background_light"
 		android2:title="View Calendar"
 		android:showAsAction="always" />
+
+	<item
+		android2:id="@+id/table"
+		android2:icon="@drawable/ic_menu_slideshow"
+		android2:title="Table"
+		android:showAsAction="always"/>
 </menu>
