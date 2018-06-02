@@ -2,9 +2,10 @@ package com.hush.hassad.controller.competition;
 
 import com.hush.hassad.controller.competition.results.MatchResult;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Match {
+public class Match implements Serializable{
     private int id;
 
     private Team home;

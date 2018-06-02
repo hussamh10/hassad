@@ -1,6 +1,8 @@
 package com.hush.hassad.controller.competition;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable {
     private int id;
     private String name;
     private String image_url;

@@ -19,7 +19,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".Home" />
+		<activity android:name=".ui.activities.MatchScreenActivity"></activity>
     </application>
 
 </manifest>
