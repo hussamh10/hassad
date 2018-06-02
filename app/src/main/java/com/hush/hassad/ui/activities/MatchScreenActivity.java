@@ -87,15 +87,15 @@ public class MatchScreenActivity extends AppCompatActivity {
 			away_score.setText(Integer.toString(match.getResult().getAway_score()));
 		}
 
-		EditText temp = (EditText) findViewById(R.id.et_home_score);
-		final int predicted_home_score = Integer.parseInt(temp.getText().toString());
-
-		temp = (EditText) findViewById(R.id.et_away_score);
-		final int predicted_away_score = Integer.parseInt(temp.getText().toString());
-
 		submit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				EditText temp = (EditText) findViewById(R.id.et_home_score);
+				final int predicted_home_score = Integer.parseInt(temp.getText().toString());
+
+				temp = (EditText) findViewById(R.id.et_away_score);
+				final int predicted_away_score = Integer.parseInt(temp.getText().toString());
+
 				MatchPrediction prediction;
 				if (predicted_home_score >= predicted_away_score){
 					prediction = Manager.getInstance().createMatchPrediction(match, predicted_home_score, predicted_away_score, match.getHome());
