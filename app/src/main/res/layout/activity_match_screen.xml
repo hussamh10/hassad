@@ -34,6 +34,7 @@
 				android:text="Home Score" />
 
 			<EditText
+				android:id="@+id/et_home_score"
 				android:layout_width="50dp"
 				android:layout_height="50dp"
 				android:layout_gravity="center"
@@ -53,6 +54,7 @@
 				android:text="Away Score"/>
 
 			<EditText
+				android:id="@+id/et_away_score"
 				android:layout_width="50dp"
 				android:layout_height="50dp"
 				android:layout_gravity="center"
@@ -61,6 +63,7 @@
 	</LinearLayout>
 
 	<Button
+		android:id="@+id/btn_submit"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"

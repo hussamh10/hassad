@@ -2,6 +2,9 @@ package com.hush.hassad.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,11 +13,19 @@ import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.competition.results.MatchResult;
+import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.dal.DAL;
+
+import java.util.UUID;
 
 public class MatchScreenActivity extends AppCompatActivity {
 
 	Match match;
+	User user;
+	MatchPrediction predicted;
+
 	ImageView home_team_img;
 	TextView home_team_name;
 	TextView pred_home_score;
@@ -31,6 +42,8 @@ public class MatchScreenActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_screen);
+
+		Button submit = (Button) findViewById(R.id.btn_submit);
 
 		match = (Match) getIntent().getSerializableExtra("match");
 
@@ -71,9 +84,33 @@ public class MatchScreenActivity extends AppCompatActivity {
 		else {
 
 			home_score.setText(Integer.toString(match.getResult().getHome_score()));
-
 			away_score.setText(Integer.toString(match.getResult().getAway_score()));
 		}
+
+		EditText temp = (EditText) findViewById(R.id.et_home_score);
+		final int predicted_home_score = Integer.parseInt(temp.getText().toString());
+
+		temp = (EditText) findViewById(R.id.et_away_score);
+		final int predicted_away_score = Integer.parseInt(temp.getText().toString());
+
+		submit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				MatchPrediction prediction;
+				if (predicted_home_score >= predicted_away_score){
+					prediction = Manager.getInstance().createMatchPrediction(match, predicted_home_score, predicted_away_score, match.getHome());
+				}
+				else{
+					prediction = Manager.getInstance().createMatchPrediction(match, predicted_home_score, predicted_away_score, match.getAway());
+				}
+				try{
+					Manager.getInstance().submitMatchPrediction(prediction);
+				}
+				catch (Exception e){
+					Toast.makeText(MatchScreenActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 
 	}
 }
