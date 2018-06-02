@@ -20,7 +20,6 @@ public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
 	ProfileViewpager profilePagerAdapter;
 	MatchesFragment predicted_matches;
-	GroupFragment predicted_groups;
 	TournamentFragment predicted_tournament;
 
 	public ProfileFragment(){
@@ -29,9 +28,6 @@ public class ProfileFragment extends Fragment {
 	public void update(User user){
 		predicted_matches = new MatchesFragment();
 		predicted_matches.update(user);
-
-		predicted_groups = new GroupFragment();
-		predicted_groups.update(user);
 
 		predicted_tournament = new TournamentFragment();
 		predicted_tournament.update(user);
@@ -72,7 +68,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	public class ProfileViewpager extends FragmentPagerAdapter {
-		private String tabTitles[] = new String[]{"Matches","Groups","Tournament"};
+		private String tabTitles[] = new String[]{"Matches","Tournament"};
 		private Context context;
 
 		public ProfileViewpager(FragmentManager fm, Context context) {
@@ -86,8 +82,6 @@ public class ProfileFragment extends Fragment {
 				case 0:
 					return predicted_matches;
 				case 1:
-					return predicted_groups;
-				case 2:
 					return predicted_tournament;
 				default:
 					return null;

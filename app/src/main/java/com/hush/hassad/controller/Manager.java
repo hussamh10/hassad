@@ -1,12 +1,9 @@
 package com.hush.hassad.controller;
 
-import com.hush.hassad.controller.competition.Group;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
-import com.hush.hassad.controller.competition.results.GroupResult;
 import com.hush.hassad.controller.competition.results.MatchResult;
 import com.hush.hassad.controller.player.Info;
-import com.hush.hassad.controller.predictions.GroupPrediction;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
@@ -48,15 +45,6 @@ public class Manager {
         return prediction;
     }
 
-    public GroupPrediction createGroupPrediction(int team1_id , int team2_id, int grp_id){
-        Team t1 = getTeam(team1_id);
-        Team t2 = getTeam(team2_id);
-
-        GroupResult gr = new GroupResult(t1, t2, grp_id);
-        GroupPrediction gp = new GroupPrediction(UUID.randomUUID(), gr, player);
-        return gp;
-    }
-
     // =============================== GETTERS ============================
 
     public User getPlayingUser() {
@@ -74,10 +62,6 @@ public class Manager {
         return db.getTeam(id);
     }
 
-    public Group getGroup(int group) {
-        return db.getGroup(group);
-    }
-
     public Match getMatch(int id){
     	return db.getMatch(id);
     }
@@ -86,16 +70,8 @@ public class Manager {
         return db.getMatches(date);
     }
 
-    public static ArrayList<Group> getGroups() {
-        return db.getGroups();
-    }
-
     public ArrayList<MatchPrediction> getPredictedMatches(User user) {
         return db.getPredictedMatches(user);
-    }
-
-    public ArrayList<GroupPrediction> getPredictedGroups(User user) {
-        return db.getPredictedGroups(user);
     }
 
     public TournamentPrediction getTournamentPrediction(User user) {
@@ -141,17 +117,6 @@ public class Manager {
         This will update entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction not already made
          */
-    }
-
-    public void submitGroupPrediction(GroupPrediction prediction)throws Exception{
-        /*
-        TODO com.hush.hassad.dal.DAL.submitGroupPrediction(predicion) @usman
-        */
-
-        if (this.player.getCoins() < Constants.GROUP_PREDICTION_COST){
-            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.GROUP_PREDICTION_COST + ".");
-        }
-        this.player.removeCoins(Constants.GROUP_PREDICTION_COST);
     }
 
     public void register(String name, String email, Date DOB, String location, int timezone) throws Exception{
@@ -217,37 +182,8 @@ public class Manager {
          */
     }
 
-    public void compareGroupPredictions(ArrayList<GroupPrediction> predictions){
-        int amount = 0;
-        for(GroupPrediction prediction : predictions){
-            Group gp = getGroup(prediction.getPredicted_result().getGroup());
-            amount += compareGroupPrediction(prediction, gp);
-        }
-
-        // adding points
-        // TODO make sure that the points are added only once
-
-        Manager.getInstance().getPlayingUser().addPoints(amount);
-		// update user
-    }
 
     // ------------------------------------- Utility ------------------------------------------
-
-    private int compareGroupPrediction(GroupPrediction prediction, Group group){
-        int amount = 0;
-        int q1 = prediction.getPredicted_result().getQualifying_1().getId();
-        int q2 = prediction.getPredicted_result().getQualifying_2().getId();
-
-    	if(q1 == group.getQualifying().get(0).getId() || q1 == group.getQualifying().get(1).getId()){
-    	    amount += Constants.GROUP_PREDICTION_POINTS;
-        }
-
-        if(q2 == group.getQualifying().get(0).getId() || q2 == group.getQualifying().get(1).getId()){
-            amount += Constants.GROUP_PREDICTION_POINTS;
-        }
-
-        return amount;
-    }
 
     private int compareScoreline(Match m, MatchResult mr){
         int similarity = 0;

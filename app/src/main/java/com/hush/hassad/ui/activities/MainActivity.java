@@ -15,7 +15,6 @@ import com.hush.hassad.controller.player.User;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
-import com.hush.hassad.ui.fragments.TableFragment;
 import com.hush.hassad.ui.fragments.AboutFragment;
 import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity
 
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
-    TableFragment table_fragment;
 
     private void initUser(){
         // FIXME
@@ -45,17 +43,11 @@ public class MainActivity extends AppCompatActivity
     public void initFragments(){
 		loadFriendsFragment();
 		loadProfileFragment();
-		loadTableFragment();
 	}
 
 	public void loadFriendsFragment() {
 		friends_fragment = new FriendsFragment();
 		friends_fragment.update();
-	}
-
-	public void loadTableFragment(){
-		table_fragment = new TableFragment();
-		table_fragment.update();
 	}
 
 	public void loadProfileFragment(){

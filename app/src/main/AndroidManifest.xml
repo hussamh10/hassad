@@ -20,7 +20,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".Home" />
-		<activity android:name=".ui.activities.GroupPredictionActivity" />
-	</application>
+    </application>
 
 </manifest>

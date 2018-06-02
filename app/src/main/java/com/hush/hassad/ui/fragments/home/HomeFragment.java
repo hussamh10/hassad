@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
-import com.hush.hassad.ui.fragments.TableFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -98,11 +97,6 @@ public class HomeFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch(item.getItemId()){
-			case R.id.table:
-				TableFragment table_fragment = new TableFragment();
-				table_fragment.update();
-				getFragmentManager().beginTransaction().replace(R.id.content_frame, table_fragment).commit();
-				break;
 			case R.id.view_calendar:
 				break;
 		}
