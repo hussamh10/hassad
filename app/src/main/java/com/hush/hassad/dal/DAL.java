@@ -1,5 +1,6 @@
 package com.hush.hassad.dal;
 
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.MatchResult;
@@ -78,6 +79,7 @@ public class DAL {
 
     public ArrayList<Match> getMatches(Date date)throws Exception{
 
+		User p = Manager.getInstance().getPlayingUser();
 
         Match m = new Match(1,
                 new Team(1, "Brasil", ""),
@@ -105,8 +107,6 @@ public class DAL {
             matches.add(m);
         }
 
-		matches.add(m);
-		matches.add(m);
 		matches.add(m);
         return matches;
     }

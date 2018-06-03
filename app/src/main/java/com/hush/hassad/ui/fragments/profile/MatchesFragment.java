@@ -2,16 +2,22 @@ package com.hush.hassad.ui.fragments.profile;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.predictions.Prediction;
+import com.hush.hassad.ui.activities.MatchScreenActivity;
 import com.hush.hassad.ui.adapters.MatchesPredictedAdapter;
 
 import java.util.ArrayList;
