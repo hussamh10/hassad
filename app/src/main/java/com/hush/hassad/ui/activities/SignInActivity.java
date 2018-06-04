@@ -108,7 +108,6 @@ public class SignInActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		// Check if user is signed in (non-null) and update UI accordingly.
 		FirebaseUser currentUser = mAuth.getCurrentUser();
 		update(currentUser, 1);
 	}
@@ -130,7 +129,6 @@ public class SignInActivity extends AppCompatActivity {
 	}
 
 	@Override
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -138,8 +136,10 @@ public class SignInActivity extends AppCompatActivity {
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			try {
 				GoogleSignInAccount account = task.getResult(ApiException.class);
+				Toast.makeText(this, "Success 1", Toast.LENGTH_SHORT).show();
 				firebaseAuthWithGoogle(account);
 			} catch (ApiException e) {
+				Toast.makeText(this, "Failed 1", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 		}
@@ -162,9 +162,11 @@ public class SignInActivity extends AppCompatActivity {
 		int a =0;
 		AuthCredential credential = null;
 		try{
+			Toast.makeText(this, "Success 2", Toast.LENGTH_SHORT).show();
 			credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
 		}
 		catch (Exception e){
+			Toast.makeText(this, "Failed 2", Toast.LENGTH_SHORT).show();
 			System.out.print(e.getMessage());
 			e.printStackTrace();
 		}
