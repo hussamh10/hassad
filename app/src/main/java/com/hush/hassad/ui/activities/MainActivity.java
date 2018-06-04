@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     ProfileFragment profile_fragment;
 
     private void initUser(String id){
+    	DAL.getInstance().getUser(id);
         //Manager.getInstance().setPlayingUser(u);
 		//initFragments
 		//TODO

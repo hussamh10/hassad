@@ -84,13 +84,12 @@ public class DAL {
 	}
 
 	public void getUser(String id) {
-		Query q = users_doc.whereEqualTo("name", "Hussam Habib");
+		Query q = users_doc.whereEqualTo("id", id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				if(u.exists()){
 					String id = u.getString("id");
 					String name = u.getString("name");
 					String email = u.getString("email");
@@ -98,7 +97,6 @@ public class DAL {
 
 					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
 					Manager.getInstance().setPlayingUser(user);
-				}
 			}
 		});
 	}
