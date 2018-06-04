@@ -8,10 +8,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.dal.DAL;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
@@ -31,13 +35,11 @@ public class MainActivity extends AppCompatActivity
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
 
-    private void initUser(){
-        // FIXME
-		UUID id = UUID.randomUUID();
-        Info info = new Info(id, "Hussam", "hussamh10@gmail.com", new Date(), "lahore", 5);
-        User u = new User(id, 0, 0, info);
-        Manager.getInstance().setPlayingUser(u);
-        initFragments();
+    private void initUser(String id){
+        //Manager.getInstance().setPlayingUser(u);
+		//initFragments
+		//TODO
+        //return u;
     }
 
     public void initFragments(){
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DAL.getInstance();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -71,7 +75,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initUser();
+        int type = getIntent().getIntExtra("type", 1);
+
+		FirebaseAuth m = FirebaseAuth.getInstance();
+		FirebaseUser acc = m.getCurrentUser();
+
+        if(type == 0){
+			DAL.getInstance().createUser(acc);
+		}
+
+		initUser(acc.getUid().toString());
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();
@@ -80,11 +93,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+        	return;
+            //super.onBackPressed();
         }
     }
 

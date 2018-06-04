@@ -8,6 +8,7 @@ import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.dal.DAL;
+import com.hush.hassad.ui.activities.MainActivity;
 
 import java.util.ArrayList; import java.util.Date;
 import java.util.UUID;
@@ -123,7 +124,7 @@ public class Manager {
         if (userExists(email)){
             throw new Exception("User with email address: " + email + " already exists.");
         }
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         Info info = new Info(id, name, email, DOB, location, timezone);
         User u = new User(id, Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
@@ -134,7 +135,7 @@ public class Manager {
         if (!userExists(email)){
             throw new Exception("User with email address:" + email + " does not exist.");
         }
-        ArrayList<UUID> friends = player.getFriends();
+        ArrayList<String> friends = player.getFriends();
         User friend = getUser(email);
 
         if (friends.contains(friend.getId())){

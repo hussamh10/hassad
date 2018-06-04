@@ -1,28 +1,27 @@
 package com.hush.hassad.controller.player;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class User {
-    private UUID id;
+    private String id;
     private int points;
     private int coins;
     private Info info;
-    private ArrayList<UUID> friends_ids;
+    private ArrayList<String> friends_ids;
 
-    public User(UUID id, int points, int coins, Info info) {
+    public User(String id, int points, int coins, Info info) {
         this.id = id;
         this.points = points;
         this.coins = coins;
         this.info = info;
-        friends_ids = new ArrayList<UUID>();
+        friends_ids = new ArrayList<String>();
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,11 +57,11 @@ public class User {
         this.points += amount;
     }
 
-    public void addFriend(UUID friend_id){
+    public void addFriend(String friend_id){
         friends_ids.add(friend_id);
     }
 
-    public ArrayList<UUID> getFriends(){
+    public ArrayList<String> getFriends(){
         return friends_ids;
     }
 

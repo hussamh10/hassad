@@ -1,5 +1,21 @@
 package com.hush.hassad.dal;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.hush.hassad.controller.Constants;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
@@ -12,7 +28,11 @@ import com.hush.hassad.controller.predictions.TournamentPrediction;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import static android.content.ContentValues.TAG;
 
 public class DAL {
 
@@ -22,7 +42,68 @@ public class DAL {
 	private ArrayList<Team> teams;
 	private ArrayList<MatchPrediction> mp;
 
+	private Object temp;
+
+	FirebaseFirestore db = FirebaseFirestore.getInstance();
+	CollectionReference users_doc = db.collection("users");
+
     private DAL(){
+    	init();
+	}
+
+	public User createUser(FirebaseUser user){
+    	String id = user.getUid();
+		String name = user.getDisplayName();
+		String email = user.getEmail();
+
+		User u = new User(id, Constants.INITIAL_POINTS, 0, new Info(id, name, email, null, null, 0));
+
+		Map<String, Object> doc = new HashMap<>();
+
+		doc.put("id", id);
+		doc.put("points", Constants.INITIAL_COINS);
+		doc.put("name", name);
+		doc.put("email", email);
+
+		users_doc.add(doc);
+/*
+		dr_user.add(doc).addOnCompleteListener(new OnCompleteListener<Void>() {
+			@Override
+			public void onComplete(@NonNull Task<Void> task) {
+				if (task.isSuccessful()){
+					Log.d("FUCK", "yes");
+				}
+				else{
+					Log.d("FUCK", "yes");
+				}
+			}
+		});
+*/
+
+		return u;
+	}
+
+	public void getUser(String id) {
+		Query q = users_doc.whereEqualTo("name", "Hussam Habib");
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				if(u.exists()){
+					String id = u.getString("id");
+					String name = u.getString("name");
+					String email = u.getString("email");
+					int points = 1000;
+
+					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
+					Manager.getInstance().setPlayingUser(user);
+				}
+			}
+		});
+	}
+
+	private void init(){
 		Team brasil = new Team(111, "Brasil", "");
 		Team italy = new Team(112, "Italy", "");
 		Team eng = new Team(113, "England", "");
@@ -146,11 +227,11 @@ public class DAL {
 	public ArrayList<User> getFriends(User player) {
 		ArrayList<User> friends = new ArrayList<>();
 
-		UUID id = UUID.randomUUID();
+		String id = UUID.randomUUID().toString();
 		User fn1 = new User(id, 1000, 100, new Info(id, "Haroon Ahmed", "haroon@saad.usman",
 				new Date(), "Washroom", 12));
 
-		id = UUID.randomUUID();
+		id = UUID.randomUUID().toString();
 		User fn2 = new User(id, 1000, 100, new Info(id, "Usman Ahmed", "haripur@saad.usman",
 				new Date(), "Bathroom", 12));
 
@@ -165,6 +246,7 @@ public class DAL {
 		TournamentPrediction tp = new TournamentPrediction(UUID.randomUUID(), result, user);
 		return tp;
 	}
+
 
 	// Real functions
 }

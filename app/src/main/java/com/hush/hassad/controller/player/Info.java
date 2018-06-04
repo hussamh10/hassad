@@ -5,14 +5,14 @@ import java.util.UUID;
 
 public class Info {
 
-    private UUID userID;
+    private String userID;
     private String name;
     private String email;
     private Date DOB;
     private String location;
     private int timezone;
 
-    public Info(UUID userID, String name, String email, Date DOB, String location, int timezone) {
+    public Info(String userID, String name, String email, Date DOB, String location, int timezone) {
         this.userID = userID;
         this.name = name;
         this.email = email;
@@ -21,7 +21,7 @@ public class Info {
         this.timezone = timezone;
     }
 
-    public UUID getUserID() {
+    public String getUserID() {
         return userID;
     }
 
