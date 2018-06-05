@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initUser(String id){
     	DAL.getInstance().getUser(id);
-        //Manager.getInstance().setPlayingUser(u);
+        initFragments();
+    	//Manager.getInstance().setPlayingUser(u);
 		//initFragments
 		//TODO
         //return u;
