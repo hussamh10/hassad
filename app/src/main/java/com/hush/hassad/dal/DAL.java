@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,10 +26,14 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
+import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -66,19 +71,6 @@ public class DAL {
 		doc.put("email", email);
 
 		users_doc.add(doc);
-/*
-		dr_user.add(doc).addOnCompleteListener(new OnCompleteListener<Void>() {
-			@Override
-			public void onComplete(@NonNull Task<Void> task) {
-				if (task.isSuccessful()){
-					Log.d("FUCK", "yes");
-				}
-				else{
-					Log.d("FUCK", "yes");
-				}
-			}
-		});
-*/
 
 		return u;
 	}
@@ -93,13 +85,54 @@ public class DAL {
 					String id = u.getString("id");
 					String name = u.getString("name");
 					String email = u.getString("email");
-					int points = 1000;
-
+					int points = u.getLong("points").intValue();
 					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
 					Manager.getInstance().setPlayingUser(user);
 			}
 		});
 	}
+
+	public void updateLeaderboard(final LeaderboardFragment leaderboardFragment) {
+		Query q = users_doc.whereGreaterThan("points", -1);
+		Log.i("DAL", "Started Leaderboard");
+		Task<QuerySnapshot> task = q.get();
+		task.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+				ArrayList<User> users = new ArrayList<>();
+
+				for (DocumentSnapshot u : docs){
+					String id = u.getString("id");
+					String name = u.getString("name");
+					String email = u.getString("email");
+					int points = u.getLong("points").intValue();
+					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
+
+					users.add(user);
+				}
+				Collections.sort(users, new Comparator<User>() {
+					@Override
+					public int compare(User user, User t1) {
+						if (user.getPoints() > t1.getPoints()){
+							return 1;
+						}
+						return 0;
+					}
+				});
+				Log.i("DAL", "Loaded Leaderboard");
+				leaderboardFragment.setUsers(users);
+			}
+		});
+		task.addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.i("DAL", "Could not load leaderboard");
+			}
+		});
+	}
+
+
 
 	private void init(){
 		Team brasil = new Team(111, "Brasil", "");

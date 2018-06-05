@@ -34,12 +34,12 @@ public class MainActivity extends AppCompatActivity
 
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
+	LeaderboardFragment leaderboard_fragment;
 
     private void initUser(String id){
     	DAL.getInstance().getUser(id);
-        initFragments();
-    	//Manager.getInstance().setPlayingUser(u);
-		//initFragments
+		initFragments();
+        //Manager.getInstance().setPlayingUser(u);
 		//TODO
         //return u;
     }
@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity
     public void initFragments(){
 		loadFriendsFragment();
 		loadProfileFragment();
+		loadLeaderboardFragment();
+	}
+	public void loadLeaderboardFragment(){
+    	leaderboard_fragment = new LeaderboardFragment();
+    	leaderboard_fragment.update();
 	}
 
 	public void loadFriendsFragment() {
@@ -82,9 +87,8 @@ public class MainActivity extends AppCompatActivity
 		FirebaseAuth m = FirebaseAuth.getInstance();
 		FirebaseUser acc = m.getCurrentUser();
 
-        if(type == 0){
-			DAL.getInstance().createUser(acc);
-		}
+
+		DAL.getInstance().createUser(acc);
 
 		initUser(acc.getUid().toString());
 
@@ -95,13 +99,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-        	return;
-            //super.onBackPressed();
+            super.onBackPressed();
         }
     }
 
