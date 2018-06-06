@@ -152,9 +152,17 @@ public class SignInActivity extends AppCompatActivity {
 
 	public void update(FirebaseUser acc, int type){
 		if (acc != null){
-			Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-			intent.putExtra("type", type);
-			startActivity(intent);
+			if(type == 0)
+			{
+				Intent intent = new Intent(SignInActivity.this, TournamentPredictionActivity.class);
+				intent.putExtra("type", type);
+				startActivity(intent);
+			}
+			else {
+				Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+				intent.putExtra("type", type);
+				startActivity(intent);
+			}
 		}
 	}
 

@@ -13,4 +13,73 @@
 	<string name="title_activity_sign_in">SignInActivity</string>
 	<string name="dummy_button">Dummy Button</string>
 	<string name="dummy_content">DUMMY\nCONTENT</string>
+
+	<string-array name="countries">
+		<item>Argentina</item>
+		<item>Australia</item>
+		<item>Belgium</item>
+		<item>Brazil</item>
+		<item>Colombia</item>
+		<item>Costa Rica</item>
+		<item>Croatia</item>
+		<item>Denmark</item>
+		<item>Egypt</item>
+		<item>England</item>
+		<item>France</item>
+		<item>Germany</item>
+		<item>Iceland</item>
+		<item>Iran</item>
+		<item>Japan</item>
+		<item>Mexico</item>
+		<item>Morocco</item>
+		<item>Nigeria</item>
+		<item>Panama</item>
+		<item>Peru</item>
+		<item>Poland</item>
+		<item>Portugal</item>
+		<item>Russia</item>
+		<item>Saudi Arabia</item>
+		<item>Senegal</item>
+		<item>Serbia</item>
+		<item>South Korea</item>
+		<item>Spain</item>
+		<item>Sweden</item>
+		<item>Switzerland</item>
+		<item>Tunisia</item>
+		<item>Uruguay</item>
+	</string-array>
+	<integer-array name="flags">
+		<item>@drawable/argentina</item>
+		<item>@drawable/australia</item>
+		<item>@drawable/belgium</item>
+		<item>@drawable/brazil</item>
+		<item>@drawable/colombia</item>
+		<item>@drawable/costa_rica</item>
+		<item>@drawable/croatia</item>
+		<item>@drawable/denmark</item>
+		<item>@drawable/egypt</item>
+		<item>@drawable/england</item>
+		<item>@drawable/france</item>
+		<item>@drawable/germany</item>
+		<item>@drawable/iceland</item>
+		<item>@drawable/iran</item>
+		<item>@drawable/japan</item>
+		<item>@drawable/mexico</item>
+		<item>@drawable/morocco</item>
+		<item>@drawable/nigeria</item>
+		<item>@drawable/panama</item>
+		<item>@drawable/peru</item>
+		<item>@drawable/poland</item>
+		<item>@drawable/portugal</item>
+		<item>@drawable/russia</item>
+		<item>@drawable/saudi_arabia</item>
+		<item>@drawable/senegal</item>
+		<item>@drawable/serbia</item>
+		<item>@drawable/south_korea</item>
+		<item>@drawable/spain</item>
+		<item>@drawable/sweden</item>
+		<item>@drawable/switzerland</item>
+		<item>@drawable/tunisia</item>
+		<item>@drawable/uruguay</item>
+	</integer-array>
 </resources>

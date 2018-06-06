@@ -1,11 +1,15 @@
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context=".ui.fragments.profile.TournamentFragment">
+	android:orientation="vertical">
 
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="10dp"
+		android:text="Please predict the top three teams in the tournament."
+		/>
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -14,13 +18,13 @@
 			android:layout_width="50dp"
 			android:layout_height="50dp"
 			android:src="@drawable/gold_medal"/>
-		<TextView
+
+		<Spinner
+			android:id="@+id/spinner_gold"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/gold"
-			android:gravity="center"
-			android:textSize="20dp"
-			android:text="Brazil"/>
+			android:layout_height="wrap_content"
+			android:paddingLeft="20dp"/>
+
 	</LinearLayout>
 
 
@@ -32,13 +36,11 @@
 			android:layout_width="50dp"
 			android:layout_height="50dp"
 			android:src="@drawable/silver_medal"/>
-		<TextView
+		<Spinner
+			android:id="@+id/spinner_silver"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/silver"
-			android:gravity="center"
-			android:textSize="20dp"
-			android:text="France"/>
+			android:layout_height="wrap_content"
+			android:paddingLeft="20dp"/>
 	</LinearLayout>
 
 	<LinearLayout
@@ -49,13 +51,19 @@
 			android:layout_width="50dp"
 			android:layout_height="50dp"
 			android:src="@drawable/bronze_medal"/>
-		<TextView
+		<Spinner
+			android:id="@+id/spinner_bronze"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/bronze"
-			android:gravity="center"
-			android:textSize="20dp"
-			android:text="Belgium"/>
+			android:layout_height="wrap_content"
+			android:paddingLeft="20dp"/>
 	</LinearLayout>
+
+
+	<Button
+		android:id="@+id/btnSubmitTournamentPred"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="Submit" />
 
 </LinearLayout>
