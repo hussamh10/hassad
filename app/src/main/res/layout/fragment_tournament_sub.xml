@@ -11,15 +11,24 @@
 		android:layout_height="wrap_content"
 		android:padding="10dp">
 		<ImageView
-			android:layout_width="50dp"
+			android:layout_width="0dp"
 			android:layout_height="50dp"
+			android:layout_weight="1"
 			android:src="@drawable/gold_medal"/>
+		<ImageView
+			android:layout_width="0dp"
+			android:layout_height="40dp"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:src="@drawable/brazil"/>
 		<TextView
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="match_parent"
+			android:layout_weight="3"
 			android:id="@+id/gold"
 			android:gravity="center"
-			android:textSize="20dp"
+			android:textAlignment="textStart"
+			android:textSize="15dp"
 			android:text="Brazil"/>
 	</LinearLayout>
 
@@ -29,15 +38,24 @@
 		android:layout_height="wrap_content"
 		android:padding="10dp">
 		<ImageView
-			android:layout_width="50dp"
+			android:layout_width="0dp"
 			android:layout_height="50dp"
+			android:layout_weight="1"
 			android:src="@drawable/silver_medal"/>
+		<ImageView
+			android:layout_width="0dp"
+			android:layout_height="40dp"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:src="@drawable/france"/>
 		<TextView
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="match_parent"
+			android:layout_weight="3"
 			android:id="@+id/silver"
 			android:gravity="center"
-			android:textSize="20dp"
+			android:textAlignment="textStart"
+			android:textSize="15dp"
 			android:text="France"/>
 	</LinearLayout>
 
@@ -46,15 +64,24 @@
 		android:layout_height="wrap_content"
 		android:padding="10dp">
 		<ImageView
-			android:layout_width="50dp"
+			android:layout_width="0dp"
 			android:layout_height="50dp"
+			android:layout_weight="1"
 			android:src="@drawable/bronze_medal"/>
+		<ImageView
+			android:layout_width="0dp"
+			android:layout_height="40dp"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:src="@drawable/belgium"/>
 		<TextView
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="match_parent"
+			android:layout_weight="3"
 			android:id="@+id/bronze"
 			android:gravity="center"
-			android:textSize="20dp"
+			android:textAlignment="textStart"
+			android:textSize="15dp"
 			android:text="Belgium"/>
 	</LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.hush.hassad.ui.activities;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +54,10 @@ public class TournamentPredictionActivity extends AppCompatActivity {
 				String spinnerBronzeText = spinner_bronze.getSelectedItem().toString();
 				Log.d("TeamsOnClick", "onClick: " + spinnerGoldText + " " + spinnerSilverText + " " + spinnerBronzeText );
 				//TODO check if same teams then intent to main activity
+
+				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				startActivity(intent);
+				finish();
 			}
 		});
 	}

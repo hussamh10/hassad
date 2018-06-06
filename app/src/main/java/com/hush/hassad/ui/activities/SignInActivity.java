@@ -157,11 +157,13 @@ public class SignInActivity extends AppCompatActivity {
 				Intent intent = new Intent(SignInActivity.this, TournamentPredictionActivity.class);
 				intent.putExtra("type", type);
 				startActivity(intent);
+				finish();
 			}
 			else {
 				Intent intent = new Intent(SignInActivity.this, MainActivity.class);
 				intent.putExtra("type", type);
 				startActivity(intent);
+				finish();
 			}
 		}
 	}
