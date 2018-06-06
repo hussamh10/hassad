@@ -6,4 +6,10 @@
 	android:layout_height="match_parent"
 	tools:context="com.hush.hassad.ui.fragments.LeaderboardFragment">
 
+	<ListView
+		android:id="@+id/leaderboard_list"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+	</ListView>
 </android.support.constraint.ConstraintLayout>

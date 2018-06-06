@@ -7,25 +7,37 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
+import com.hush.hassad.ui.adapters.FriendsAdapter;
+import com.hush.hassad.ui.adapters.LeaderboardAdapter;
+import com.hush.hassad.ui.fragments.profile.ProfileFragment;
 
 import java.util.ArrayList;
 
 public class LeaderboardFragment extends Fragment {
 
-	ArrayList<User> users;
+	LeaderboardAdapter mLeaderboardAdapter;
+	ArrayList<User> users = new ArrayList<>();
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_leaderboard, container,false);
+		View view = inflater.inflate(R.layout.fragment_leaderboard, container,false);
+		final ListView listView = view.findViewById(R.id.leaderboard_list);
+		users = Manager.getInstance().getFriends();
+		mLeaderboardAdapter = new LeaderboardAdapter(getActivity(), R.layout.card_leaderboard_item, users);
+		listView.setAdapter(mLeaderboardAdapter);
+		return view;
 	}
 
 	public void update(){
-		users = new ArrayList<>();
 		DAL.getInstance().updateLeaderboard(this);
 	}
 
