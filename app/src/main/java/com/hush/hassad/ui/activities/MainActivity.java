@@ -1,6 +1,10 @@
 package com.hush.hassad.ui.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +20,7 @@ import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
+import com.hush.hassad.receiver.AlarmReceiver;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
 import com.hush.hassad.R;
 import com.hush.hassad.ui.fragments.SettingsFragment;
@@ -24,6 +29,7 @@ import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -70,6 +76,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //TODO change notification to match timings
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.SECOND,5);
+
+		Intent intent = new Intent(this, AlarmReceiver.class);//"com.hush.hassad.action.DISPLAY_NOTIFICATION");
+		PendingIntent broadcast = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+		alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
 
         DAL.getInstance();
 
