@@ -3,15 +3,26 @@ package com.hush.hassad.ui.activities;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,15 +40,27 @@ import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
-
+	FirebaseAuth firebaseauth;
+    FirebaseUser user;
+	TextView profile_name;
+	TextView profile_email;
+	TextView coins;
+	ImageView profile_img;
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
 	LeaderboardFragment leaderboard_fragment;
@@ -77,6 +100,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+		loadProfile();
+
         //TODO change notification to match timings
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Calendar calendar = Calendar.getInstance();
@@ -112,7 +137,25 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+	private void loadProfile() {
+		firebaseauth = FirebaseAuth.getInstance();
+		user = firebaseauth.getCurrentUser();
+
+		if(user != null) {
+			NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+			View header = navView.getHeaderView(0);
+			profile_name = (TextView) header.findViewById(R.id.profile_name);
+			profile_email = (TextView) header.findViewById(R.id.profile_email);
+			profile_img = (ImageView) header.findViewById(R.id.profile_img);
+
+			profile_name.setText(user.getDisplayName());
+			profile_email.setText(user.getEmail());
+			String p = user.getPhotoUrl().toString();
+			new DownloadImageTask((ImageView) findViewById(R.id.profile_img)).execute(p);
+		}
+	}
+
+	@Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -146,4 +189,29 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+		ImageView bmImage;
+
+		public DownloadImageTask(ImageView bmImage) {
+			this.bmImage = bmImage;
+		}
+
+		protected Bitmap doInBackground(String... urls) {
+			String urldisplay = urls[0];
+			Bitmap mIcon11 = null;
+			try {
+				InputStream in = new java.net.URL(urldisplay).openStream();
+				mIcon11 = BitmapFactory.decodeStream(in);
+			} catch (Exception e) {
+				Log.e("Error", e.getMessage());
+				e.printStackTrace();
+			}
+			return mIcon11;
+		}
+
+		protected void onPostExecute(Bitmap result) {
+			profile_img.setImageBitmap(result);
+		}
+	}
 }
