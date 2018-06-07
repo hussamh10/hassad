@@ -27,6 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
@@ -187,11 +192,24 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame,new AboutFragment()).commit();
         }
 		else if (id == R.id.nav_signout) {
-			FirebaseAuth.getInstance().signOut();
-			Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-			startActivity(intent);
-			finish();
-		}
+			GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+					.requestIdToken(getString(R.string.default_web_client_id))
+					.requestEmail()
+					.build();
+
+			GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+			mGoogleSignInClient.signOut()
+					.addOnCompleteListener(this, new OnCompleteListener<Void>() {
+						@Override
+						public void onComplete(@NonNull Task<Void> task) {
+							FirebaseAuth.getInstance().signOut();
+							Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+							startActivity(intent);
+							finish();
+
+						}
+					});
+					}
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
