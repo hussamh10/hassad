@@ -60,8 +60,8 @@ public class DAL {
     	String id = user.getUid();
 		String name = user.getDisplayName();
 		String email = user.getEmail();
-
-		User u = new User(id, Constants.INITIAL_POINTS, 0, new Info(id, name, email, null, null, 0));
+		String photoUrl = String.valueOf(user.getPhotoUrl());
+		User u = new User(id, Constants.INITIAL_POINTS, 0, new Info(id, name, email, null, null, 0, null));
 
 		Map<String, Object> doc = new HashMap<>();
 
@@ -69,7 +69,7 @@ public class DAL {
 		doc.put("points", Constants.INITIAL_COINS);
 		doc.put("name", name);
 		doc.put("email", email);
-
+		doc.put("photoUrl", photoUrl);
 		users_doc.add(doc);
 
 		return u;
@@ -85,8 +85,9 @@ public class DAL {
 					String id = u.getString("id");
 					String name = u.getString("name");
 					String email = u.getString("email");
+					String photoUrl = u.getString("photoUrl");
 					int points = u.getLong("points").intValue();
-					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
+					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0, photoUrl));
 					Manager.getInstance().setPlayingUser(user);
 			}
 		});
@@ -106,8 +107,9 @@ public class DAL {
 					String id = u.getString("id");
 					String name = u.getString("name");
 					String email = u.getString("email");
+					String photoUrl = u.getString("photoUrl");
 					int points = u.getLong("points").intValue();
-					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0));
+					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0,photoUrl));
 
 					users.add(user);
 				}
@@ -256,13 +258,14 @@ public class DAL {
 	public ArrayList<User> getFriends(User player) {
 		ArrayList<User> friends = new ArrayList<>();
 
+		String photoUrl = "https://www.google.com/imgres?imgurl=https%3A%2F%2Flibrary.stanford.edu%2Fsites%2Fdefault%2Ffiles%2Fperson%2Fimage%2Fimg_0017.jpg&imgrefurl=https%3A%2F%2Flibrary.stanford.edu%2Fpeople%2Faalsum&docid=2ZcGmzIUiq9mtM&tbnid=GB9HnX-iGA45LM%3A&vet=1&w=4213&h=3602&safe=off&client=safari&bih=907&biw=1680&ved=0ahUKEwjxnerb0sHbAhWhK5oKHbiWCioQMwgzKAAwAA&iact=c&ictx=1";
 		String id = UUID.randomUUID().toString();
 		User fn1 = new User(id, 1000, 100, new Info(id, "Haroon Ahmed", "haroon@saad.usman",
-				new Date(), "Washroom", 12));
+				new Date(), "Washroom", 12, photoUrl));
 
 		id = UUID.randomUUID().toString();
 		User fn2 = new User(id, 1000, 100, new Info(id, "Usman Ahmed", "haripur@saad.usman",
-				new Date(), "Bathroom", 12));
+				new Date(), "Bathroom", 12, photoUrl));
 
 		friends.add(fn1);
 		friends.add(fn2);

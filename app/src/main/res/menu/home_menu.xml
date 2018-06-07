@@ -8,9 +8,4 @@
 		android:showAsAction="always"
     />
 
-	<item
-		android2:id="@+id/table"
-		android2:icon="@drawable/ic_menu_slideshow"
-		android2:title="Table"
-		android:showAsAction="always"/>
 </menu>

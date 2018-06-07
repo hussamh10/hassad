@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +26,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
@@ -39,6 +46,7 @@ import com.hush.hassad.ui.fragments.AboutFragment;
 import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
+import com.hush.hassad.util.DownloadImageTask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,7 +162,7 @@ public class MainActivity extends AppCompatActivity
 			profile_name.setText(user.getDisplayName());
 			profile_email.setText(user.getEmail());
 			String p = user.getPhotoUrl().toString();
-			new DownloadImageTask((ImageView) findViewById(R.id.profile_img)).execute(p);
+			new DownloadImageTask(profile_img).execute(p);
 		}
 	}
 
@@ -187,34 +195,28 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new AboutFragment()).commit();
         }
+		else if (id == R.id.nav_signout) {
+			GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+					.requestIdToken(getString(R.string.default_web_client_id))
+					.requestEmail()
+					.build();
+
+			GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+			mGoogleSignInClient.signOut()
+					.addOnCompleteListener(this, new OnCompleteListener<Void>() {
+						@Override
+						public void onComplete(@NonNull Task<Void> task) {
+							FirebaseAuth.getInstance().signOut();
+							Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+							startActivity(intent);
+							finish();
+
+						}
+					});
+					}
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		ImageView bmImage;
-
-		public DownloadImageTask(ImageView bmImage) {
-			this.bmImage = bmImage;
-		}
-
-		protected Bitmap doInBackground(String... urls) {
-			String urldisplay = urls[0];
-			Bitmap mIcon11 = null;
-			try {
-				InputStream in = new java.net.URL(urldisplay).openStream();
-				mIcon11 = BitmapFactory.decodeStream(in);
-			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			}
-			return mIcon11;
-		}
-
-		protected void onPostExecute(Bitmap result) {
-			profile_img.setImageBitmap(result);
-		}
-	}
 }

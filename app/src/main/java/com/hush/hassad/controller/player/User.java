@@ -65,7 +65,6 @@ public class User {
         return friends_ids;
     }
 
-
     @Override
     public String toString() {
         return "User{" +
