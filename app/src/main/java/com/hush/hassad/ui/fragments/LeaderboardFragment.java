@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +22,18 @@ import com.hush.hassad.ui.adapters.LeaderboardAdapter;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LeaderboardFragment extends Fragment {
 
 	LeaderboardAdapter mLeaderboardAdapter;
-	ArrayList<User> users = new ArrayList<>();
+	ArrayList<User> users;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_leaderboard, container,false);
 		final ListView listView = view.findViewById(R.id.leaderboard_list);
-		users = Manager.getInstance().getFriends();
 		mLeaderboardAdapter = new LeaderboardAdapter(getActivity(), R.layout.card_leaderboard_item, users);
 		listView.setAdapter(mLeaderboardAdapter);
 		return view;

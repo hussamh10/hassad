@@ -132,8 +132,6 @@ public class DAL {
 		});
 	}
 
-
-
 	private void init(){
 		Team brasil = new Team(111, "Brasil", "");
 		Team italy = new Team(112, "Italy", "");

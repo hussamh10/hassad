@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -78,8 +79,10 @@ public class MainActivity extends AppCompatActivity
 		loadProfileFragment();
 		loadLeaderboardFragment();
 	}
+
 	public void loadLeaderboardFragment(){
     	leaderboard_fragment = new LeaderboardFragment();
+    	leaderboard_fragment.setUsers(new ArrayList<User>());
     	leaderboard_fragment.update();
 	}
 
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_friends) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
         } else if (id == R.id.nav_leaderboard) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new LeaderboardFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,leaderboard_fragment).commit();
         }  else if (id == R.id.nav_profile) {
 			fragmentManager.beginTransaction().replace(R.id.content_frame, profile_fragment).commit();
         } else if (id == R.id.nav_settings) {
