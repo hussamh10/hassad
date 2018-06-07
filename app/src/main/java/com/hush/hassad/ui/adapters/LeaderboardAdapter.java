@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.util.DownloadImageTask;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class LeaderboardAdapter extends ArrayAdapter {
         mHolder.name.setText(user.getInfo().getName());
         mHolder.rank.setText("" + (position + 1));
         mHolder.points.setText(Integer.toString(user.getPoints()));
-        mHolder.imgProfile.setImageResource(R.drawable.chelsea);
+        new DownloadImageTask(mHolder.imgProfile).execute(user.getInfo().getPhotoUrl());
 
         return convertView;
     }

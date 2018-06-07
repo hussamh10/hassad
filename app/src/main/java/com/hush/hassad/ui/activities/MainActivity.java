@@ -39,6 +39,7 @@ import com.hush.hassad.ui.fragments.AboutFragment;
 import com.hush.hassad.ui.fragments.FriendsFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
+import com.hush.hassad.util.DownloadImageTask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity
 			profile_name.setText(user.getDisplayName());
 			profile_email.setText(user.getEmail());
 			String p = user.getPhotoUrl().toString();
-			new DownloadImageTask((ImageView) findViewById(R.id.profile_img)).execute(p);
+			new DownloadImageTask(profile_img).execute(p);
 		}
 	}
 
@@ -189,29 +190,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		ImageView bmImage;
-
-		public DownloadImageTask(ImageView bmImage) {
-			this.bmImage = bmImage;
-		}
-
-		protected Bitmap doInBackground(String... urls) {
-			String urldisplay = urls[0];
-			Bitmap mIcon11 = null;
-			try {
-				InputStream in = new java.net.URL(urldisplay).openStream();
-				mIcon11 = BitmapFactory.decodeStream(in);
-			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			}
-			return mIcon11;
-		}
-
-		protected void onPostExecute(Bitmap result) {
-			profile_img.setImageBitmap(result);
-		}
-	}
 }

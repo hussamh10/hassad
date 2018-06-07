@@ -10,15 +10,17 @@ public class Info {
     private String email;
     private Date DOB;
     private String location;
+    private String photoUrl;
     private int timezone;
 
-    public Info(String userID, String name, String email, Date DOB, String location, int timezone) {
+    public Info(String userID, String name, String email, Date DOB, String location, int timezone, String photoUrl) {
         this.userID = userID;
         this.name = name;
         this.email = email;
         this.DOB = DOB;
         this.location = location;
         this.timezone = timezone;
+        this.photoUrl = photoUrl;
     }
 
     public String getUserID() {
@@ -54,5 +56,13 @@ public class Info {
                 ", location='" + location + '\'' +
                 ", timezone=" + timezone +
                 '}';
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }
