@@ -11,12 +11,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +42,7 @@ public class SignInActivity extends AppCompatActivity {
 
 	private GoogleSignInClient mGoogleSignInClient;
 	private FirebaseAuth mAuth;
+	private SignInButton btn_signin;
 
 	/**
 	 * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -125,8 +128,16 @@ public class SignInActivity extends AppCompatActivity {
 				.build();
 
 		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-		signIn();
+
+		btn_signin = (SignInButton) findViewById(R.id.btn_signin);
+		btn_signin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				signIn();
+			}
+		});
 	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

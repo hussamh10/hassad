@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
@@ -184,6 +186,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new AboutFragment()).commit();
         }
+		else if (id == R.id.nav_signout) {
+			FirebaseAuth.getInstance().signOut();
+			Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+			startActivity(intent);
+			finish();
+		}
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
