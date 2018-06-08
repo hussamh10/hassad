@@ -21,19 +21,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
 
@@ -231,7 +239,50 @@ public class SignInActivity extends AppCompatActivity {
 
 	public void checkExistence(String uid) {
 
-		FirebaseDatabase.getInstance().getReference(uid).addValueEventListener(new ValueEventListener() {
+		FirebaseFirestore db = FirebaseFirestore.getInstance();
+		Query query = db.collection("users").whereEqualTo("id", uid);
+
+		query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				FirebaseUser user = mAuth.getCurrentUser();
+				if(queryDocumentSnapshots.isEmpty()){
+					//The user exists...
+					update(user, NEW_USER);
+				}
+				else {
+					//The user doesn't exist...
+					update(user, OLD_USER);
+				}
+			}
+		});
+		/*final String id = uid;
+		DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+		DatabaseReference userNameRef = rootRef.child("users");
+		ValueEventListener eventListener = new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				FirebaseUser user = mAuth.getCurrentUser();
+				for(DataSnapshot data: dataSnapshot.getChildren()){
+					if (data.child(id).exists()) {
+						update(user, OLD_USER);
+					} else {
+						update(user, NEW_USER);
+					}
+				}*/
+				/*if(dataSnapshot.exists()){
+					update(user, OLD_USER);
+				} else {
+					update(user, NEW_USER);
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {}
+		};
+		userNameRef.addListenerForSingleValueEvent(eventListener);
+
+		/*FirebaseDatabase.getInstance().getReference(uid).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				FirebaseUser user = mAuth.getCurrentUser();
@@ -239,7 +290,6 @@ public class SignInActivity extends AppCompatActivity {
 					update(user, NEW_USER);
 				} else {
 					update(user, OLD_USER);
-
 				}
 			}
 
@@ -247,7 +297,7 @@ public class SignInActivity extends AppCompatActivity {
 			public void onCancelled(DatabaseError databaseError) {
 
 			}
-		});
+		});*/
 	}
 
 /*	@Override

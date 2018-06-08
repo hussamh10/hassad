@@ -85,7 +85,7 @@ public class DAL {
 		return u;
 	}
 
-
+/*
 	public Match getMatchFromDB(int id){
     	final Match match = new Match(0, null, null, null, null, null, false, 0);
     	Query q = matches_doc.whereEqualTo("id", id);
@@ -167,7 +167,7 @@ public class DAL {
 		});
 		return team;
 	}
-
+*/
 
 	public void setPlayingUser(String id) {
 		Query q = users_doc.whereEqualTo("id", id);
