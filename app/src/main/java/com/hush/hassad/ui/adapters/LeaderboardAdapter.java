@@ -17,6 +17,8 @@ import com.hush.hassad.util.DownloadImageTask;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class LeaderboardAdapter extends ArrayAdapter {
     Activity activity;
     int resource;
@@ -27,7 +29,7 @@ public class LeaderboardAdapter extends ArrayAdapter {
         TextView rank;
         TextView name;
         TextView points;
-        ImageView imgProfile;
+        CircleImageView imgProfile;
     }
 
     public LeaderboardAdapter(Activity activity, int resource, ArrayList<User> users){
@@ -56,7 +58,8 @@ public class LeaderboardAdapter extends ArrayAdapter {
         mHolder.name.setText(user.getInfo().getName());
         mHolder.rank.setText("" + (position + 1));
         mHolder.points.setText(Integer.toString(user.getPoints()));
-        new DownloadImageTask(mHolder.imgProfile).execute(user.getInfo().getPhotoUrl());
+        String photoUrl = user.getInfo().getPhotoUrl();
+        new DownloadImageTask(mHolder.imgProfile).execute(photoUrl);
 
         return convertView;
     }

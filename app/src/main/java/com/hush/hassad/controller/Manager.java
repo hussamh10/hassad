@@ -125,7 +125,8 @@ public class Manager {
             throw new Exception("User with email address: " + email + " already exists.");
         }
         String id = UUID.randomUUID().toString();
-        Info info = new Info(id, name, email, DOB, location, timezone);
+        String photoUrl = "https://www.google.com/imgres?imgurl=https%3A%2F%2Flibrary.stanford.edu%2Fsites%2Fdefault%2Ffiles%2Fperson%2Fimage%2Fimg_0017.jpg&imgrefurl=https%3A%2F%2Flibrary.stanford.edu%2Fpeople%2Faalsum&docid=2ZcGmzIUiq9mtM&tbnid=GB9HnX-iGA45LM%3A&vet=1&w=4213&h=3602&safe=off&client=safari&bih=907&biw=1680&ved=0ahUKEwjxnerb0sHbAhWhK5oKHbiWCioQMwgzKAAwAA&iact=c&ictx=1";
+        Info info = new Info(id, name, email, DOB, location, timezone, photoUrl);
         User u = new User(id, Constants.INITIAL_POINTS, Constants.INITIAL_COINS, info);
         setPlayingUser(u);
         //db.addUser(u);
