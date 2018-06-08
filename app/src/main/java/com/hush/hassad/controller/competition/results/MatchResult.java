@@ -4,11 +4,29 @@ import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 
 public class MatchResult extends Result{
+	private int id;
     private int home_score;
     private int away_score;
     private Team winner;
     private int match;
 
+	public MatchResult(int id, int home_score, int away_score, Team winner, int match) {
+		this.id = id;
+		this.home_score = home_score;
+		this.away_score = away_score;
+		this.winner = winner;
+		this.match = match;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId(){
+		return id;
+	}
+
+    //deprecated
     public MatchResult(int home_score, int away_score, Team winner, int match) {
         this.home_score = home_score;
         this.away_score = away_score;

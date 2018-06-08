@@ -35,6 +35,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
 	LeaderboardFragment leaderboard_fragment;
+
+	//test start
+	Match m = null;
+	//test end
 
     public void initFragments(){
 		loadFriendsFragment();
@@ -116,6 +122,13 @@ public class MainActivity extends AppCompatActivity
 
         DAL.getInstance();
 
+        //test start
+
+		m = null;
+		m = DAL.getInstance().getMatchAsync(1, m);
+
+		//test end
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -152,6 +165,10 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
     public void onBackPressed() {
+    	// test start
+    	// here the actual match is shown
+		Toast.makeText(this, m.toString(), Toast.LENGTH_SHORT).show();
+		// test end
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

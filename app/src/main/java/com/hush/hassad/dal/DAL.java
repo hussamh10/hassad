@@ -33,6 +33,7 @@ import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 
+import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +85,105 @@ public class DAL {
 
 		return u;
 	}
+
+	public Team getTeamAsync(final int id, Team team){
+		//TODO change the following vals to a default value
+		final Team temp = new Team(0, null, null);
+		team = temp;
+		Query q = team_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				String name = u.getString("name");
+				String image_url = u.getString("image_url");
+				temp.setId(id);
+				temp.setName(name);
+				temp.setImage_url(image_url);
+			}
+		});
+		return team;
+	}
+
+	public Match getMatchAsync(int id, Match return_match){
+		// TODO change to a default value
+		final Match match = new Match(0, null, null, null, null, null, false, 0);
+		return_match = match;
+		Query q = matches_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int id = u.getLong("id").intValue();
+				Boolean ended = u.getBoolean("ended");
+				com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
+				String k = temp.toString();
+				//TODO fix this date stuff
+				//String kickoff_time = u.getString("kickoff_time");
+				String venue = u.getString("venue");
+				int home_team_id = u.getLong("home_team_id").intValue();
+				int away_team_id = u.getLong("away_team_id").intValue();
+				int stage = u.getLong("stage").intValue();
+				int result_id = u.getLong("match_result_id").intValue();
+
+				/*
+				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+				Date kickoff_date = null;
+				try {
+					kickoff_date = dateFormat.parse(k);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				*/
+
+				Team home = null;
+				Team away = null;
+				home = getTeamAsync(home_team_id, home);
+				away = getTeamAsync(away_team_id, away);
+
+				MatchResult result = null;
+				result = getMatchResultAsync(result_id, result);
+				match.setId(id);
+				match.setEnded(ended);
+				match.setAway(away);
+				match.setHome(home);
+				match.setKickoff_time(new Date());
+				match.setStage(stage);
+				match.setVenue(venue);
+				match.setResult(result);
+			}
+		});
+
+		return return_match;
+	}
+
+	public MatchResult getMatchResultAsync(final int match_id, MatchResult return_matchResult){
+		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
+		return_matchResult = matchResult;
+		Query q = match_results_doc.whereEqualTo("match_id", match_id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int id = u.getLong("id").intValue();
+				int home_score = u.getLong("home_score").intValue();
+				int away_score = u.getLong("away_score").intValue();
+				int match_id = u.getLong("match_id").intValue();
+				Team winner = null;
+				winner = getTeamAsync(id, winner);
+				matchResult.setId(id);
+				matchResult.setHome_score(home_score);
+				matchResult.setAway_score(away_score);
+				matchResult.setWinner(winner);
+				matchResult.setMatch(match_id);
+			}
+		});
+		return matchResult;
+	}
+
 
 /*
 	public Match getMatchFromDB(int id){
@@ -235,9 +335,9 @@ public class DAL {
 		Team fra = new Team(114, "France", "");
 		Team arg = new Team(115, "Argentina", "");
 		Team por = new Team(116, "Portugal", "");
-		Team bel = new Team(116, "Belgium", "");
-		Team pak = new Team(116, "Pakistan", "");
-		Team ind = new Team(116, "India", "");
+		Team bel = new Team(117, "Belgium", "");
+		Team pak = new Team(118, "Pakistan", "");
+		Team ind = new Team(119, "India", "");
 
 		teams = new ArrayList<>();
 		matches = new ArrayList<>();
