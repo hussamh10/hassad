@@ -2,6 +2,7 @@ package com.hush.hassad.ui.fragments.home;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
+import com.hush.hassad.ui.activities.MainActivity;
+import com.hush.hassad.ui.activities.ScheduleActivity;
+import com.hush.hassad.ui.activities.TournamentPredictionActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -97,7 +101,9 @@ public class HomeFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch(item.getItemId()){
-			case R.id.view_calendar:
+			case R.id.schedule:
+				Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+				startActivity(intent);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
