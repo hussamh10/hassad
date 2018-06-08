@@ -74,14 +74,6 @@ public class MainActivity extends AppCompatActivity
     ProfileFragment profile_fragment;
 	LeaderboardFragment leaderboard_fragment;
 
-    private void initUser(String id){
-    	DAL.getInstance().getUser(id);
-		initFragments();
-        //Manager.getInstance().setPlayingUser(u);
-		//TODO
-        //return u;
-    }
-
     public void initFragments(){
 		loadFriendsFragment();
 		loadProfileFragment();
@@ -133,15 +125,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        int type = getIntent().getIntExtra("type", 1);
-
-		FirebaseAuth m = FirebaseAuth.getInstance();
-		FirebaseUser acc = m.getCurrentUser();
-
-
-		DAL.getInstance().createUser(acc);
-
-		initUser(acc.getUid().toString());
+		initFragments();
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();

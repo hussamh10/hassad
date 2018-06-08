@@ -27,7 +27,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hush.hassad.R;
+import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.player.User;
+import com.hush.hassad.dal.DAL;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -43,6 +51,11 @@ public class SignInActivity extends AppCompatActivity {
 	private GoogleSignInClient mGoogleSignInClient;
 	private FirebaseAuth mAuth;
 	private SignInButton btn_signin;
+	private boolean exists;
+
+	private static final int NEW_USER = 0;
+	private static final int OLD_USER = 1;
+
 
 	/**
 	 * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -111,8 +124,8 @@ public class SignInActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		FirebaseUser currentUser = mAuth.getCurrentUser();
-		update(currentUser, 1);
+		FirebaseUser user = mAuth.getCurrentUser();
+		update(user, OLD_USER);
 	}
 
 	@Override
@@ -163,16 +176,23 @@ public class SignInActivity extends AppCompatActivity {
 
 	public void update(FirebaseUser acc, int type){
 		if (acc != null){
-			if(type == 0)
+			if(type == NEW_USER)
 			{
+				FirebaseAuth m = FirebaseAuth.getInstance();
+				FirebaseUser userAcc = m.getCurrentUser();
+				User user = DAL.getInstance().createUser(userAcc);
+
+				Manager.getInstance().setPlayingUser(user);
+
 				Intent intent = new Intent(SignInActivity.this, TournamentPredictionActivity.class);
-				intent.putExtra("type", type);
 				startActivity(intent);
 				finish();
 			}
 			else {
 				Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-				intent.putExtra("type", type);
+
+				DAL.getInstance().setPlayingUser(acc.getUid());
+
 				startActivity(intent);
 				finish();
 			}
@@ -199,14 +219,35 @@ public class SignInActivity extends AppCompatActivity {
 						if (task.isSuccessful()) {
 							// Sign in success, update UI with the signed-in user's information
 							FirebaseUser user = mAuth.getCurrentUser();
-							update(user, 0);
+							checkExistence(user.getUid());
 						} else {
 							// If sign in fails, display a message to the user.
-							update(null, 0);
+							update(null, NEW_USER);
 						}
 						// ...
 					}
 				});
+	}
+
+	public void checkExistence(String uid) {
+
+		FirebaseDatabase.getInstance().getReference(uid).addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				FirebaseUser user = mAuth.getCurrentUser();
+				if(dataSnapshot.exists()){
+					update(user, NEW_USER);
+				} else {
+					update(user, OLD_USER);
+
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+
+			}
+		});
 	}
 
 /*	@Override

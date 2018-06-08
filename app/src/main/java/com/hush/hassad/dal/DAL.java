@@ -9,6 +9,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -46,7 +51,6 @@ public class DAL {
     private ArrayList<Match> matches;
 	private ArrayList<Team> teams;
 	private ArrayList<MatchPrediction> mp;
-
 	private Object temp;
 
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -71,24 +75,23 @@ public class DAL {
 		doc.put("email", email);
 		doc.put("photoUrl", photoUrl);
 		users_doc.add(doc);
-
 		return u;
 	}
 
-	public void getUser(String id) {
+	public void setPlayingUser(String id) {
 		Query q = users_doc.whereEqualTo("id", id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-					String id = u.getString("id");
-					String name = u.getString("name");
-					String email = u.getString("email");
-					String photoUrl = u.getString("photoUrl");
-					int points = u.getLong("points").intValue();
-					User user = new User(id, points, 0, new Info(id, name, email, null, null, 0, photoUrl));
-					Manager.getInstance().setPlayingUser(user);
+				String id = u.getString("id");
+				String name = u.getString("name");
+				String email = u.getString("email");
+				String photoUrl = u.getString("photoUrl");
+				int points = u.getLong("points").intValue();
+				User user = new User(id, points, 0, new Info(id, name, email, null, null, 0, photoUrl));
+				Manager.getInstance().setPlayingUser(user);
 			}
 		});
 	}
