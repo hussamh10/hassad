@@ -1,7 +1,9 @@
 package com.hush.hassad.dal;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.hush.hassad.R;
 import com.hush.hassad.controller.Constants;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
@@ -31,6 +34,7 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
+import com.hush.hassad.ui.activities.ScheduleActivity;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 import com.hush.hassad.ui.fragments.home.DayFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
@@ -440,17 +444,15 @@ public class DAL {
 	}
 
     public void updateMatches(final DayFragment dayFragment, Date date){
-		final ArrayList<Match> matches = new ArrayList<>();
-
 		com.google.firebase.Timestamp start = new com.google.firebase.Timestamp(date);
 		com.google.firebase.Timestamp end = getNextDay(date);
 		Log.i("DAL", "Started Matches");
-		Task<QuerySnapshot> task = matches_doc.get();
+		Query q = matches_doc.whereGreaterThanOrEqualTo("kickoff_time",start).whereLessThanOrEqualTo("kickoff_time",end);
+		Task<QuerySnapshot> task = q.get();
 		task.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 				List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
-				final ArrayList<Match> allMatches = new ArrayList<>();
 				for (DocumentSnapshot m : docs){
 					final int id = Integer.parseInt(m.get("id").toString());
 					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
@@ -460,7 +462,6 @@ public class DAL {
 					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
 					final int stage = Integer.parseInt(m.get("stage").toString());
 					final String venue = m.getString("venue");
-
 
 					getTeamAsync(home_team_id, new Callback() {
 						@Override
@@ -490,6 +491,54 @@ public class DAL {
 			}
 		});
 	}
+
+	public void updateSchedule(final ScheduleActivity scheduleActivity){
+		Log.i("DAL", "Started Matches");
+		Query q = matches_doc.whereEqualTo("ended",false);
+		Task<QuerySnapshot> task = q.get();
+		task.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+				for (DocumentSnapshot m : docs){
+					final int id = Integer.parseInt(m.get("id").toString());
+					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
+					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
+					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final Date kickoffTime = m.getDate("kickoff_time");
+					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
+					final int stage = Integer.parseInt(m.get("stage").toString());
+					final String venue = m.getString("venue");
+
+					getTeamAsync(home_team_id, new Callback() {
+						@Override
+						public void callback(final Object homeTeam) {
+							getTeamAsync(away_team_id, new Callback() {
+								@Override
+								public void callback(final Object awayTeam) {
+									getMatchResultAsync(result_id, new Callback() {
+										@Override
+										public void callback(final Object matchResult) {
+											Match match = new Match(id, (Team)homeTeam, (Team)awayTeam, venue, kickoffTime, (MatchResult)matchResult, ended, stage);
+											scheduleActivity.addMatch(match);
+										}
+									});
+								}
+							});
+						}
+					});
+				}
+				Log.i("DAL", "Loaded Matches");
+			}
+		});
+		task.addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.i("DAL", "Could not load matches");
+			}
+		});
+	}
+
 
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
 		mp = new ArrayList<>();

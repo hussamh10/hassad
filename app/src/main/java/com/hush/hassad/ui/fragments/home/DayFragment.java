@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +81,7 @@ public class DayFragment extends Fragment {
 	public void setMatches(ArrayList<Match> matches){
 		this.matches.addAll(matches);
 	}
+
 	public void addMatch(Match m) {
 		//TODO: insert sorted
 		this.matches.add(m);
