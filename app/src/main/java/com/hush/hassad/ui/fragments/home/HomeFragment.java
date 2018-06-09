@@ -59,6 +59,9 @@ public class HomeFragment extends Fragment {
 	private Date getDay(int i) {
 		final Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, i);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
 	}
 
@@ -66,6 +69,9 @@ public class HomeFragment extends Fragment {
 	private Date[] generateDates() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -2);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
 
 		Date[] dates = new Date[5];
 

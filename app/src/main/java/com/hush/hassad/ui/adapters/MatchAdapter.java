@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,8 @@ public class MatchAdapter extends ArrayAdapter {
 		TextView away_score;
 
 		TextView match_time;
+
+		LinearLayout result;
 	}
 
 
@@ -94,12 +97,14 @@ public class MatchAdapter extends ArrayAdapter {
 		matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
 
 		matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
+		matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
 
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
 		matchHolder.home_team_name.setText(match.getHome().getName().toString());
 
 		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
+
 
 		if(Manager.getInstance().isPredicted(match)){
 			MatchPrediction pred = null;
@@ -114,10 +119,16 @@ public class MatchAdapter extends ArrayAdapter {
 		}
 
 		if(!match.isEnded()) {
+			matchHolder.match_time.setVisibility(View.VISIBLE);
+			matchHolder.result.setVisibility(View.GONE);
+
 			String time = Utils.getTimeString(match.getKickoff_time());
 			matchHolder.match_time.setText(time);
 		}
 		else {
+			matchHolder.match_time.setVisibility(View.GONE);
+			matchHolder.result.setVisibility(View.VISIBLE);
+
 			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
 		}

@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.competition.Match;
+import com.hush.hassad.dal.DAL;
 import com.hush.hassad.ui.activities.MatchScreenActivity;
 import com.hush.hassad.ui.adapters.MatchAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
@@ -30,7 +32,9 @@ public class DayFragment extends Fragment {
     private ArrayList<Match> matches;
     private Date date;
 
-    public DayFragment(){ }
+    public DayFragment(){
+    	matches = new ArrayList<>();
+	}
 
 	public View createView(LayoutInflater inflater, ViewGroup container){
 		View view = inflater.inflate(R.layout.fragment_home_sub, container, false);
@@ -60,23 +64,27 @@ public class DayFragment extends Fragment {
 	public void updateMatches(Date date){
 		this.date = date;
 		try{
-			matches = Manager.getInstance().getMatches(date);
+			//matches = Manager.getInstance().getMatches(date);
+			DAL.getInstance().updateMatches(this,date);
 		}
 		catch (Exception e){
 			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	public void updateMatches(){
-		try{
-			matches = Manager.getInstance().getMatches(date);
-		}
-		catch (Exception e){
-			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
-		}
-	}
 
 	public void setDate(Date date){
     	this.date = date;
+	}
+
+	public void setMatches(ArrayList<Match> matches){
+		this.matches.addAll(matches);
+	}
+	public void addMatch(Match m) {
+		//TODO: insert sorted
+		this.matches.add(m);
+		if (matchAdapter != null) {
+			matchAdapter.notifyDataSetChanged();
+		}
 	}
 }

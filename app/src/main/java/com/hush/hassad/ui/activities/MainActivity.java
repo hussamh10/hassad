@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     FriendsFragment friends_fragment;
     ProfileFragment profile_fragment;
 	LeaderboardFragment leaderboard_fragment;
+	HomeFragment home_fragment;
 
 	//test start
 	Match m = null;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity
 		loadFriendsFragment();
 		loadProfileFragment();
 		loadLeaderboardFragment();
+		loadHomeFragment();
 	}
 
 	public void loadLeaderboardFragment(){
@@ -100,6 +102,11 @@ public class MainActivity extends AppCompatActivity
 	public void loadProfileFragment(){
 		profile_fragment = new ProfileFragment();
 		profile_fragment.update(Manager.getInstance().getPlayingUser());
+	}
+
+	public void loadHomeFragment(){
+		home_fragment = new HomeFragment();
+		home_fragment.update();
 	}
 
     @Override
@@ -141,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 		initFragments();
 
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new HomeFragment() ).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, home_fragment).commit();
         }
     }
 
@@ -184,7 +191,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, home_fragment).commit();
         } else if (id == R.id.nav_friends) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
         } else if (id == R.id.nav_leaderboard) {

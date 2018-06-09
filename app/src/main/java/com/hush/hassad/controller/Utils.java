@@ -1,5 +1,6 @@
 package com.hush.hassad.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -22,11 +23,7 @@ public class Utils {
 	}
 
 	public static String getTimeString(Date date){
-		int hour = date.getHours();
-		int minutes = date.getMinutes();
-
-		String time = Utils.changeTo12hr(hour, minutes);
-
-		return time;
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+		return sdf.format(date);
 	}
 }

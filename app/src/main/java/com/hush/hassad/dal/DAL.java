@@ -32,11 +32,14 @@ import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
+import com.hush.hassad.ui.fragments.home.DayFragment;
+import com.hush.hassad.ui.fragments.home.HomeFragment;
 
 import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -103,8 +106,29 @@ public class DAL {
 				temp.setImage_url(image_url);
 			}
 		});
-		return team;
+		return temp;
 	}
+
+	public Team getTeamAsync(final int id, final Callback callback){
+		//TODO change the following vals to a default value
+		final Team temp = new Team(0, null, null);
+		Query q = team_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				String name = u.getString("name");
+				String image_url = u.getString("image_url");
+				temp.setId(id);
+				temp.setName(name);
+				temp.setImage_url(image_url);
+				callback.callback(temp);
+			}
+		});
+		return temp;
+	}
+
 
 	public Match getMatchAsync(int id, Match return_match){
 		// TODO change to a default value
@@ -158,10 +182,85 @@ public class DAL {
 
 		return return_match;
 	}
+	public Match getMatchAsync(int id, final Callback callback){
+		// TODO change to a default value
+		final Match match = new Match(0, null, null, null, null, null, false, 0);
+		Query q = matches_doc.whereEqualTo("id", id);
 
-	public MatchResult getMatchResultAsync(final int match_id, MatchResult return_matchResult){
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int id = u.getLong("id").intValue();
+				Boolean ended = u.getBoolean("ended");
+				com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
+				String k = temp.toString();
+				//TODO fix this date stuff
+				//String kickoff_time = u.getString("kickoff_time");
+				String venue = u.getString("venue");
+				int home_team_id = u.getLong("home_team_id").intValue();
+				int away_team_id = u.getLong("away_team_id").intValue();
+				int stage = u.getLong("stage").intValue();
+				int result_id = u.getLong("match_result_id").intValue();
+
+				/*
+				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+				Date kickoff_date = null;
+				try {
+					kickoff_date = dateFormat.parse(k);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				*/
+
+				Team home = null;
+				Team away = null;
+				home = getTeamAsync(home_team_id, home);
+				away = getTeamAsync(away_team_id, away);
+
+				MatchResult result = null;
+				result = getMatchResultAsync(result_id, result);
+				match.setId(id);
+				match.setEnded(ended);
+				match.setAway(away);
+				match.setHome(home);
+				match.setKickoff_time(new Date());
+				match.setStage(stage);
+				match.setVenue(venue);
+				match.setResult(result);
+				callback.callback(match);
+			}
+		});
+
+		return match;
+	}
+
+	public MatchResult getMatchResultAsync(final int match_id, final Callback callback){
 		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
-		return_matchResult = matchResult;
+		Query q = match_results_doc.whereEqualTo("match_id", match_id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int id = u.getLong("id").intValue();
+				int home_score = u.getLong("home_score").intValue();
+				int away_score = u.getLong("away_score").intValue();
+				int match_id = u.getLong("match_id").intValue();
+				Team winner = null;
+				winner = getTeamAsync(id, winner);
+				matchResult.setId(id);
+				matchResult.setHome_score(home_score);
+				matchResult.setAway_score(away_score);
+				matchResult.setWinner(winner);
+				matchResult.setMatch(match_id);
+				callback.callback(matchResult);
+			}
+		});
+		return matchResult;
+	}
+	public MatchResult getMatchResultAsync(final int match_id, MatchResult mr){
+		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
 		Query q = match_results_doc.whereEqualTo("match_id", match_id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -185,89 +284,6 @@ public class DAL {
 	}
 
 
-/*
-	public Match getMatchFromDB(int id){
-    	final Match match = new Match(0, null, null, null, null, null, false, 0);
-    	Query q = matches_doc.whereEqualTo("id", id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				String id = u.getString("id");
-				Boolean ended = u.getBoolean("ended");
-				String kickoff_time = u.getString("kickoff_time");
-				String venue = u.getString("venue");
-				String home_team_id = u.getString("home_team_id");
-				String away_team_id = u.getString("away_team_id");
-				int stage = u.getLong("stage").intValue();
-
-				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
-				Date kickoff_date = null;
-				try {
-					kickoff_date = dateFormat.parse(kickoff_time);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				Team home = getTeamFromDB(home_team_id);
-				Team away = getTeamFromDB(away_team_id);
-
-				MatchResult result = getMatchResult(id);
-				match.setId(id);
-				match.setEnded(ended);
-				match.setAway(away);
-				match.setHome(home);
-				match.setKickoff_time(kickoff_date);
-				match.setStage(stage);
-				match.setVenue(venue);
-				match.setResult(result);
-			}
-		});
-
-		return match;
-	}
-
-
-	public MatchResult getMatchResult(final String match_id){
-		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
-    	Query q = match_results_doc.whereEqualTo("match_id", match_id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				int home_score = u.getLong("home_score").intValue();
-				int away_score = u.getLong("away_score").intValue();
-				Team winner  = getTeam(id);
-				matchResult.setHome_score(home_score);
-				matchResult.setAway_score(away_score);
-				matchResult.setWinner(winner);
-				matchResult.setMatch(match_id);
-			}
-		});
-		return matchResult;
-	}
-
-
-	public Team getTeamFromDB(final String id){
-    	final Team team = new Team(0, null, null);
-    	Query q = team_doc.whereEqualTo("id", id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				String name = u.getString("name");
-				String image_url = u.getString("image_url");
-				team.setId(id);
-				team.setName(name);
-				team.setImage_url(image_url);
-			}
-		});
-		return team;
-	}
-*/
 
 	public void setPlayingUser(String id) {
 		Query q = users_doc.whereEqualTo("id", id);
@@ -384,7 +400,6 @@ public class DAL {
     }
 
     public ArrayList<Match> getMatches(Date date)throws Exception{
-
 		User p = Manager.getInstance().getPlayingUser();
 
         Match m = new Match(1,
@@ -416,6 +431,65 @@ public class DAL {
 		matches.add(m);
         return matches;
     }
+
+    private com.google.firebase.Timestamp getNextDay(Date date) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	cal.add(Calendar.DAY_OF_MONTH, 1);
+    	return new com.google.firebase.Timestamp(cal.getTime());
+	}
+
+    public void updateMatches(final DayFragment dayFragment, Date date){
+		final ArrayList<Match> matches = new ArrayList<>();
+
+		com.google.firebase.Timestamp start = new com.google.firebase.Timestamp(date);
+		com.google.firebase.Timestamp end = getNextDay(date);
+		Log.i("DAL", "Started Matches");
+		Task<QuerySnapshot> task = matches_doc.get();
+		task.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+				final ArrayList<Match> allMatches = new ArrayList<>();
+				for (DocumentSnapshot m : docs){
+					final int id = Integer.parseInt(m.get("id").toString());
+					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
+					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
+					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final Date kickoffTime = m.getDate("kickoff_time");
+					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
+					final int stage = Integer.parseInt(m.get("stage").toString());
+					final String venue = m.getString("venue");
+
+
+					getTeamAsync(home_team_id, new Callback() {
+						@Override
+						public void callback(final Object homeTeam) {
+							getTeamAsync(away_team_id, new Callback() {
+								@Override
+								public void callback(final Object awayTeam) {
+									getMatchResultAsync(result_id, new Callback() {
+										@Override
+										public void callback(final Object matchResult) {
+											Match match = new Match(id, (Team)homeTeam, (Team)awayTeam, venue, kickoffTime, (MatchResult)matchResult, ended, stage);
+											dayFragment.addMatch(match);
+										}
+									});
+								}
+							});
+						}
+					});
+				}
+				Log.i("DAL", "Loaded Matches");
+			}
+		});
+		task.addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.i("DAL", "Could not load matches");
+			}
+		});
+	}
 
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
 		mp = new ArrayList<>();
@@ -474,5 +548,93 @@ public class DAL {
 	}
 
 
+
+	public interface Callback {
+		void callback(Object o);
+	}
+
 	// Real functions
 }
+/*
+	public Match getMatchFromDB(int id){
+    	final Match match = new Match(0, null, null, null, null, null, false, 0);
+    	Query q = matches_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				String id = u.getString("id");
+				Boolean ended = u.getBoolean("ended");
+				String kickoff_time = u.getString("kickoff_time");
+				String venue = u.getString("venue");
+				String home_team_id = u.getString("home_team_id");
+				String away_team_id = u.getString("away_team_id");
+				int stage = u.getLong("stage").intValue();
+
+				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+				Date kickoff_date = null;
+				try {
+					kickoff_date = dateFormat.parse(kickoff_time);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				Team home = getTeamFromDB(home_team_id);
+				Team away = getTeamFromDB(away_team_id);
+
+				MatchResult result = getMatchResult(id);
+				match.setId(id);
+				match.setEnded(ended);
+				match.setAway(away);
+				match.setHome(home);
+				match.setKickoff_time(kickoff_date);
+				match.setStage(stage);
+				match.setVenue(venue);
+				match.setResult(result);
+			}
+		});
+
+		return match;
+	}
+
+
+	public MatchResult getMatchResult(final String match_id){
+		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
+    	Query q = match_results_doc.whereEqualTo("match_id", match_id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int home_score = u.getLong("home_score").intValue();
+				int away_score = u.getLong("away_score").intValue();
+				Team winner  = getTeam(id);
+				matchResult.setHome_score(home_score);
+				matchResult.setAway_score(away_score);
+				matchResult.setWinner(winner);
+				matchResult.setMatch(match_id);
+			}
+		});
+		return matchResult;
+	}
+
+
+	public Team getTeamFromDB(final String id){
+    	final Team team = new Team(0, null, null);
+    	Query q = team_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				String name = u.getString("name");
+				String image_url = u.getString("image_url");
+				team.setId(id);
+				team.setName(name);
+				team.setImage_url(image_url);
+			}
+		});
+		return team;
+	}
+*/
