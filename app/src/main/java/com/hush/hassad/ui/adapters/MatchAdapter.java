@@ -17,8 +17,11 @@ import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.Prediction;
+import com.hush.hassad.util.DownloadImageTask;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Saad Mujeeb on 31/3/2018.
@@ -32,12 +35,12 @@ public class MatchAdapter extends ArrayAdapter {
 	MatchHolder matchHolder;
 
 	static class MatchHolder{
-		ImageView home_team_img;
+		CircleImageView home_team_img;
 		TextView home_team_name;
 		TextView pred_home_score;
 		TextView home_score;
 
-		ImageView away_team_img;
+		CircleImageView away_team_img;
 		TextView away_team_name;
 		TextView pred_away_score;
 		TextView away_score;
@@ -61,7 +64,25 @@ public class MatchAdapter extends ArrayAdapter {
 
 		if (convertView == null) {
 			convertView = activity.getLayoutInflater().inflate(resource, parent, false);
+
+			matchHolder = new MatchHolder();
+
+			matchHolder.home_team_img = (CircleImageView) convertView.findViewById(R.id.home_team_img);
+			matchHolder.home_team_name = (TextView) convertView.findViewById(R.id.home_team_name);
+			matchHolder.pred_home_score = (TextView) convertView.findViewById(R.id.pred_home_score);
+			matchHolder.home_score = (TextView) convertView.findViewById(R.id.home_score);
+
+			matchHolder.away_team_img = (CircleImageView) convertView.findViewById(R.id.away_team_img);
+			matchHolder.away_team_name = (TextView) convertView.findViewById(R.id.away_team_name);
+			matchHolder.pred_away_score = (TextView) convertView.findViewById(R.id.pred_away_score);
+			matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
+
+			matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
+			matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
+			convertView.setTag(matchHolder);
 		}
+		else
+			matchHolder = (MatchHolder) convertView.getTag();
 
 		Match match = matches.get(position);
 
@@ -84,27 +105,15 @@ public class MatchAdapter extends ArrayAdapter {
 		//TODO @hussam test the predcited score in card
 
 
-		matchHolder = new MatchHolder();
-
-		matchHolder.home_team_img = (ImageView) convertView.findViewById(R.id.home_team_img);
-		matchHolder.home_team_name = (TextView) convertView.findViewById(R.id.home_team_name);
-		matchHolder.pred_home_score = (TextView) convertView.findViewById(R.id.pred_home_score);
-		matchHolder.home_score = (TextView) convertView.findViewById(R.id.home_score);
-
-		matchHolder.away_team_img = (ImageView) convertView.findViewById(R.id.away_team_img);
-		matchHolder.away_team_name = (TextView) convertView.findViewById(R.id.away_team_name);
-		matchHolder.pred_away_score = (TextView) convertView.findViewById(R.id.pred_away_score);
-		matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
-
-		matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
-		matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
-
-		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
+		//matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
+		String photoUrl = match.getHome().getImage_url();
+		new DownloadImageTask(matchHolder.home_team_img).execute(photoUrl);
 		matchHolder.home_team_name.setText(match.getHome().getName().toString());
 
-		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
+		//matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
+		photoUrl = match.getAway().getImage_url();
+		new DownloadImageTask(matchHolder.away_team_img).execute(photoUrl);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
-
 
 		if(Manager.getInstance().isPredicted(match)){
 			MatchPrediction pred = null;
