@@ -84,7 +84,7 @@ public class DayFragment extends Fragment {
 	}
 
 	public void addMatch(Match m) {
-    	synchronized (matches) {
+    	/*synchronized (matches) {
     		for (int i = 0; i < matches.size(); ++i) {
     			// TODO: verify this works
 				// change > to <
@@ -92,7 +92,8 @@ public class DayFragment extends Fragment {
     				this.matches.add(i, m);
 				}
 			}
-		}
+		}*/
+    	this.matches.add(m);
 		if (matchAdapter != null) {
 			matchAdapter.notifyDataSetChanged();
 		}
