@@ -32,6 +32,7 @@ public class DayFragment extends Fragment {
 	private MatchAdapter matchAdapter;
     private ArrayList<Match> matches;
     private Date date;
+	ListView matchList;
 
     public DayFragment(){
     	matches = new ArrayList<>();
@@ -39,7 +40,7 @@ public class DayFragment extends Fragment {
 
 	public View createView(LayoutInflater inflater, ViewGroup container){
 		View view = inflater.inflate(R.layout.fragment_home_sub, container, false);
-		ListView matchList = (ListView) view.findViewById(R.id.match_list);
+		matchList = (ListView) view.findViewById(R.id.match_list);
 
 		matchAdapter = new MatchAdapter(getActivity(), R.layout.card_match, matches ,null);
 		matchList.setAdapter(matchAdapter);
