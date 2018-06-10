@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -186,6 +188,7 @@ public class DAL {
 
 		return return_match;
 	}
+
 	public Match getMatchAsync(int id, final Callback callback){
 		// TODO change to a default value
 		final Match match = new Match(0, null, null, null, null, null, false, 0);
@@ -263,6 +266,7 @@ public class DAL {
 		});
 		return matchResult;
 	}
+
 	public MatchResult getMatchResultAsync(final int match_id, MatchResult mr){
 		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
 		Query q = match_results_doc.whereEqualTo("match_id", match_id);
@@ -286,8 +290,6 @@ public class DAL {
 		});
 		return matchResult;
 	}
-
-
 
 	public void setPlayingUser(String id) {
 		Query q = users_doc.whereEqualTo("id", id);
@@ -539,7 +541,6 @@ public class DAL {
 		});
 	}
 
-
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
 		mp = new ArrayList<>();
 		MatchResult result_ended = new MatchResult(10, 1, teams.get(0), 0);
@@ -595,8 +596,6 @@ public class DAL {
 		TournamentPrediction tp = new TournamentPrediction(UUID.randomUUID(), result, user);
 		return tp;
 	}
-
-
 
 	public interface Callback {
 		void callback(Object o);
