@@ -119,14 +119,15 @@ public class MainActivity extends AppCompatActivity
 		loadProfile();
 
         //TODO change notification to match timings
-		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		/*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.SECOND,5);
+
 
 		Intent intent = new Intent(this, AlarmReceiver.class);//"com.hush.hassad.action.DISPLAY_NOTIFICATION");
 		PendingIntent broadcast = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+		//alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES,broadcast);
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
-
+*/
         DAL.getInstance();
 
         //test start

@@ -36,6 +36,7 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
+import com.hush.hassad.receiver.AlarmReceiver;
 import com.hush.hassad.ui.activities.ScheduleActivity;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 import com.hush.hassad.ui.fragments.home.DayFragment;
@@ -540,6 +541,39 @@ public class DAL {
 			}
 		});
 	}
+
+	public void isMatch(final AlarmReceiver alarmReceiver, Date date){
+		com.google.firebase.Timestamp start = new com.google.firebase.Timestamp(date);
+		com.google.firebase.Timestamp end = getNextDay(date);
+		Log.i("DAL", "Getting Num of Matches");
+
+		Query q = matches_doc.whereGreaterThanOrEqualTo("kickoff_time",start).whereLessThanOrEqualTo("kickoff_time",end);
+		Task<QuerySnapshot> task = q.get();
+		task.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+				if(docs.isEmpty()) {
+					int count = 0;
+					alarmReceiver.setCount(count);
+					alarmReceiver.sendNotification();
+				}
+				else{
+					int count = 1;
+					alarmReceiver.setCount(count);
+					alarmReceiver.sendNotification();
+				}
+				Log.i("DAL", "Got Num of Matches");
+			}
+		});
+		task.addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.i("DAL", "Could not get num of matches");
+			}
+		});
+	}
+
 
 	public ArrayList<MatchPrediction> getPredictedMatches(User user){
 		mp = new ArrayList<>();
