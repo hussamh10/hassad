@@ -84,8 +84,15 @@ public class DayFragment extends Fragment {
 	}
 
 	public void addMatch(Match m) {
-		//TODO: insert sorted
-		this.matches.add(m);
+    	synchronized (matches) {
+    		for (int i = 0; i < matches.size(); ++i) {
+    			// TODO: verify this works
+				// change > to <
+    			if (matches.get(i).getKickoff_time().compareTo(m.getKickoff_time()) > 0) {
+    				this.matches.add(i, m);
+				}
+			}
+		}
 		if (matchAdapter != null) {
 			matchAdapter.notifyDataSetChanged();
 		}
