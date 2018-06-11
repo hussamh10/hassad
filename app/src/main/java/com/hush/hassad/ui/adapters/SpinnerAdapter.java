@@ -45,6 +45,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
 	@Override
 	public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+		// TODO: fix adapter
 		if(convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView= inflater.inflate(R.layout.custom_spinner_items, null);

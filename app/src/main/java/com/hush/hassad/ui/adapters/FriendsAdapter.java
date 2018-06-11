@@ -50,6 +50,8 @@ public class FriendsAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // TODO: fix adapter
+    
         if (convertView == null) {
             convertView = activity.getLayoutInflater().inflate(resource, parent, false);
         }

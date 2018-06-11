@@ -28,7 +28,7 @@
 			android:orientation="vertical"
 			>
 
-			<ImageView
+			<de.hdodenhof.circleimageview.CircleImageView
 				android:id="@+id/home_team_img"
 				android:layout_width="40dp"
 				android:layout_height="40dp"
@@ -147,7 +147,7 @@
 			android:orientation="vertical"
 			>
 
-			<ImageView
+			<de.hdodenhof.circleimageview.CircleImageView
 				android:id="@+id/away_team_img"
 				android:layout_width="40dp"
 				android:layout_height="40dp"

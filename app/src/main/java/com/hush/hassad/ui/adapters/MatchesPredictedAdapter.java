@@ -58,6 +58,7 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 	@Override
 	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+		// TODO: fix adapter
 		if (convertView == null) {
 			convertView = activity.getLayoutInflater().inflate(resource, parent, false);
 		}
