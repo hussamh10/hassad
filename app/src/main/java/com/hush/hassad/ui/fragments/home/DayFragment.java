@@ -31,7 +31,6 @@ public class DayFragment extends Fragment {
 
 	private MatchAdapter matchAdapter;
     private ArrayList<Match> matches;
-    private Date date;
 	ListView matchList;
 
     public DayFragment(){
@@ -63,38 +62,20 @@ public class DayFragment extends Fragment {
 		return createView(inflater, container);
 	}
 
-	public void updateMatches(Date date){
-		this.date = date;
-		try{
+	public void updateMatches(Date date) {
+		try {
 			//matches = Manager.getInstance().getMatches(date);
-			DAL.getInstance().updateMatches(this,date);
-		}
-		catch (Exception e){
+			DAL.getInstance().updateMatches(this, date);
+		} catch (Exception e){
 			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
 		}
 	}
-
-
-	public void setDate(Date date){
-    	this.date = date;
-	}
-
-	public void setMatches(ArrayList<Match> matches){
-		this.matches.addAll(matches);
-	}
-
-	public void addMatch(Match m) {
-    	synchronized (matches) {
-    		for (int i = 0; i < matches.size(); ++i) {
-    			// TODO: verify this works
-				// change > to <
-    			if (matches.get(i).getKickoff_time().compareTo(m.getKickoff_time()) > 0) {
-    				this.matches.add(i, m);
-				}
-			}
-		}
-		if (matchAdapter != null) {
-			matchAdapter.notifyDataSetChanged();
+	
+	public void addMatch(Match match) {
+    	this.matches.add(match);
+    	if (matchAdapter != null) {
+    		matchAdapter.notifyDataSetChanged();
 		}
 	}
+	
 }

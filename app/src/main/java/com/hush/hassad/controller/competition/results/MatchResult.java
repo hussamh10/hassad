@@ -10,6 +10,10 @@ public class MatchResult extends Result{
     private Team winner;
     private int match;
 
+    public MatchResult() {
+    	this(0, 0, 0, null, 0);
+	}
+ 
 	public MatchResult(int id, int home_score, int away_score, Team winner, int match) {
 		this.id = id;
 		this.home_score = home_score;

@@ -7,6 +7,9 @@ public class Team implements Serializable {
     private String name;
     private String image_url;
 
+    public Team() {
+        this(0, null, null);
+    }
     public Team(int id, String name, String image_url) {
         this.id = id;
         this.name = name;

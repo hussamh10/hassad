@@ -19,6 +19,10 @@ public class Match implements Serializable{
 
     private int stage; // higher points for winning higher stage bets
 
+    public Match() {
+        this(0, null, null, null, null, null, false, 0);
+    }
+    
     public Match(int id, Team home, Team away, String venue, Date kickoff_time, MatchResult result, boolean ended, int stage) {
         this.id = id;
         this.ended = ended;
