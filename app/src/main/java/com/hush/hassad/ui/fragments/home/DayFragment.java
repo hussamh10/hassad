@@ -71,9 +71,19 @@ public class DayFragment extends Fragment {
 		}
 	}
 	
-	public void addMatch(Match match) {
-    	this.matches.add(match);
-    	if (matchAdapter != null) {
+	public void addMatchSorted(Match match) {
+    	synchronized (matches) {
+    		int i;
+    		int size = matches.size();
+			for (i = 0; i < size; ++i) {
+				// TODO: verify this
+				if (matches.get(i).getKickoff_time().compareTo(match.getKickoff_time()) > 0) {
+					break;
+				}
+			}
+			matches.add(i, match);
+		}
+		if (matchAdapter != null) {
     		matchAdapter.notifyDataSetChanged();
 		}
 	}

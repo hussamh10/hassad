@@ -544,7 +544,7 @@ public class DAL {
 						}).addOnSuccessListener(new OnSuccessListener<Match>() {
 							@Override
 							public void onSuccess(Match match) {
-								dayFragment.addMatch(match);
+								dayFragment.addMatchSorted(match);
 							}
 						});
 						
