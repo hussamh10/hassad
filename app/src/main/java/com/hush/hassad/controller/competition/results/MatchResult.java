@@ -3,7 +3,10 @@ package com.hush.hassad.controller.competition.results;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 
-public class MatchResult extends Result{
+import java.io.Serializable;
+import java.util.Random;
+
+public class MatchResult extends Result implements Serializable{
 	private int id;
     private int home_score;
     private int away_score;
@@ -30,8 +33,11 @@ public class MatchResult extends Result{
 		return id;
 	}
 
-    //deprecated
     public MatchResult(int home_score, int away_score, Team winner, int match) {
+		Random rand = new Random();
+
+		this.id = rand.nextInt(1000000) + 1;
+
         this.home_score = home_score;
         this.away_score = away_score;
         this.winner = winner;

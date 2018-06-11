@@ -1,10 +1,13 @@
 package com.hush.hassad.controller.predictions;
 
+import com.hush.hassad.controller.Constants;
 import com.hush.hassad.controller.competition.results.MatchResult;
 
 import com.hush.hassad.controller.player.User;
 
 import java.util.UUID;
+
+import static java.lang.Math.abs;
 
 public class MatchPrediction extends Prediction{
     private MatchResult predicted_result;

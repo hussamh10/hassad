@@ -76,6 +76,7 @@ public class DAL {
 
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
 	CollectionReference users_doc = db.collection("users");
+	CollectionReference predictions_doc = db.collection("predictions_test");
 	CollectionReference matches_doc = db.collection("matches");
 	CollectionReference match_results_doc = db.collection("match_results");
 	CollectionReference team_doc = db.collection("teams");
@@ -299,6 +300,42 @@ public class DAL {
 		return matchResult;
 	}
 
+	public void submitMatchResult(MatchResult match_result){
+    	int id = match_result.getId();
+		int match = match_result.getMatch();
+		int home_score = match_result.getHome_score();
+		int away_score = match_result.getAway_score();
+
+		int winner = match_result.getWinner().getId();
+
+		Map<String, Object> doc = new HashMap<>();
+
+		doc.put("id", id);
+		doc.put("match_id", match);
+		doc.put("home_score", home_score);
+		doc.put("away_score", away_score);
+		doc.put("winner", winner);
+		match_results_doc.add(doc);
+	}
+
+	public void submitPrediction(MatchPrediction prediction) {
+		MatchResult mr = prediction.getPredicted_result();
+		submitMatchResult(mr);
+
+		String user_id = Manager.getInstance().getPlayingUser().getId();
+		int match_id = prediction.getPredicted_result().getMatch();
+		int mr_id = mr.getId();
+
+		Map<String, Object> doc = new HashMap<>();
+
+		doc.put("user_id", user_id);
+		doc.put("match_id", match_id);
+		doc.put("match_result_id", mr_id);
+
+		Log.i("DAL", "Added predictoins");
+		predictions_doc.add(doc);
+	}
+
 	public void setPlayingUser(String id) {
 		Query q = users_doc.whereEqualTo("id", id);
 
@@ -477,7 +514,7 @@ public class DAL {
 				final ArrayList<Match> matches = new ArrayList<>();
 				
 				for (DocumentSnapshot m : matchDocs) {
-					final int match_id = Integer.parseInt(m.get("id").toString());
+					final int match_id = m.getLong("id").intValue();
 					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
 					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
 					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
@@ -488,6 +525,7 @@ public class DAL {
 					
 					try {
 						final Match match = new Match();
+						match.setId(match_id);
 						match.setHome(new Team());
 						match.setAway(new Team());
 						match.setResult(new MatchResult());
@@ -545,6 +583,7 @@ public class DAL {
 							@Override
 							public void onSuccess(Match match) {
 								dayFragment.addMatchSorted(match);
+								Log.i("DAL", "onSuccess: sorted matches" + match.getHome().getName());
 							}
 						});
 						

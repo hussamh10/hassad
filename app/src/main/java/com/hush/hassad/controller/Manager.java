@@ -1,5 +1,7 @@
 package com.hush.hassad.controller;
 
+import android.util.Log;
+
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.MatchResult;
@@ -106,11 +108,20 @@ public class Manager {
         This will create a new entry in the table with prediction id, match info, result info and user info
         this function returns exception if prediction already made
          */
-        if (this.player.getCoins() < Constants.GROUP_PREDICTION_COST){
-            throw new Exception("Not enough Coins! Wallet: " + this.player.getCoins() + " Requierd: " + Constants.MATCH_PREDICTION_COST + ".");
-        }
-        this.player.removeCoins(Constants.MATCH_PREDICTION_COST);
+
+		if (isPredicted(prediction)){
+			throw new Exception("You have already predicted this match.");
+		}
+		else{
+			DAL.getInstance().submitPrediction(prediction);
+		}
+
     }
+
+    public boolean isPredicted(MatchPrediction prediction){
+		//check_if_prediction_already_made get prediction from prediction.getPredicted_result().getMatch(); and userId.;
+    	return false;
+	}
 
     public void editMatchPrediciton(MatchPrediction prediction)throws Exception{
         /*
@@ -150,40 +161,6 @@ public class Manager {
             update user in com.hush.hassad.dal.DAL
          */
     }
-
-    public void compareMatchPrediction(MatchPrediction prediction) throws Exception{
-        MatchResult predicted_result;
-        Match match;
-
-        try{
-            predicted_result = prediction.getPredicted_result();
-            int match_id = predicted_result.getMatch();
-            match = db.getMatch(match_id);
-        }
-        catch (Exception e){
-            throw e;
-        }
-
-        if (!match.isEnded()){
-            throw new Exception("Match has not ended yet.");
-        }
-
-        int score = 0;
-
-        score = compareScoreline(match, predicted_result) * Constants.SCORE_PREDICTION_POINTS_WEIGHT;
-        score  += compareWinner(match, predicted_result) * Constants.WINNER_PREDICTION_POINTS_WEIGHT;
-
-        int coins = score * Constants.SCORE_TO_COIN_RATIO;
-        int points = score * Constants.SCORE_TO_POINT_RATIO;
-
-        player.addCoins(coins);
-        player.addPoints(points);
-
-        /*
-        TODO Update User in com.hush.hassad.dal.DAL?
-         */
-    }
-
 
     // ------------------------------------- Utility ------------------------------------------
 
