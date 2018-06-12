@@ -47,6 +47,7 @@ public class MatchesFragment extends Fragment {
 	}
 
 	public void update(User user){
-		predictedMatches = Manager.getInstance().getPredictedMatches(user);
+		//TODO Prediction
+		//predictedMatches = Manager.getInstance().getPredictedMatches(user);
 	}
 }

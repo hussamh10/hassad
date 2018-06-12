@@ -68,10 +68,13 @@ public class Manager {
     public Match getMatch(int id){
     	return db.getMatch(id);
     }
+    //TODO Prediction
+/*
 
     public ArrayList<Match> getMatches(Date date) throws Exception{
         return db.getMatches(date);
     }
+*/
 
     public ArrayList<MatchPrediction> getPredictedMatches(User user) {
         return db.getPredictedMatches(user);

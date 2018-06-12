@@ -77,10 +77,6 @@ public class MainActivity extends AppCompatActivity
 	LeaderboardFragment leaderboard_fragment;
 	HomeFragment home_fragment;
 
-	//test start
-	Match m = null;
-	//test end
-
     public void initFragments(){
 		loadFriendsFragment();
 		loadProfileFragment();
@@ -128,14 +124,6 @@ public class MainActivity extends AppCompatActivity
 		//alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES,broadcast);
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
 */
-        DAL.getInstance();
-
-        //test start
-
-		m = null;
-		m = DAL.getInstance().getMatchAsync(1, m);
-
-		//test end
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -173,10 +161,6 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
     public void onBackPressed() {
-    	// test start
-    	// here the actual match is shown
-		Toast.makeText(this, m.toString(), Toast.LENGTH_SHORT).show();
-		// test end
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

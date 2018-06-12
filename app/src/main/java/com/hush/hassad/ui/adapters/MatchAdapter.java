@@ -91,6 +91,7 @@ public class MatchAdapter extends ArrayAdapter {
 		 */
 
 		MatchPrediction prediction;
+/*
 
 		boolean isPredicted = Manager.getInstance().isPredicted(match);
 		if (isPredicted){
@@ -101,21 +102,22 @@ public class MatchAdapter extends ArrayAdapter {
 				Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 		}
+*/
 
 		//TODO @hussam test the predcited score in card
 
 
-		//matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
-		String photoUrl = match.getHome().getImage_url();
-		new DownloadImageTask(matchHolder.home_team_img).execute(photoUrl);
+		matchHolder.home_team_img.setImageBitmap(match.getHome().getImage_url());
+		//String photoUrl = match.getHome().getImage_url();
+		//new DownloadImageTask(matchHolder.home_team_img).execute(photoUrl);
 		matchHolder.home_team_name.setText(match.getHome().getName().toString());
 
-		//matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
-		photoUrl = match.getAway().getImage_url();
-		new DownloadImageTask(matchHolder.away_team_img).execute(photoUrl);
+		matchHolder.away_team_img.setImageBitmap(match.getAway().getImage_url());
+		//photoUrl = match.getAway().getImage_url();
+		//new DownloadImageTask(matchHolder.away_team_img).execute(photoUrl);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
 
-		if(Manager.getInstance().isPredicted(match)){
+		/*if(Manager.getInstance().isPredicted(match)){
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
@@ -126,7 +128,7 @@ public class MatchAdapter extends ArrayAdapter {
 			matchHolder.pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
 			matchHolder.pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
 		}
-
+*/
 		if(!match.isEnded()) {
 			matchHolder.match_time.setVisibility(View.VISIBLE);
 			matchHolder.result.setVisibility(View.GONE);
