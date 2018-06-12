@@ -46,7 +46,7 @@ import com.hush.hassad.ui.activities.ScheduleActivity;
 import com.hush.hassad.ui.fragments.LeaderboardFragment;
 import com.hush.hassad.ui.fragments.home.DayFragment;
 import com.hush.hassad.ui.fragments.home.HomeFragment;
-import com.hush.hassad.util.GetBitmapFromURL;
+import com.hush.hassad.util.GetByteArrayFromURL;
 
 import java.security.Timestamp;
 import java.text.ParseException;
@@ -553,8 +553,8 @@ public class DAL {
 								homeTeam.setId(home_team_id);
 								homeTeam.setName(homeDoc.getString("name"));
 								//homeTeam.setImage_url(homeDoc.getString("image_url"));
-								Bitmap bitmap = GetBitmapFromURL.getBitmapFromURL(homeDoc.getString("image_url"));
-								homeTeam.setImage_url(bitmap);
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(homeDoc.getString("image_url"));
+								homeTeam.setImage_url(bytes);
 								return team_doc.whereEqualTo("id", away_team_id).get();
 							}
 						}).continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
@@ -566,8 +566,8 @@ public class DAL {
 								awayTeam.setId(away_team_id);
 								awayTeam.setName(awayDoc.getString("name"));
 								//awayTeam.setImage_url(awayDoc.getString("image_url"));
-								Bitmap bitmap = GetBitmapFromURL.getBitmapFromURL(awayDoc.getString("image_url"));
-								awayTeam.setImage_url(bitmap);
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(awayDoc.getString("image_url"));
+								awayTeam.setImage_url(bytes);
 
 								return match_results_doc.whereEqualTo("match_id", match_id).get();
 							}
@@ -656,8 +656,8 @@ public class DAL {
 								homeTeam.setId(home_team_id);
 								homeTeam.setName(homeDoc.getString("name"));
 								//homeTeam.setImage_url(homeDoc.getString("image_url"));
-								Bitmap bitmap = GetBitmapFromURL.getBitmapFromURL(homeDoc.getString("image_url"));
-								homeTeam.setImage_url(bitmap);
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(homeDoc.getString("image_url"));
+								homeTeam.setImage_url(bytes);
 								return team_doc.whereEqualTo("id", away_team_id).get();
 							}
 						}).continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
@@ -669,8 +669,8 @@ public class DAL {
 								awayTeam.setId(away_team_id);
 								awayTeam.setName(awayDoc.getString("name"));
 								//awayTeam.setImage_url(awayDoc.getString("image_url"));
-								Bitmap bitmap = GetBitmapFromURL.getBitmapFromURL(awayDoc.getString("image_url"));
-								awayTeam.setImage_url(bitmap);
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(awayDoc.getString("image_url"));
+								awayTeam.setImage_url(bytes);
 
 								return match_results_doc.whereEqualTo("match_id", match_id).get();
 							}

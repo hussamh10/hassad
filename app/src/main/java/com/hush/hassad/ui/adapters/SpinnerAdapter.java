@@ -49,12 +49,17 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 		if(convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView= inflater.inflate(R.layout.custom_spinner_items, null);
+
+			mSpinnerItemHolder = new SpinnerItemHolder();
+
+			mSpinnerItemHolder.teamName = convertView.findViewById(R.id.spinner_team_name);
+			mSpinnerItemHolder.flag = convertView.findViewById(R.id.spinner_flag);
+			convertView.setTag(mSpinnerItemHolder);
+		}
+		else {
+			mSpinnerItemHolder = (SpinnerItemHolder) convertView.getTag();
 		}
 
-		mSpinnerItemHolder = new SpinnerItemHolder();
-
-		mSpinnerItemHolder.teamName = convertView.findViewById(R.id.spinner_team_name);
-		mSpinnerItemHolder.flag = convertView.findViewById(R.id.spinner_flag);
 
 		mSpinnerItemHolder.teamName.setText(countries[position]);
 		mSpinnerItemHolder.flag.setImageResource(flags.getResourceId(position, -1));

@@ -61,23 +61,29 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 		// TODO: fix adapter
 		if (convertView == null) {
 			convertView = activity.getLayoutInflater().inflate(resource, parent, false);
+
+			matchHolder = new MatchHolder();
+
+			matchHolder.home_team_img = (ImageView) convertView.findViewById(R.id.home_team_img);
+			matchHolder.home_team_name = (TextView) convertView.findViewById(R.id.home_team_name);
+			matchHolder.pred_home_score = (TextView) convertView.findViewById(R.id.pred_home_score);
+			matchHolder.home_score = (TextView) convertView.findViewById(R.id.home_score);
+
+			matchHolder.away_team_img = (ImageView) convertView.findViewById(R.id.away_team_img);
+			matchHolder.away_team_name = (TextView) convertView.findViewById(R.id.away_team_name);
+			matchHolder.pred_away_score = (TextView) convertView.findViewById(R.id.pred_away_score);
+			matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
+
+			matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
+			matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
+			convertView.setTag(matchHolder);
+		}
+		else {
+			matchHolder = (MatchHolder) convertView.getTag();
 		}
 
-		matchHolder = new MatchHolder();
 
-		matchHolder.home_team_img = (ImageView) convertView.findViewById(R.id.home_team_img);
-		matchHolder.home_team_name = (TextView) convertView.findViewById(R.id.home_team_name);
-		matchHolder.pred_home_score = (TextView) convertView.findViewById(R.id.pred_home_score);
-		matchHolder.home_score = (TextView) convertView.findViewById(R.id.home_score);
-
-		matchHolder.away_team_img = (ImageView) convertView.findViewById(R.id.away_team_img);
-		matchHolder.away_team_name = (TextView) convertView.findViewById(R.id.away_team_name);
-		matchHolder.pred_away_score = (TextView) convertView.findViewById(R.id.pred_away_score);
-		matchHolder.away_score = (TextView) convertView.findViewById(R.id.away_score);
-
-		matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
-		matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
-
+		//TODO predition
 		MatchPrediction predictedMatch = predictedMatches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
 		Match match = Manager.getInstance().getMatch(predictedMatch.getPredicted_result().getMatch());

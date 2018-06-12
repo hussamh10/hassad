@@ -8,12 +8,12 @@ import java.util.BitSet;
 public class Team implements Serializable {
     private int id;
     private String name;
-    private Bitmap image_url;
+    private byte [] image_url;
 
     public Team() {
         this(0, null, null);
     }
-    public Team(int id, String name, Bitmap image_url) {
+    public Team(int id, String name, byte [] image_url) {
         this.id = id;
         this.name = name;
         this.image_url = image_url;
@@ -37,11 +37,11 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public Bitmap getImage_url() {
+    public byte [] getImage_url() {
         return image_url;
     }
 
-    public void setImage_url(Bitmap image_url) {
+    public void setImage_url(byte [] image_url) {
         this.image_url = image_url;
     }
 

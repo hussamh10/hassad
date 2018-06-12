@@ -1,5 +1,7 @@
 package com.hush.hassad.ui.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.BiMap;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
@@ -60,13 +63,17 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 		match_time = (TextView) findViewById(R.id.match_time);
 
-		home_team_img.setImageResource(R.drawable.manchester_united);
+		byte [] bytes = match.getHome().getImage_url();
+		Bitmap bmp =  BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		home_team_img.setImageBitmap(bmp);
 		home_team_name.setText(match.getHome().getName().toString());
 
-		away_team_img.setImageResource(R.drawable.chelsea);
+		bytes = match.getAway().getImage_url();
+		bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		away_team_img.setImageBitmap(bmp);
 		away_team_name.setText(match.getAway().getName().toString());
 
-		if(Manager.getInstance().isPredicted(match)){
+		/*if(Manager.getInstance().isPredicted(match)){
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
@@ -76,7 +83,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 			pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
 			pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
-		}
+		}*/
 
 		if(!match.isEnded()) {
 			String time = Utils.getTimeString(match.getKickoff_time());
