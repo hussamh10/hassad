@@ -26,7 +26,7 @@
 			android:name=".ui.activities.SignInActivity"
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:label="1Hassad"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.SignInActivityTheme">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
