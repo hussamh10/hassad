@@ -1,7 +1,10 @@
 package com.hush.hassad.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -120,10 +123,24 @@ public class SignInActivity extends AppCompatActivity {
 		update(user, OLD_USER);
 	}
 
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager
+				= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in);
+
+		if (!isNetworkAvailable()){
+			Intent intent = new Intent(SignInActivity.this, NoConnectionActivity.class);
+			startActivity(intent);
+			finish();
+		}
 
 		mAuth = FirebaseAuth.getInstance();
 
