@@ -39,6 +39,8 @@ import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.predictions.Prediction;
 import com.hush.hassad.dal.DAL;
 import com.hush.hassad.receiver.AlarmReceiver;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, home_fragment).commit();
         }
+
     }
 
 	private void loadProfile() {
@@ -182,6 +185,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_leaderboard) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,leaderboard_fragment).commit();
         }  else if (id == R.id.nav_profile) {
+        	profile_fragment.update(Manager.getInstance().getPlayingUser());
 			fragmentManager.beginTransaction().replace(R.id.content_frame, profile_fragment).commit();
         } else if (id == R.id.nav_settings) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new SettingsFragment()).commit();

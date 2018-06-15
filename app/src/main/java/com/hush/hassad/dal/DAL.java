@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -40,6 +41,7 @@ import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.controller.predictions.Prediction;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.receiver.AlarmReceiver;
 import com.hush.hassad.ui.activities.ScheduleActivity;
@@ -112,6 +114,8 @@ public class DAL {
 		final Team temp = new Team(0, null, null);
 		team = temp;
 		Query q = team_doc.whereEqualTo("id", id);
+
+		Log.i("ERROR", "getTeamAsync: " + id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
@@ -254,9 +258,9 @@ public class DAL {
 		return match;
 	}
 
-	public MatchResult getMatchResultAsync(final int match_id, final Callback callback){
+	public MatchResult getMatchResultAsync(final int id, final Callback callback){
 		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
-		Query q = match_results_doc.whereEqualTo("match_id", match_id);
+		Query q = match_results_doc.whereEqualTo("id", id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
@@ -266,8 +270,9 @@ public class DAL {
 				int home_score = u.getLong("home_score").intValue();
 				int away_score = u.getLong("away_score").intValue();
 				int match_id = u.getLong("match_id").intValue();
+				int winner_id = u.getLong("winner").intValue();
 				Team winner = null;
-				winner = getTeamAsync(id, winner);
+				winner = getTeamAsync(winner_id, winner);
 				matchResult.setId(id);
 				matchResult.setHome_score(home_score);
 				matchResult.setAway_score(away_score);
@@ -322,6 +327,7 @@ public class DAL {
 	}
 
 	public void submitPrediction(MatchPrediction prediction) {
+    	Manager.getInstance().addMatchPrediction(prediction);
 		MatchResult mr = prediction.getPredicted_result();
 		submitMatchResult(mr);
 
@@ -355,6 +361,72 @@ public class DAL {
 				Manager.getInstance().setPlayingUser(user);
 			}
 		});
+	}
+
+
+	public void getUser(final String user_id, final Callback callback){
+		final ArrayList<MatchPrediction> predictions = new ArrayList<>();
+		Query q = users_doc.whereEqualTo("id", user_id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+
+				String email = u.getString("email");
+				String name = u.getString("name");
+				String photo_url = u.getString("photoUrl");
+				int points = u.getLong("points").intValue();
+
+				User user = new User(user_id, points, 0, new Info(user_id, name,
+						email, new Date(), "LAHOOOOOORE", 0, photo_url));
+
+				callback.callback(user);
+			}
+		});
+	}
+
+	public void getPredictions(final String user_id, final Callback callback){
+		final ArrayList<MatchPrediction> predictions = new ArrayList<>();
+		final Query q = predictions_doc.whereEqualTo("user_id", user_id);
+
+		getUser(user_id, new Callback() {
+			@Override
+			public void callback(Object o) {
+			final User user = (User) o;
+			q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+				@Override
+				public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+					for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()){
+
+						int match_id = u.getLong("match_id").intValue();
+						int match_result_id = u.getLong("match_result_id").intValue();
+
+
+						final MatchResult mr = new MatchResult(-1, -1, -1, new Team(-1, "temp", new byte[1]), -1);
+						mr.setId(match_result_id);
+
+						getMatchResultAsync(match_result_id, new Callback() {
+							@Override
+							public void callback(Object o) {
+								final MatchResult mrtemp = (MatchResult) o;
+								mr.setMatch(mrtemp.getMatch());
+								mr.setAway_score(mrtemp.getAway_score());
+								mr.setHome_score(mrtemp.getHome_score());
+								mr.setWinner(mrtemp.getWinner());
+							}
+						});
+
+						predictions.add(new MatchPrediction(UUID.randomUUID(), mr, user));
+
+					}
+					Log.i("DAL", "onSuccess: predictions sent");
+					callback.callback(predictions);
+				}
+			});
+			}
+		});
+
 	}
 
 	public void updateLeaderboard(final LeaderboardFragment leaderboardFragment) {

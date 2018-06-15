@@ -11,10 +11,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.dal.DAL;
+
+import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 	private TabLayout tabLayout;
@@ -66,6 +70,7 @@ public class ProfileFragment extends Fragment {
 
 		return view;
 	}
+
 
 	public class ProfileViewpager extends FragmentPagerAdapter {
 		private String tabTitles[] = new String[]{"Matches","Tournament"};

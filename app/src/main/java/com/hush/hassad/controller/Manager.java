@@ -18,25 +18,48 @@ import java.util.UUID;
 public class Manager {
 
     private static DAL db;
-    private static Manager instance;
+    private static final Manager instance = new Manager();
     private static User player;
 	private ArrayList<User> friends;
+	private boolean loaded = false;
+	private ArrayList<MatchPrediction> user_predictions;
 
 	private Manager(){
+		Log.i("Manager", "Created");
         db = DAL.getInstance();
+        user_predictions = new ArrayList<>();
     }
 
     public static Manager getInstance() {
-        if (instance != null){
-            return instance;
+        if (instance == null){
+			return new Manager();
         }
-        return new Manager();
+		return instance;
     }
 
+	public void loading(){
+		loadPredictions();
+	}
+
+	public void loadPredictions(){
+		DAL.getInstance().getPredictions(player.getId(), new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				ArrayList<MatchPrediction> temp = (ArrayList<MatchPrediction>) o;
+				for (MatchPrediction i : temp){
+					user_predictions.add(i);
+				}
+				Log.i("Manager", "callback: Predictions loaded");
+				loaded = true;
+			}
+		});
+	}
 
     public void setPlayingUser(User player){
         this.player = player;
+        loading();
     }
+
 
     // ================================ Creators ==============================
 
@@ -85,12 +108,11 @@ public class Manager {
     }
 
     public MatchPrediction getPrediction(Match match)throws Exception{
-        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
-        for(MatchPrediction prediction : predictions){
-            if(prediction.getPredicted_result().getMatch() == match.getId()){
-                return prediction;
-            }
-        }
+		for (MatchPrediction p : user_predictions){
+			if (match.getId() == p.getPredicted_result().getMatch()){
+				return p;
+			}
+		}
         throw new Exception("Match not yet predicted");
     }
 
@@ -106,12 +128,6 @@ public class Manager {
     // ============================= DAL entries ==============================
 
     public void submitMatchPrediction(MatchPrediction prediction) throws Exception{
-        /*
-        TODO com.hush.hassad.dal.DAL.submitMatchPrediction(predicion) @usman
-        This will create a new entry in the table with prediction id, match info, result info and user info
-        this function returns exception if prediction already made
-         */
-
 		if (isPredicted(prediction)){
 			throw new Exception("You have already predicted this match.");
 		}
@@ -121,8 +137,21 @@ public class Manager {
 
     }
 
+    public boolean isPredicted(int match_id){
+		for (MatchPrediction p : user_predictions){
+			if (match_id == p.getPredicted_result().getMatch()){
+				return true;
+			}
+		}
+		return false;
+	}
+
     public boolean isPredicted(MatchPrediction prediction){
-		//check_if_prediction_already_made get prediction from prediction.getPredicted_result().getMatch(); and userId.;
+    	for (MatchPrediction p : user_predictions){
+    		if (prediction.getPredicted_result().getMatch() == p.getPredicted_result().getMatch()){
+    			return true;
+			}
+		}
     	return false;
 	}
 
@@ -203,5 +232,13 @@ public class Manager {
             }
         }
         return false;
+	}
+
+	public void addMatchPrediction(MatchPrediction prediction) {
+    	user_predictions.add(prediction);
+	}
+
+	public boolean isLoaded() {
+		return loaded;
 	}
 }

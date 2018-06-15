@@ -45,15 +45,8 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.dal.DAL;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class SignInActivity extends AppCompatActivity {
-	/**
-	 * Whether or not the system UI should be auto-hidden after
-	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-	 */
+
 	private static final boolean AUTO_HIDE = true;
 
 	private GoogleSignInClient mGoogleSignInClient;
@@ -65,16 +58,7 @@ public class SignInActivity extends AppCompatActivity {
 	private static final int OLD_USER = 1;
 
 
-	/**
-	 * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-	 * user interaction before hiding the system UI.
-	 */
 	private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-	/**
-	 * Some older devices needs a small delay between UI widget updates
-	 * and a change of the status and navigation bar.
-	 */
 	private static final int UI_ANIMATION_DELAY = 300;
 	private final Handler mHideHandler = new Handler();
 	private View mContentView;

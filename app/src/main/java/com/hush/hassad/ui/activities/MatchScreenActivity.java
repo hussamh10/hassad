@@ -2,6 +2,7 @@ package com.hush.hassad.ui.activities;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,7 +74,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 		away_team_img.setImageBitmap(bmp);
 		away_team_name.setText(match.getAway().getName().toString());
 
-		/*if(Manager.getInstance().isPredicted(match)){
+		if(Manager.getInstance().isPredicted(match.getId())){
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
@@ -83,7 +84,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 			pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
 			pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
-		}*/
+		}
 
 		if(!match.isEnded()) {
 			String time = Utils.getTimeString(match.getKickoff_time());
@@ -93,6 +94,10 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 			home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			away_score.setText(Integer.toString(match.getResult().getAway_score()));
+		}
+
+		if(Manager.getInstance().isPredicted(match.getId())){
+			submit.setEnabled(false);
 		}
 
 		submit.setOnClickListener(new View.OnClickListener() {
