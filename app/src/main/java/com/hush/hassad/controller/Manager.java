@@ -17,6 +17,8 @@ import com.hush.hassad.ui.fragments.home.HomeFragment;
 import java.util.ArrayList; import java.util.Date;
 import java.util.UUID;
 
+import static java.lang.Math.abs;
+
 public class Manager {
 
     private static DAL db;
@@ -140,6 +142,58 @@ public class Manager {
 	public int calculatePrediction(MatchResult predicted, MatchResult actual){
 		return 100;
 	}
+
+
+	public int compareMatchPrediction(MatchResult predicted, MatchResult actual){
+		int predicted_gd = abs(predicted.getAway_score() - predicted.getHome_score());
+		int predicted_gs = abs(predicted.getAway_score() + predicted.getHome_score());
+
+		int actual_gd = abs(actual.getAway_score() - actual.getHome_score());
+		int actual_gs = abs(actual.getAway_score() + actual.getHome_score());
+
+		int gd_score = Constants.GD_INITIAL_SCORE - (abs(predicted_gd - actual_gd) * Constants.GOAL_DIFFERENCE_WEIGHT);
+
+		int gs_score = Constants.GS_INITIAL_SCORE - (abs(predicted_gs - actual_gs) * Constants.GOAL_SUM_WEIGHT);
+
+		int winner_score = 0;
+
+		if (match_draw(actual)){
+			if(match_draw(predicted)){
+				winner_score = Constants.WINNER_PREDICTION_SCORE;
+			}
+			else{
+				winner_score = 0;
+			}
+		}
+		else{
+			if(actual.getWinner() == predicted.getWinner()){
+				winner_score = Constants.WINNER_PREDICTION_SCORE;
+			}
+			else{
+				winner_score = 0;
+			}
+		}
+
+		if (gs_score < 0){
+			gs_score = 0;
+		}
+
+		if (gd_score < 0){
+			gd_score = 0;
+		}
+
+		int score = gs_score + gd_score + winner_score;
+
+		return score;
+	}
+
+	public boolean match_draw(MatchResult result){
+		if(result.getHome_score() == result.getAway_score()){
+			return true;
+		}
+		return false;
+	}
+
 
     // ================================ Creators ==============================
 

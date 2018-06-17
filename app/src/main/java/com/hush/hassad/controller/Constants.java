@@ -2,16 +2,13 @@ package com.hush.hassad.controller;
 
 public class Constants {
     // tentative
-    public static final int GROUP_PREDICTION_COST = 100;
-    public static final int MATCH_PREDICTION_COST = 10;
     public static final int INITIAL_COINS = 1000;
     public static final int INITIAL_POINTS = 0;
-    public static final int WINNER_PREDICTION_POINTS = 100;
-    public static final int GOAL_DIFFERENCE_PREDICTION_POINTS_WEIGHT = 10;
-	public static final int TOTAL_GOALS_PREDICTION_POINTS_WEIGHT = 10;
-    public static final int SCORE_TO_COIN_RATIO = 2;
-    public static final int SCORE_TO_POINT_RATIO = 1;
-	public static final int GROUP_PREDICTION_POINTS = 1;
-	public static final int MINIMUM_POINTS = 0;
-	public static final int INITIAL_MATCH_POINTS = 1000;
+
+    public static final int WINNER_PREDICTION_SCORE = 100;
+    public static final int GOAL_DIFFERENCE_WEIGHT = 20;
+	public static final int GOAL_SUM_WEIGHT = 20;
+
+	public static final int GD_INITIAL_SCORE = 100;
+	public static final int GS_INITIAL_SCORE = 100;
 }
