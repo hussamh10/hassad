@@ -49,7 +49,7 @@ public class Manager {
 				for (MatchPrediction i : temp){
 					user_predictions.add(i);
 				}
-				Log.i("Manager", "callback: Predictions loaded");
+				Log.i("DAL", "callback: Predictions loaded");
 				loaded = true;
 			}
 		});
@@ -99,8 +99,8 @@ public class Manager {
     }
 */
 
-    public ArrayList<MatchPrediction> getPredictedMatches(User user) {
-        return db.getPredictedMatches(user);
+    public ArrayList<MatchPrediction> getPredictedMatches() {
+    	return user_predictions;
     }
 
     public TournamentPrediction getTournamentPrediction(User user) {
@@ -225,7 +225,7 @@ public class Manager {
     }
 
 	public boolean isPredicted(Match match) {
-        ArrayList<MatchPrediction> predictions = getPredictedMatches(player);
+        ArrayList<MatchPrediction> predictions = getPredictedMatches();
         for(MatchPrediction prediction : predictions){
             if(prediction.getPredicted_result().getMatch() == match.getId()){
                 return true;

@@ -3,6 +3,7 @@ package com.hush.hassad.ui.adapters;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.predictions.MatchPrediction;
+import com.hush.hassad.dal.DAL;
 
 import java.util.ArrayList;
 
@@ -84,27 +86,40 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 
 
 		//TODO predition
-		MatchPrediction predictedMatch = predictedMatches.get(position);
+		final MatchPrediction predictedMatch = predictedMatches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
-		Match match = Manager.getInstance().getMatch(predictedMatch.getPredicted_result().getMatch());
 
-		matchHolder.home_team_name.setText(match.getHome().getName().toString());
-		matchHolder.pred_home_score.setText(Integer.toString(predictedMatch.getPredicted_result().getHome_score()));
+		final int match_id = predictedMatch.getPredicted_result().getMatch();
 
-		matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
-		matchHolder.away_team_name.setText(match.getAway().getName().toString());
-		matchHolder.pred_away_score.setText(Integer.toString(predictedMatch.getPredicted_result().getAway_score()));
+		DAL.getInstance().getMatchAsync(match_id, new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				Match match = (Match) o;
+				try{
+					matchHolder.home_team_name.setText(match.getHome().getName().toString());
+					matchHolder.pred_home_score.setText(Integer.toString(predictedMatch.getPredicted_result().getHome_score()));
 
-		if(!match.isEnded()) {
-			String time = Utils.getTimeString(match.getKickoff_time());
-			matchHolder.match_time.setText(time);
-		}
-		else{
-			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
-			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
-			matchHolder.result.setVisibility(View.VISIBLE);
-			matchHolder.match_time.setVisibility((View.GONE));
-		}
+					matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
+					matchHolder.away_team_name.setText(match.getAway().getName().toString());
+					matchHolder.pred_away_score.setText(Integer.toString(predictedMatch.getPredicted_result().getAway_score()));
+
+					if(!match.isEnded()) {
+						String time = Utils.getTimeString(match.getKickoff_time());
+						matchHolder.match_time.setText(time);
+					}
+					else{
+						matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
+						matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
+						matchHolder.result.setVisibility(View.VISIBLE);
+						matchHolder.match_time.setVisibility((View.GONE));
+					}
+				}
+				catch (Exception e){
+					Log.i("Catch", "callback: " + e.getMessage());
+					Log.i("Catch", "Could not load: " + match_id);
+				}
+			}
+		});
 
 		return convertView;
 	}

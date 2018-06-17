@@ -1,6 +1,7 @@
 package com.hush.hassad.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
+import com.hush.hassad.R;
 import android.os.Bundle;
 
 public class NoConnectionActivity extends AppCompatActivity {
