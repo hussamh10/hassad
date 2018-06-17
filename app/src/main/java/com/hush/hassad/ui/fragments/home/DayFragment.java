@@ -66,7 +66,6 @@ public class DayFragment extends Fragment {
 
 	public void updateMatches(Date date) {
 		try {
-			//matches = Manager.getInstance().getMatches(date);
 			DAL.getInstance().updateMatches(this, date);
 		} catch (Exception e){
 			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();

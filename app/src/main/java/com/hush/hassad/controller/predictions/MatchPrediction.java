@@ -17,9 +17,36 @@ public class MatchPrediction extends Prediction{
         this.predicted_result = predicted_result;
     }
 
+    public MatchPrediction(UUID id, MatchResult predicted_result, User predictor, boolean calculated, int score){
+        super(id, predictor);
+        this.setCalculated(calculated);
+		this.setScore(score);
+        this.predicted_result = predicted_result;
+    }
+
     public MatchResult getPredicted_result() {
         return predicted_result;
     }
+
+    public boolean getCalculated(){
+    	return super.calculated;
+	}
+
+	public void setCalculated(boolean calculated){
+		super.calculated = calculated;
+	}
+
+	public User getPredictor(){
+    	return super.getPredictor();
+	}
+
+	public void setScore(int score){
+    	super.setScore(score);
+	}
+
+	public int getScore(){
+    	return super.getScore();
+	}
 
     @Override
     public String toString() {

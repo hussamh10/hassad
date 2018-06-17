@@ -84,42 +84,42 @@ public class MatchesPredictedAdapter extends ArrayAdapter {
 			matchHolder = (MatchHolder) convertView.getTag();
 		}
 
-
-		//TODO predition
 		final MatchPrediction predictedMatch = predictedMatches.get(position);
 		matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
 
 		final int match_id = predictedMatch.getPredicted_result().getMatch();
 
-		DAL.getInstance().getMatchAsync(match_id, new DAL.Callback() {
-			@Override
-			public void callback(Object o) {
-				Match match = (Match) o;
-				try{
-					matchHolder.home_team_name.setText(match.getHome().getName().toString());
-					matchHolder.pred_home_score.setText(Integer.toString(predictedMatch.getPredicted_result().getHome_score()));
+		Match match = Manager.getInstance().getMatchCached(match_id);
 
-					matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
-					matchHolder.away_team_name.setText(match.getAway().getName().toString());
-					matchHolder.pred_away_score.setText(Integer.toString(predictedMatch.getPredicted_result().getAway_score()));
+		try{
+			matchHolder.home_team_name.setText(match.getHome().getName().toString());
+			matchHolder.pred_home_score.setText(Integer.toString(predictedMatch.getPredicted_result().getHome_score()));
 
-					if(!match.isEnded()) {
-						String time = Utils.getTimeString(match.getKickoff_time());
-						matchHolder.match_time.setText(time);
-					}
-					else{
-						matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
-						matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
-						matchHolder.result.setVisibility(View.VISIBLE);
-						matchHolder.match_time.setVisibility((View.GONE));
-					}
-				}
-				catch (Exception e){
-					Log.i("Catch", "callback: " + e.getMessage());
-					Log.i("Catch", "Could not load: " + match_id);
+			matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
+			matchHolder.away_team_name.setText(match.getAway().getName().toString());
+			matchHolder.pred_away_score.setText(Integer.toString(predictedMatch.getPredicted_result().getAway_score()));
+
+			if(!match.isEnded()) {
+				String time = Utils.getTimeString(match.getKickoff_time());
+				matchHolder.match_time.setText(time);
+			}
+			else{
+				matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
+				matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
+				matchHolder.result.setVisibility(View.VISIBLE);
+				matchHolder.match_time.setVisibility((View.GONE));
+				if(Manager.getInstance().isPredicted(match)){
+					MatchPrediction prediction = Manager.getInstance().getPrediction(match);
+					matchHolder.pred_away_score.setText("" + prediction.getPredicted_result().getAway_score());
+					matchHolder.pred_home_score.setText("" + prediction.getPredicted_result().getHome_score());
 				}
 			}
-		});
+		}
+
+		catch (Exception e){
+			Log.i("Catch", "callback: " + e.getMessage());
+			Log.i("Catch", "Could not load: " + match_id);
+		}
 
 		return convertView;
 	}

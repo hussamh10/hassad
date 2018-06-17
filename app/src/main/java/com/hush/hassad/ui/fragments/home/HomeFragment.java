@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
 	}
 
 	//FIXME
-	private ArrayList<Date> getDates(int min, int max){
+	public static ArrayList<Date> getDates(int min, int max){
 		ArrayList<Date> dates = new ArrayList<>();
 
 	    for (int i = min; i <= max; i++){
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
 
 
 	// FIXME move to utils
-	private Date getDay(int i) {
+	public static Date getDay(int i) {
 		final Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, i);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
 	}
 
 	// FIXME move to utils
-	private Date[] generateDates() {
+	public static Date[] generateDates() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -2);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);

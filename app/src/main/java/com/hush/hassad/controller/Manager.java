@@ -11,6 +11,8 @@ import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.dal.DAL;
 import com.hush.hassad.ui.activities.MainActivity;
+import com.hush.hassad.ui.fragments.home.DayFragment;
+import com.hush.hassad.ui.fragments.home.HomeFragment;
 
 import java.util.ArrayList; import java.util.Date;
 import java.util.UUID;
@@ -23,6 +25,9 @@ public class Manager {
 	private ArrayList<User> friends;
 	private boolean loaded = false;
 	private ArrayList<MatchPrediction> user_predictions;
+	private ArrayList<MatchResult> match_results;
+	private ArrayList<Match> matches;
+	private ArrayList<Team> teams;
 
 	private Manager(){
 		Log.i("Manager", "Created");
@@ -38,19 +43,51 @@ public class Manager {
     }
 
 	public void loading(){
-		loadPredictions();
+		loadTeams();
 	}
+
+	public void loadTeams(){
+		DAL.getInstance().getAllTeams(new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				teams = (ArrayList<Team>) o;
+				Log.i("Loading", "callback: Teams loaded");
+				loadMatchesResults();
+			}
+		});
+	}
+
+	public void loadMatchesResults(){
+		DAL.getInstance().getAllMatchResults(new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				match_results = (ArrayList<MatchResult>) o;
+				Log.i("Loading", "callback: results loaded");
+				loadMatches();
+			}
+		});
+	}
+
+	public void loadMatches(){
+		DAL.getInstance().getAllMatches(new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				matches = (ArrayList<Match>) o;
+				Log.i("Loading", "callback: Matches loaded");
+				loadPredictions();
+			}
+		});
+	}
+
 
 	public void loadPredictions(){
 		DAL.getInstance().getPredictions(player.getId(), new DAL.Callback() {
 			@Override
 			public void callback(Object o) {
-				ArrayList<MatchPrediction> temp = (ArrayList<MatchPrediction>) o;
-				for (MatchPrediction i : temp){
-					user_predictions.add(i);
-				}
-				Log.i("DAL", "callback: Predictions loaded");
+				user_predictions = (ArrayList<MatchPrediction>) o;
+				Log.i("Loading", "callback: Predictions loaded");
 				loaded = true;
+				calculatePredictions();
 			}
 		});
 	}
@@ -60,6 +97,49 @@ public class Manager {
         loading();
     }
 
+    public void calculatePredictions(){
+		/*
+		walks through all the predicitoins the user has ever made
+		if the prediction is not calculated, it gets the match from the DB
+		if the match has ended then the score is calculated
+		the score is then updated in the DB along with the calculated boolean
+		 */
+
+		for (final MatchPrediction prediction : user_predictions){
+			if (!prediction.getCalculated()){
+				final int match_id = prediction.getPredicted_result().getMatch();
+				Match match = getMatchCached(match_id);
+				if (match.isEnded()){
+					if (prediction.getCalculated() == false){
+						int score = calculatePrediction(prediction.getPredicted_result(), match.getResult());
+						prediction.setScore(score);
+						prediction.setCalculated(true);
+						DAL.getInstance().updatePrediction(prediction);
+						Log.i("DAL", "Prediction calculated matchid " + match.getId());
+					}
+				}
+			}
+		}
+		updateUserScore();
+	}
+
+	public void updateUserScore(){
+		int score = 0;
+		for (final MatchPrediction prediction : user_predictions){
+			if (prediction.getCalculated() == true){
+				score += prediction.getScore();
+			}
+		}
+		if (player.getPoints() != score){
+			player.setPoints(score);
+			DAL.getInstance().updatePlayer(player);
+		}
+		Log.i("Manager", "updateUserScore: score already up to date");
+	}
+
+	public int calculatePrediction(MatchResult predicted, MatchResult actual){
+		return 100;
+	}
 
     // ================================ Creators ==============================
 
@@ -155,14 +235,6 @@ public class Manager {
     	return false;
 	}
 
-    public void editMatchPrediciton(MatchPrediction prediction)throws Exception{
-        /*
-        TODO com.hush.hassad.dal.DAL.submitPrediction(predicion) @usman
-        This will update entry in the table with prediction id, match info, result info and user info
-        this function returns exception if prediction not already made
-         */
-    }
-
     public void register(String name, String email, Date DOB, String location, int timezone) throws Exception{
         if (userExists(email)){
             throw new Exception("User with email address: " + email + " already exists.");
@@ -196,26 +268,6 @@ public class Manager {
 
     // ------------------------------------- Utility ------------------------------------------
 
-    private int compareScoreline(Match m, MatchResult mr){
-        int similarity = 0;
-
-        if (m.getResult().getAway_score() == mr.getAway_score()){
-            similarity ++;
-        }
-
-        if (m.getResult().getHome_score() == mr.getHome_score()){
-            similarity ++;
-        }
-
-        return similarity;
-    }
-
-    private int compareWinner(Match m, MatchResult mr){
-        if (m.getResult().getWinner().getId() == mr.getWinner().getId()){
-            return 1;
-        }
-        return 0;
-    }
 
     private boolean userExists(String email){
         if (getUser(email) == null){
@@ -240,5 +292,35 @@ public class Manager {
 
 	public boolean isLoaded() {
 		return loaded;
+	}
+
+	public Team getTeamCached(int id) {
+    	for (Team team : teams){
+    		if(team.getId() == id){
+    			return team;
+			}
+		}
+		Log.e("Error", "getTeamCached: No team found with id" + id );
+		return new Team();
+	}
+
+	public MatchResult getMatchResultCached(int result_id) {
+		for (MatchResult mr : match_results){
+			if(mr.getId() == result_id){
+				return mr;
+			}
+		}
+		Log.e("Error", "getMatchResultCached: No result found with id" + result_id );
+		return new MatchResult();
+	}
+
+	public Match getMatchCached(int id) {
+		for (Match match : matches){
+			if(match.getId() == id){
+				return match;
+			}
+		}
+		Log.e("Error", "getMatchCached: No result found with id" + id );
+		return new Match();
 	}
 }

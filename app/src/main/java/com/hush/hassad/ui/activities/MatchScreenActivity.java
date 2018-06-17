@@ -41,6 +41,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 	TextView pred_away_score;
 	TextView away_score;
 
+	TextView prediction_score;
 	TextView match_time;
 
 	@Override
@@ -56,6 +57,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 		home_team_name = (TextView) findViewById(R.id.home_team_name);
 		pred_home_score = (TextView) findViewById(R.id.pred_home_score);
 		home_score = (TextView) findViewById(R.id.home_score);
+		prediction_score = (TextView) findViewById(R.id.pred_score);
 
 		away_team_img = (ImageView) findViewById(R.id.away_team_img);
 		away_team_name = (TextView) findViewById(R.id.away_team_name);
@@ -78,12 +80,16 @@ public class MatchScreenActivity extends AppCompatActivity {
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
+				pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
+				pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
+				if(pred.getCalculated()){
+					Log.i("Success", "Updated prediction score for match:" + match.getId());
+					prediction_score.setText("" + pred.getScore());
+				}
 			} catch (Exception e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 
-			pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
-			pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
 		}
 
 		if(!match.isEnded()) {
