@@ -1,10 +1,12 @@
 package com.hush.hassad.controller;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.MatchResult;
+import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.player.User;
@@ -30,6 +32,9 @@ public class Manager {
 	private ArrayList<MatchResult> match_results;
 	private ArrayList<Match> matches;
 	private ArrayList<Team> teams;
+	private ArrayList<User> users;
+	private ArrayList<TournamentResult> tournament_results;
+	private TournamentPrediction tournament_perdiction;
 
 	private Manager(){
 		Log.i("Manager", "Created");
@@ -45,7 +50,18 @@ public class Manager {
     }
 
 	public void loading(){
-		loadTeams();
+		loadUsers();
+	}
+
+	public void loadUsers(){
+		DAL.getInstance().getAllUsers(new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				users = (ArrayList<User>) o;
+				Log.i("Loading", "callback: Users loaded");
+				loadTeams();
+			}
+		});
 	}
 
 	public void loadTeams(){
@@ -89,7 +105,30 @@ public class Manager {
 				user_predictions = (ArrayList<MatchPrediction>) o;
 				Log.i("Loading", "callback: Predictions loaded");
 				loaded = true;
+				loadTournamentResults();
 				calculatePredictions();
+			}
+		});
+	}
+
+	public void loadTournamentResults(){
+		DAL.getInstance().getAllTournamentResults(new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				tournament_results = (ArrayList<TournamentResult>) o;
+				Log.i("Loading", "callback: TournamentResult loaded");
+				loadTournamentPrediction();
+			}
+		});
+	}
+
+	public void loadTournamentPrediction(){
+		DAL.getInstance().getTournamentPrediction(player.getId(), new DAL.Callback() {
+			@Override
+			public void callback(Object o) {
+				tournament_perdiction = (TournamentPrediction) o;
+				Log.i("Loading", "callback: TournamentResult loaded");
+				Log.i("DONE" ,"+++++++++++++++++++++++++++++++++++++++++++++ ALL LOADED ++++++++++++++++++++++++++++++++++++++++++++++");
 			}
 		});
 	}
@@ -237,10 +276,6 @@ public class Manager {
     	return user_predictions;
     }
 
-    public TournamentPrediction getTournamentPrediction(User user) {
-        return db.getTournamentPrediction(user);
-    }
-
     public MatchPrediction getPrediction(Match match)throws Exception{
 		for (MatchPrediction p : user_predictions){
 			if (match.getId() == p.getPredicted_result().getMatch()){
@@ -348,6 +383,27 @@ public class Manager {
 		return loaded;
 	}
 
+	public User getUserCached(String id) {
+		for (User user : users){
+			if(user.getId() == id){
+				return user;
+			}
+		}
+		Log.e("Error", "getTeamCached: No user found with id" + id );
+		return new User("", 0, 0, null);
+	}
+
+	public TournamentResult getTournamentResultCached(int id) {
+		for (TournamentResult result : tournament_results){
+			if(result.getId() == id){
+				return result;
+			}
+		}
+		Log.e("Error", "getTeamCached: No tournament_result found with id" + id );
+		return new TournamentResult(-1, null, null, null);
+	}
+
+
 	public Team getTeamCached(int id) {
     	for (Team team : teams){
     		if(team.getId() == id){
@@ -376,5 +432,9 @@ public class Manager {
 		}
 		Log.e("Error", "getMatchCached: No result found with id" + id );
 		return new Match();
+	}
+
+	public TournamentPrediction getTournamentPredictionCached(){
+    	return tournament_perdiction;
 	}
 }

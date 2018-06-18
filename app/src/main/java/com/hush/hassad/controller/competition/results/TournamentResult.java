@@ -6,17 +6,27 @@ public class TournamentResult extends Result{
     private Team gold;
     private Team silver;
     private Team bronze;
+    private int id;
 
-    public TournamentResult(Team gold, Team silver, Team bronze) {
+    public TournamentResult(int id, Team gold, Team silver, Team bronze) {
         this.gold = gold;
         this.silver = silver;
         this.bronze = bronze;
+        this.id = id;
     }
-
 
     // Auto Generated Code
 
-    public Team getGold() {
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Team getGold() {
         return this.gold;
     }
 

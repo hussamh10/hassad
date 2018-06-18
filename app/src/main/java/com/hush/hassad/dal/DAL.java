@@ -84,6 +84,7 @@ public class DAL {
 	CollectionReference matches_doc = db.collection("matches");
 	CollectionReference match_results_doc = db.collection("match_results");
 	CollectionReference team_doc = db.collection("teams");
+	CollectionReference tournament_predictions = db.collection("tournament_predictions");
 
     private DAL(){
 	}
@@ -370,6 +371,75 @@ public class DAL {
 						email, new Date(), "LAHOOOOOORE", 0, photo_url));
 
 				callback.callback(user);
+			}
+		});
+	}
+
+	public void getAllUsers(final Callback callback){
+		users_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				ArrayList<User> users = new ArrayList<>();
+				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()) {
+
+					String user_id = u.getString("id");
+					String name = u.getString("name");
+					String email = u.getString("email");
+					String url = u.getString("photoUrl");
+					int points = u.getLong("points").intValue();
+
+					Info info = new Info(user_id, name, email, new Date(), "", 0, url);
+					User user = new User(user_id, points, 0, info);
+					users.add(user);
+				}
+				callback.callback(users);;
+			}
+		});
+	}
+
+	public void getAllTournamentResults(final Callback callback){
+		users_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				ArrayList<TournamentResult> results = new ArrayList<>();
+				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()) {
+					int id = u.getLong("id").intValue();
+					int gold = u.getLong("gold").intValue();
+					int silver = u.getLong("silver").intValue();
+					int bronze = u.getLong("bronze").intValue();
+
+					Team g = Manager.getInstance().getTeamCached(gold);
+					Team s = Manager.getInstance().getTeamCached(silver);
+					Team b = Manager.getInstance().getTeamCached(bronze);
+
+					TournamentResult result = new TournamentResult(id, g, s, b);
+					results.add(result);
+
+				}
+				callback.callback(results);
+			}
+		});
+	}
+
+	public void getTournamentPrediction(final String user_id, final Callback callback){
+		final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), null, null);
+		final Query q = tournament_predictions.whereEqualTo("user_id", user_id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+
+				int result_id = u.getLong("result_id").intValue();
+				boolean calculated = u.getBoolean("calculated");
+				int score = u.getLong("score").intValue();
+
+				TournamentResult tr = Manager.getInstance().getTournamentResultCached(result_id);
+				User user = Manager.getInstance().getUserCached(user_id);
+
+				final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), tr, user, calculated, score);
+				Log.i("DAL", "onSuccess: predictions sent");
+				callback.callback(prediction);
 			}
 		});
 	}
@@ -730,12 +800,6 @@ public class DAL {
 		friends.add(fn2);
 
 		return friends;
-	}
-
-	public TournamentPrediction getTournamentPrediction(User user) {
-		TournamentResult result = new TournamentResult(teams.get(1), teams.get(3), teams.get(4));
-		TournamentPrediction tp = new TournamentPrediction(UUID.randomUUID(), result, user);
-		return tp;
 	}
 
 	public void updatePrediction(final MatchPrediction prediction) {
