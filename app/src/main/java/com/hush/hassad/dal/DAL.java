@@ -85,6 +85,7 @@ public class DAL {
 	CollectionReference match_results_doc = db.collection("match_results");
 	CollectionReference team_doc = db.collection("teams");
 	CollectionReference tournament_predictions = db.collection("tournament_predictions");
+	CollectionReference tournament_results = db.collection("tournament_results");
 
     private DAL(){
 	}
@@ -403,7 +404,7 @@ public class DAL {
 	}
 
 	public void getAllTournamentResults(final Callback callback){
-		users_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+		tournament_results.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 				ArrayList<TournamentResult> results = new ArrayList<>();
@@ -430,6 +431,10 @@ public class DAL {
 		final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), null, null);
 		final Query q = tournament_predictions.whereEqualTo("user_id", user_id);
 
+		callback.callback(new TournamentPrediction(UUID.randomUUID(), null, null));
+		// HUSSAM FIX THIS, SO THIS IS NOT CALLED IF TOURNAMENT PRED IS NOT MADE
+		/*
+
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -443,10 +448,10 @@ public class DAL {
 				User user = Manager.getInstance().getUserCached(user_id);
 
 				final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), tr, user, calculated, score);
-				Log.i("DAL", "onSuccess: predictions sent");
-				callback.callback(prediction);
 			}
 		});
+		*/
+
 	}
 
 	public void getPredictions(final String user_id, final Callback callback){
