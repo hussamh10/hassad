@@ -97,12 +97,11 @@ public class MatchScreenActivity extends AppCompatActivity {
 			match_time.setText(time);
 		}
 		else {
-
 			home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			away_score.setText(Integer.toString(match.getResult().getAway_score()));
 		}
 
-		if(Manager.getInstance().isPredicted(match.getId())){
+		if(Manager.getInstance().isPredicted(match.getId()) || match.isStarted()){
 			submit.setEnabled(false);
 		}
 

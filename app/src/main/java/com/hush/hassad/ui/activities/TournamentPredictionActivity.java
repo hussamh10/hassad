@@ -15,10 +15,14 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.hush.hassad.R;
+import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.ui.adapters.FriendsAdapter;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.UUID;
 
 public class TournamentPredictionActivity extends AppCompatActivity {
 
@@ -56,7 +60,14 @@ public class TournamentPredictionActivity extends AppCompatActivity {
 				//TODO check if same teams then intent to main activity
 
 				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+				intent.putExtra("prediction", true);
+				intent.putExtra("gold", spinnerGoldText);
+				intent.putExtra("silver", spinnerSilverText);
+				intent.putExtra("bronze", spinnerBronzeText);
+
 				startActivity(intent);
+
 				finish();
 			}
 		});

@@ -199,9 +199,8 @@ public class SignInActivity extends AppCompatActivity {
 			}
 			else {
 				Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-
+				intent.putExtra("prediction", false);
 				DAL.getInstance().setPlayingUser(acc.getUid());
-
 				startActivity(intent);
 				finish();
 			}

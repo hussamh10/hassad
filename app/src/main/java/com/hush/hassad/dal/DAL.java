@@ -180,8 +180,10 @@ public class DAL {
 				ArrayList<Match> matches = new ArrayList<>();
 				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()){
 					final Match match = new Match();
+
 					final int id = u.getLong("id").intValue();
 					final Boolean ended = u.getBoolean("ended");
+					final Boolean started = u.getBoolean("started");
 					com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
 					final String k = temp.toString();
 					final String venue = u.getString("venue");
@@ -197,6 +199,7 @@ public class DAL {
 
 					match.setId(id);
 					match.setEnded(ended);
+					match.setStarted(started);
 					match.setAway(away);
 					match.setHome(home);
 					match.setKickoff_time(new Date());
@@ -211,7 +214,7 @@ public class DAL {
 	}
 
 	public void getMatchAsync(int id, final Callback callback){
-		final Match match = new Match(0, null, null, null, null, null, false, 0);
+		final Match match = new Match(0, null, null, null, null, null, false, 0, false);
 		Query q = matches_doc.whereEqualTo("id", id);
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -220,6 +223,7 @@ public class DAL {
 				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
 				final int id = u.getLong("id").intValue();
 				final Boolean ended = u.getBoolean("ended");
+				final Boolean started = u.getBoolean("started");
 				com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
 				final String k = temp.toString();
 				//TODO fix this date stuff
@@ -245,6 +249,7 @@ public class DAL {
 
 										match.setId(id);
 										match.setEnded(ended);
+										match.setStarted(started);
 										match.setAway(away);
 										match.setHome(home);
 										match.setKickoff_time(new Date());
@@ -554,6 +559,7 @@ public class DAL {
 					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
 					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
 					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final boolean started = Boolean.parseBoolean(m.get("started").toString());
 					final Date kickoffTime = m.getDate("kickoff_time");
 					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
 					final int stage = Integer.parseInt(m.get("stage").toString());
@@ -568,6 +574,7 @@ public class DAL {
 						match.setStage(stage);
 						match.setKickoff_time(kickoffTime);
 						match.setEnded(ended);
+						match.setStarted(started);
 						match.setVenue(venue);
 
 						Task<QuerySnapshot> initialTask = team_doc.whereEqualTo("id", home_team_id).get();
@@ -657,6 +664,7 @@ public class DAL {
 					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
 					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
 					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final boolean started = Boolean.parseBoolean(m.get("started").toString());
 					final Date kickoffTime = m.getDate("kickoff_time");
 					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
 					final int stage = Integer.parseInt(m.get("stage").toString());
@@ -670,6 +678,7 @@ public class DAL {
 						match.setResult(new MatchResult());
 						match.setStage(stage);
 						match.setKickoff_time(kickoffTime);
+						match.setStarted(started);
 						match.setEnded(ended);
 						match.setVenue(venue);
 

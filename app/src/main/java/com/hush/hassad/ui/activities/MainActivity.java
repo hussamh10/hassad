@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
+import com.hush.hassad.controller.competition.results.TournamentResult;
 import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
@@ -60,6 +61,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -107,6 +109,21 @@ public class MainActivity extends AppCompatActivity
 		home_fragment.update();
 	}
 
+	public void submitTournamentPrediction(Intent intent){
+    	// Make sure to call this after the loading is completed
+
+		// Also check if prediction is already made
+
+		String gold = intent.getStringExtra("gold");
+		String silver = intent.getStringExtra("silver");
+		String bronze = intent.getStringExtra("bronze");
+
+		Random rand = new Random();
+		int id = rand.nextInt(1000000) + 1;
+
+		TournamentResult result = new TournamentResult(id, Manager.getInstance().getTeamCached(gold), Manager.getInstance().getTeamCached(silver), Manager.getInstance().getTeamCached(bronze));
+	}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +132,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 		loadProfile();
+
+		boolean prediction_made = getIntent().getBooleanExtra("prediction", false);
 
         //TODO change notification to match timings
 		/*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

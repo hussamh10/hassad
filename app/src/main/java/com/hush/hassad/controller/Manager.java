@@ -389,7 +389,7 @@ public class Manager {
 				return user;
 			}
 		}
-		Log.e("Error", "getTeamCached: No user found with id" + id );
+		Log.e("Error", "getUserCached: No user found with id" + id );
 		return new User("", 0, 0, null);
 	}
 
@@ -399,7 +399,7 @@ public class Manager {
 				return result;
 			}
 		}
-		Log.e("Error", "getTeamCached: No tournament_result found with id" + id );
+		Log.e("Error", "getTournamentResultCached: No tournament_result found with id" + id );
 		return new TournamentResult(-1, null, null, null);
 	}
 
@@ -411,6 +411,16 @@ public class Manager {
 			}
 		}
 		Log.e("Error", "getTeamCached: No team found with id" + id );
+		return new Team();
+	}
+
+	public Team getTeamCached(String name) {
+		for (Team team : teams){
+			if(team.getName().toLowerCase() == name.toLowerCase()){
+				return team;
+			}
+		}
+		Log.e("Error", "getTeamCached: No team found with name" + name);
 		return new Team();
 	}
 
