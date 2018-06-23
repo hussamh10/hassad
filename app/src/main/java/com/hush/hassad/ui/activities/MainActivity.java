@@ -1,10 +1,12 @@
 package com.hush.hassad.ui.activities;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, home_fragment).commit();
         }
     }
-
+	
 	private void loadProfile() {
 		firebaseauth = FirebaseAuth.getInstance();
 		user = firebaseauth.getCurrentUser();

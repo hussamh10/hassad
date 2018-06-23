@@ -6,4 +6,9 @@
 	<color name="colorAccent">#1c47a8</color>
 
 	<color name="black_overlay">#66000000</color>
+
+	<color name="wc_gold">#f3eed0</color>
+	<color name="wc_red">#d90009</color>
+	<color name="wc_red_dark">#bb0009</color>
+
 </resources>
