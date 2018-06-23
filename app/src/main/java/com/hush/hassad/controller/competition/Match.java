@@ -16,14 +16,16 @@ public class Match implements Serializable{
 
     private MatchResult result;
     private boolean ended;
+	private boolean started;
 
     private int stage; // higher points for winning higher stage bets
 
     public Match() {
-        this(0, null, null, null, null, null, false, 0);
+        this(0, null, null, null, null, null, false, 0, false);
     }
-    
-    public Match(int id, Team home, Team away, String venue, Date kickoff_time, MatchResult result, boolean ended, int stage) {
+
+
+	public Match(int id, Team home, Team away, String venue, Date kickoff_time, MatchResult result, boolean ended, int stage, boolean started) {
         this.id = id;
         this.ended = ended;
         this.home = home;
@@ -98,6 +100,14 @@ public class Match implements Serializable{
         this.stage = stage;
     }
 
+	public boolean isStarted() {
+		return started;
+	}
+
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+
     @Override
     public String toString() {
         return "Match{" +
@@ -109,6 +119,7 @@ public class Match implements Serializable{
                 ", kickoff_time=" + kickoff_time +
                 ", result=" + result +
                 ", stage=" + stage +
+				", started=" + started +
                 '}';
     }
 }

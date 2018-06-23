@@ -104,31 +104,11 @@ public class DAL {
 
 		return u;
 	}
-
-
-	public void getTeamAsync(final int id, final Callback callback){
-		//TODO change the following vals to a default value
-		final Team temp = new Team(0, null, null);
-		Query q = team_doc.whereEqualTo("id", id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				String name = u.getString("name");
-				String image_url = u.getString("image_url");
-				temp.setId(id);
-				temp.setName(name);
-				callback.callback(temp);
-			}
-		});
-	}
-
+	
 	public void getAllTeams(final Callback callback){
     	team_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				ArrayList<Team> teams = new ArrayList<>();
 				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()) {
 					Team temp = new Team();
 					int id = u.getLong("id").intValue();
@@ -174,11 +154,12 @@ public class DAL {
 		matches_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				ArrayList<Match> matches = new ArrayList<>();
 				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()){
 					final Match match = new Match();
+
 					final int id = u.getLong("id").intValue();
 					final Boolean ended = u.getBoolean("ended");
+					final Boolean started = u.getBoolean("started");
 					com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
 					final String k = temp.toString();
 					final String venue = u.getString("venue");
@@ -194,6 +175,7 @@ public class DAL {
 
 					match.setId(id);
 					match.setEnded(ended);
+					match.setStarted(started);
 					match.setAway(away);
 					match.setHome(home);
 					match.setKickoff_time(new Date());
@@ -203,90 +185,6 @@ public class DAL {
 					matches.add(match);
 				}
 				callback.callback(matches);
-			}
-		});
-	}
-
-	public void getMatchAsync(int id, final Callback callback){
-		final Match match = new Match(0, null, null, null, null, null, false, 0);
-		Query q = matches_doc.whereEqualTo("id", id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				final int id = u.getLong("id").intValue();
-				final Boolean ended = u.getBoolean("ended");
-				com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
-				final String k = temp.toString();
-				//TODO fix this date stuff
-				//String kickoff_time = u.getString("kickoff_time");
-				final String venue = u.getString("venue");
-				final int home_team_id = u.getLong("home_team_id").intValue();
-				final int away_team_id = u.getLong("away_team_id").intValue();
-				final int stage = u.getLong("stage").intValue();
-				final int result_id = u.getLong("match_result_id").intValue();
-
-				getTeamAsync(home_team_id, new Callback() {
-					@Override
-					public void callback(final Object home_obj) {
-						getTeamAsync(away_team_id, new Callback() {
-							@Override
-							public void callback(final Object away_obj) {
-								getMatchResultAsync(result_id, new Callback() {
-									@Override
-									public void callback(Object result_obj) {
-										MatchResult result = (MatchResult)  result_obj;
-										Team away = (Team) away_obj;
-										Team home = (Team) home_obj;
-
-										match.setId(id);
-										match.setEnded(ended);
-										match.setAway(away);
-										match.setHome(home);
-										match.setKickoff_time(new Date());
-										match.setStage(stage);
-										match.setVenue(venue);
-										match.setResult(result);
-										callback.callback(match);
-									}
-								});
-							}
-						});
-					}
-				});
-			}
-		});
-	}
-
-	public void getMatchResultAsync(final int id, final Callback callback){
-		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
-		Query q = match_results_doc.whereEqualTo("id", id);
-
-		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
-				int id = u.getLong("id").intValue();
-				int home_score = u.getLong("home_score").intValue();
-				int away_score = u.getLong("away_score").intValue();
-				int match_id = u.getLong("match_id").intValue();
-				int winner_id = u.getLong("winner").intValue();
-				Team winner = null;
-
-				getTeamAsync(winner_id, new Callback() {
-					@Override
-					public void callback(Object team_obj) {
-						Team winner = (Team) team_obj;
-					}
-				});
-
-				matchResult.setId(id);
-				matchResult.setHome_score(home_score);
-				matchResult.setAway_score(away_score);
-				matchResult.setWinner(winner);
-				matchResult.setMatch(match_id);
-				callback.callback(matchResult);
 			}
 		});
 	}
@@ -547,6 +445,7 @@ public class DAL {
 					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
 					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
 					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final boolean started = Boolean.parseBoolean(m.get("started").toString());
 					final Date kickoffTime = m.getDate("kickoff_time");
 					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
 					final int stage = Integer.parseInt(m.get("stage").toString());
@@ -560,6 +459,7 @@ public class DAL {
 						match.setResult(new MatchResult());
 						match.setStage(stage);
 						match.setKickoff_time(kickoffTime);
+						match.setStarted(started);
 						match.setEnded(ended);
 						match.setVenue(venue);
 
