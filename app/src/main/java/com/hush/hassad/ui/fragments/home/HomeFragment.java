@@ -32,20 +32,24 @@ public class HomeFragment extends Fragment implements Manager.IMatchObserver {
  	private ArrayList<DayFragment> dayFragments;
 
 	public HomeFragment() {
+		dayFragments = new ArrayList<>();
+		ArrayList<Date> dates = getDates(-2, 2);
+		for (Date d : dates) {
+			DayFragment df = new DayFragment();
+			df.setDate(d);
+			dayFragments.add(df);
+		}
 		Manager.getInstance().notifyMeWhenMatchesLoaded(this);
 	}
 
 	public void setMatches(ArrayList<Match> matches) {
-		ArrayList<Date> dates = getDates(-2, 2);
-		for (Date d : dates) {
-			DayFragment fragment = new DayFragment();
+		for (DayFragment df : dayFragments) {
 			for (Match m : matches) {
-				if (Utils.isSameDay(m.getKickoff_time(), d)) {
-					fragment.addMatchSorted(m);
+				if (Utils.isSameDay(m.getKickoff_time(), df.getDate())) {
+					df.addMatchSorted(m);
 				}
 			}
-			fragment.notifyDataSetChanged();
-			dayFragments.add(fragment);
+			df.notifyDataSetChanged();
 		}
 	}
 	

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +36,21 @@ public class DayFragment extends Fragment {
 
 	private MatchAdapter matchAdapter;
     private ArrayList<Match> matches;
+    private Date date;
 	ListView matchList;
 
-    public DayFragment(){
+    public DayFragment() {
     	matches = new ArrayList<>();
 	}
-
+	
+	void setDate(Date d) {
+    	this.date = d;
+	}
+	
+	Date getDate() {
+    	return date;
+	}
+	
 	public View createView(LayoutInflater inflater, ViewGroup container){
 		View view = inflater.inflate(R.layout.fragment_home_sub, container, false);
 		matchList = (ListView) view.findViewById(R.id.match_list);
@@ -80,9 +90,14 @@ public class DayFragment extends Fragment {
 	}
 	
 	public void notifyDataSetChanged() {
-    	if (matchAdapter != null) {
-    		matchAdapter.notifyDataSetChanged();
-		}
+    	new Handler().post(new Runnable() {
+			@Override
+			public void run() {
+				if (matchAdapter != null) {
+					matchAdapter.notifyDataSetChanged();
+				}
+			}
+		});
 	}
 	
 }

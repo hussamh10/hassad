@@ -84,7 +84,10 @@ public class DAL {
 	private ArrayList<Team> teams;
 	private ArrayList<Match> matches;
 	
-	private DAL() {}
+	private DAL() {
+		teams = new ArrayList<>();
+		matches = new ArrayList<>();
+	}
 
 	public User createUser(FirebaseUser user){
     	String id = user.getUid();
