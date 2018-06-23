@@ -71,4 +71,10 @@
 		android:layout_gravity="center"
 		android:text="Submit"/>
 
+	<TextView
+		android:id="@+id/pred_score"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="HELLo" />
+
 </LinearLayout>

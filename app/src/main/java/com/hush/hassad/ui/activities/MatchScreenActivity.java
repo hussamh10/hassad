@@ -1,7 +1,11 @@
 package com.hush.hassad.ui.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.BiMap;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.Utils;
@@ -36,6 +41,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 	TextView pred_away_score;
 	TextView away_score;
 
+	TextView prediction_score;
 	TextView match_time;
 
 	@Override
@@ -51,6 +57,7 @@ public class MatchScreenActivity extends AppCompatActivity {
 		home_team_name = (TextView) findViewById(R.id.home_team_name);
 		pred_home_score = (TextView) findViewById(R.id.pred_home_score);
 		home_score = (TextView) findViewById(R.id.home_score);
+		prediction_score = (TextView) findViewById(R.id.pred_score);
 
 		away_team_img = (ImageView) findViewById(R.id.away_team_img);
 		away_team_name = (TextView) findViewById(R.id.away_team_name);
@@ -59,22 +66,30 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 		match_time = (TextView) findViewById(R.id.match_time);
 
-		home_team_img.setImageResource(R.drawable.manchester_united);
+		byte [] bytes = match.getHome().getImage_url();
+		Bitmap bmp =  BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		home_team_img.setImageBitmap(bmp);
 		home_team_name.setText(match.getHome().getName().toString());
 
-		away_team_img.setImageResource(R.drawable.chelsea);
+		bytes = match.getAway().getImage_url();
+		bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		away_team_img.setImageBitmap(bmp);
 		away_team_name.setText(match.getAway().getName().toString());
 
-		if(Manager.getInstance().isPredicted(match)){
+		if(Manager.getInstance().isPredicted(match.getId())){
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
+				pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
+				pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
+				if(pred.getCalculated()){
+					Log.i("Success", "Updated prediction score for match:" + match.getId());
+					prediction_score.setText("" + pred.getScore());
+				}
 			} catch (Exception e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 
-			pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
-			pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
 		}
 
 		if(!match.isEnded()) {
@@ -85,6 +100,10 @@ public class MatchScreenActivity extends AppCompatActivity {
 
 			home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			away_score.setText(Integer.toString(match.getResult().getAway_score()));
+		}
+
+		if(Manager.getInstance().isPredicted(match.getId())){
+			submit.setEnabled(false);
 		}
 
 		submit.setOnClickListener(new View.OnClickListener() {

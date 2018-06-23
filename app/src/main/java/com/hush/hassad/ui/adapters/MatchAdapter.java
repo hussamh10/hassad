@@ -1,6 +1,8 @@
 package com.hush.hassad.ui.adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -91,6 +93,8 @@ public class MatchAdapter extends ArrayAdapter {
 		 */
 
 		MatchPrediction prediction;
+		//TODO prediction
+/*
 
 		boolean isPredicted = Manager.getInstance().isPredicted(match);
 		if (isPredicted){
@@ -101,21 +105,27 @@ public class MatchAdapter extends ArrayAdapter {
 				Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 		}
+*/
 
 		//TODO @hussam test the predcited score in card
 
 
-		//matchHolder.home_team_img.setImageResource(R.drawable.manchester_united);
-		String photoUrl = match.getHome().getImage_url();
-		new DownloadImageTask(matchHolder.home_team_img).execute(photoUrl);
+		byte [] bytes = match.getHome().getImage_url();
+		Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		matchHolder.home_team_img.setImageBitmap(bmp);
+		//String photoUrl = match.getHome().getImage_url();
+		//new DownloadImageTask(matchHolder.home_team_img).execute(photoUrl);
 		matchHolder.home_team_name.setText(match.getHome().getName().toString());
 
-		//matchHolder.away_team_img.setImageResource(R.drawable.chelsea);
-		photoUrl = match.getAway().getImage_url();
-		new DownloadImageTask(matchHolder.away_team_img).execute(photoUrl);
+		bytes = match.getAway().getImage_url();
+		bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		matchHolder.away_team_img.setImageBitmap(bmp);
+		//photoUrl = match.getAway().getImage_url();
+		//new DownloadImageTask(matchHolder.away_team_img).execute(photoUrl);
 		matchHolder.away_team_name.setText(match.getAway().getName().toString());
 
-		if(Manager.getInstance().isPredicted(match)){
+		//TODO prediction
+		/*if(Manager.getInstance().isPredicted(match)){
 			MatchPrediction pred = null;
 			try {
 				pred = Manager.getInstance().getPrediction(match);
@@ -126,7 +136,7 @@ public class MatchAdapter extends ArrayAdapter {
 			matchHolder.pred_home_score.setText(Integer.toString(pred.getPredicted_result().getHome_score()));
 			matchHolder.pred_away_score.setText(Integer.toString(pred.getPredicted_result().getAway_score()));
 		}
-
+*/
 		if(!match.isEnded()) {
 			matchHolder.match_time.setVisibility(View.VISIBLE);
 			matchHolder.result.setVisibility(View.GONE);
@@ -144,4 +154,5 @@ public class MatchAdapter extends ArrayAdapter {
 
 		return convertView;
 	}
+
 }

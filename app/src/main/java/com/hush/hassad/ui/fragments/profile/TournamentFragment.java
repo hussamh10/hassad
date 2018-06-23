@@ -29,6 +29,7 @@ public class TournamentFragment extends Fragment {
 	}
 
 	public void update(User user){
-		prediction = Manager.getInstance().getTournamentPrediction(user);
+		//TODO Prediction
+//		prediction = Manager.getInstance().getTournamentPrediction(user);
 	}
 }

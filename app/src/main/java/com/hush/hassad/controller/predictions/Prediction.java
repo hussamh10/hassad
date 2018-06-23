@@ -8,10 +8,14 @@ public abstract class Prediction {
 
     private UUID id;
     private User predictor;
+    protected boolean calculated;
+    private int score;
 
     public Prediction(UUID id, User predictor) {
         this.id = id;
         this.predictor = predictor;
+        calculated = false;
+        score = 0;
     }
 
     public UUID getId() {
@@ -30,11 +34,20 @@ public abstract class Prediction {
         this.predictor = predictor;
     }
 
-    @Override
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	@Override
     public String toString() {
         return "Prediction{" +
                 "id=" + id +
                 ", predictor=" + predictor +
+				", calculated=" + calculated +
                 '}';
     }
 }

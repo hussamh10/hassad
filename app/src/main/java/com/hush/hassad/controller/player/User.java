@@ -9,6 +9,14 @@ public class User {
     private Info info;
     private ArrayList<String> friends_ids;
 
+	public void copy(User t) {
+		this.id = t.id;
+		this.info = t.info;
+		this.points = t.points;
+		this.coins = t.coins;
+		this.friends_ids = t.friends_ids;
+	}
+
     public User(String id, int points, int coins, Info info) {
         this.id = id;
         this.points = points;
@@ -74,4 +82,5 @@ public class User {
                 ", info=" + info +
                 '}';
     }
+
 }

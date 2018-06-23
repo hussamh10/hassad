@@ -45,14 +45,19 @@ public class LeaderboardAdapter extends ArrayAdapter {
         // TODO: fix adapter
         if (convertView == null) {
             convertView = activity.getLayoutInflater().inflate(resource, parent, false);
+
+            mHolder = new ViewHolder();
+
+            mHolder.name = convertView.findViewById(R.id.name);
+            mHolder.rank = convertView.findViewById(R.id.rank);
+            mHolder.points = convertView.findViewById(R.id.points);
+            mHolder.imgProfile = convertView.findViewById(R.id.profile_img);
+            convertView.setTag(mHolder);
+        }
+        else {
+            mHolder = (ViewHolder) convertView.getTag();
         }
 
-        mHolder = new ViewHolder();
-
-        mHolder.name = convertView.findViewById(R.id.name);
-        mHolder.rank = convertView.findViewById(R.id.rank);
-        mHolder.points = convertView.findViewById(R.id.points);
-        mHolder.imgProfile = convertView.findViewById(R.id.profile_img);
 
         User user = users.get(position);
 

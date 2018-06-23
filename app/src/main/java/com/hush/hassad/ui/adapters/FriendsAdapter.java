@@ -54,13 +54,17 @@ public class FriendsAdapter extends ArrayAdapter {
     
         if (convertView == null) {
             convertView = activity.getLayoutInflater().inflate(resource, parent, false);
+
+            mFriendHolder = new FriendHolder();
+
+            mFriendHolder.friend_name = convertView.findViewById(R.id.friend_name);
+            mFriendHolder.points = convertView.findViewById(R.id.friends_points);
+            mFriendHolder.friend_image = convertView.findViewById(R.id.friend_img);
+            convertView.setTag(mFriendHolder);
         }
-
-        mFriendHolder = new FriendHolder();
-
-        mFriendHolder.friend_name = convertView.findViewById(R.id.friend_name);
-		mFriendHolder.points = convertView.findViewById(R.id.friends_points);
-        mFriendHolder.friend_image = convertView.findViewById(R.id.friend_img);
+        else {
+            mFriendHolder = (FriendHolder) convertView.getTag();
+        }
 
         User friend = friends.get(position);
 

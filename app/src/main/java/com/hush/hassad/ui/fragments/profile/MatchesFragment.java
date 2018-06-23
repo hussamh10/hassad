@@ -47,6 +47,7 @@ public class MatchesFragment extends Fragment {
 	}
 
 	public void update(User user){
-		predictedMatches = Manager.getInstance().getPredictedMatches(user);
+		// right now this only returns the playing users predictions
+		predictedMatches = Manager.getInstance().getPredictedMatches();
 	}
 }

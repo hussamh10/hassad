@@ -4,6 +4,7 @@ package com.hush.hassad.ui.fragments.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class DayFragment extends Fragment {
 				int pos = (int)matchAdapter.getItemId(position);
 				Match match = (Match) matches.get(pos);
 				intent.putExtra("match",match);
+				Log.i("Day", "" + match.getId());
 				startActivity(intent);
 			}
 		});
@@ -64,7 +66,6 @@ public class DayFragment extends Fragment {
 
 	public void updateMatches(Date date) {
 		try {
-			//matches = Manager.getInstance().getMatches(date);
 			DAL.getInstance().updateMatches(this, date);
 		} catch (Exception e){
 			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
