@@ -1,6 +1,7 @@
 package com.hush.hassad.dal;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -71,13 +72,7 @@ import static android.content.ContentValues.TAG;
 public class DAL {
 
     private static DAL instance = null;
-
-    private ArrayList<Match> matches;
-	private ArrayList<Team> teams;
-	private ArrayList<MatchPrediction> mp;
-
-	private Object temp;
-
+    
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
 	CollectionReference users_doc = db.collection("users");
 	CollectionReference predictions_doc = db.collection("predictions_test");
@@ -85,9 +80,11 @@ public class DAL {
 	CollectionReference match_results_doc = db.collection("match_results");
 	CollectionReference team_doc = db.collection("teams");
 	CollectionReference tournament_predictions = db.collection("tournament_predictions");
-
-    private DAL(){
-	}
+	
+	private ArrayList<Team> teams;
+	private ArrayList<Match> matches;
+	
+	private DAL() {}
 
 	public User createUser(FirebaseUser user){
     	String id = user.getUid();
@@ -526,114 +523,7 @@ public class DAL {
     	cal.add(Calendar.DAY_OF_MONTH, 1);
     	return new com.google.firebase.Timestamp(cal.getTime());
 	}
-
-    public void updateMatches(final DayFragment dayFragment, Date date) throws Exception {
-		com.google.firebase.Timestamp start = new com.google.firebase.Timestamp(date);
-		com.google.firebase.Timestamp end = getNextDay(date);
-		Log.i("DAL", "Started Matches");
-
-		final Executor executor = new Executor() {
-			@Override
-			public void execute(@NonNull Runnable command) {
-				command.run();
-			}
-		};
-		
-		Query query = matches_doc.whereGreaterThanOrEqualTo("kickoff_time",start).whereLessThanOrEqualTo("kickoff_time",end);
-		Task<QuerySnapshot> matchTask = query.get();
-
-		matchTask.addOnSuccessListener(executor, new OnSuccessListener<QuerySnapshot>() {
-			@Override
-			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-				List<DocumentSnapshot> matchDocs = queryDocumentSnapshots.getDocuments();
-
-				final ArrayList<Match> matches = new ArrayList<>();
-
-				for (DocumentSnapshot m : matchDocs) {
-					final int match_id = m.getLong("id").intValue();
-					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
-					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
-					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
-					final Date kickoffTime = m.getDate("kickoff_time");
-					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
-					final int stage = Integer.parseInt(m.get("stage").toString());
-					final String venue = m.getString("venue");
-
-					try {
-						final Match match = new Match();
-						match.setId(match_id);
-						match.setHome(new Team());
-						match.setAway(new Team());
-						match.setResult(new MatchResult());
-						match.setStage(stage);
-						match.setKickoff_time(kickoffTime);
-						match.setEnded(ended);
-						match.setVenue(venue);
-
-						Task<QuerySnapshot> initialTask = team_doc.whereEqualTo("id", home_team_id).get();
-
-						initialTask.continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
-							@Override
-							public Task<QuerySnapshot> then(@NonNull Task<QuerySnapshot> task) {
-								DocumentSnapshot homeDoc = task.getResult().getDocuments().get(0);
-
-								Team homeTeam = match.getHome();
-								homeTeam.setId(home_team_id);
-								homeTeam.setName(homeDoc.getString("name"));
-								//homeTeam.setImage_url(homeDoc.getString("image_url"));
-								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(homeDoc.getString("image_url"));
-								homeTeam.setImage_url(bytes);
-								return team_doc.whereEqualTo("id", away_team_id).get();
-							}
-						}).continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
-							@Override
-							public Task<QuerySnapshot> then(@NonNull Task<QuerySnapshot> task) {
-								DocumentSnapshot awayDoc = task.getResult().getDocuments().get(0);
-
-								Team awayTeam = match.getAway();
-								awayTeam.setId(away_team_id);
-								awayTeam.setName(awayDoc.getString("name"));
-								//awayTeam.setImage_url(awayDoc.getString("image_url"));
-								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(awayDoc.getString("image_url"));
-								awayTeam.setImage_url(bytes);
-
-								return match_results_doc.whereEqualTo("match_id", match_id).get();
-							}
-						}).continueWith(executor, new Continuation<QuerySnapshot, Match>() {
-							@Override
-							public Match then(@NonNull Task<QuerySnapshot> task) {
-								DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-								MatchResult matchResult = match.getResult();
-								matchResult.setId(result_id);
-								matchResult.setHome_score(ds.getLong("home_score").intValue());
-								matchResult.setAway_score(ds.getLong("away_score").intValue());
-
-								int winnerId = ds.getLong("winner").intValue();
-
-								if (winnerId == home_team_id) {
-									match.getResult().setWinner(match.getHome());
-								} else {
-									match.getResult().setWinner(match.getAway());
-								}
-
-								return match;
-							}
-						}).addOnSuccessListener(new OnSuccessListener<Match>() {
-							@Override
-							public void onSuccess(Match match) {
-								dayFragment.addMatchSorted(match);
-								Log.i("DAL", "onSuccess: sorted matches" + match.getHome().getName());
-							}
-						});
-
-					} catch (Exception e) {
-						Log.i("DAL", "failed to load matches");
-					}
-				}
-			}
-		});
-	}
-
+	
 	public void updateSchedule(final ScheduleActivity scheduleActivity){
 		Log.i("DAL", "Started Matches");
 		Query q = matches_doc.whereEqualTo("ended",false);

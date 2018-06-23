@@ -3,6 +3,7 @@ package com.hush.hassad.controller;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.controller.competition.Team;
 import com.hush.hassad.controller.competition.results.MatchResult;
@@ -53,6 +54,7 @@ public class Manager {
     // call this method when done loading everything
     private void setLoaded() {
 		loaded = true;
+		notifyObservers();
 	}
 
 	public void loading(){
@@ -110,7 +112,6 @@ public class Manager {
 			public void callback(Object o) {
 				user_predictions = (ArrayList<MatchPrediction>) o;
 				Log.i("Loading", "callback: Predictions loaded");
-				setLoaded();
 				loadTournamentResults();
 				calculatePredictions();
 			}
@@ -133,6 +134,7 @@ public class Manager {
 			@Override
 			public void callback(Object o) {
 				tournament_perdiction = (TournamentPrediction) o;
+				setLoaded();
 				Log.i("Loading", "callback: TournamentResult loaded");
 				Log.i("DONE" ,"+++++++++++++++++++++++++++++++++++++++++++++ ALL LOADED ++++++++++++++++++++++++++++++++++++++++++++++");
 			}
@@ -441,6 +443,34 @@ public class Manager {
 	}
 
 	public TournamentPrediction getTournamentPredictionCached(){
-    	return tournament_perdiction;
+		return tournament_perdiction;
 	}
+	
+	
+	// code for notifying observers
+	
+	private ArrayList<IMatchObserver> matchObservers = new ArrayList<>();
+	
+	public void notifyMeWhenMatchesLoaded(IMatchObserver observer) {
+    	if (loaded) {
+    		observer.matchesLoaded(matches);
+		} else {
+    		matchObservers.add(observer);
+		}
+	}
+	
+	private void notifyObservers() {
+		for (IMatchObserver observer : matchObservers) {
+			observer.matchesLoaded(matches);
+		}
+		
+		// call other observers here if need be
+	}
+	
+	public interface IMatchObserver {
+    	void matchesLoaded(ArrayList<Match> m);
+	}
+	
+
+	
 }

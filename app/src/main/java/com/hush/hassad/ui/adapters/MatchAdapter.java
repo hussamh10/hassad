@@ -59,6 +59,10 @@ public class MatchAdapter extends ArrayAdapter {
 		this.matches = matches;
 		this.resource = resource;
 	}
+	
+	public ArrayList<Match> getMatches() {
+		return matches;
+	}
 
 	@NonNull
 	@Override

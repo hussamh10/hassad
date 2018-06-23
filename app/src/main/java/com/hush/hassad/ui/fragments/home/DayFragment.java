@@ -2,6 +2,7 @@ package com.hush.hassad.ui.fragments.home;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -26,6 +27,8 @@ import com.hush.hassad.controller.Manager;
 import com.hush.hassad.controller.competition.Match;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class DayFragment extends Fragment {
@@ -63,28 +66,21 @@ public class DayFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return createView(inflater, container);
 	}
-
-	public void updateMatches(Date date) {
-		try {
-			DAL.getInstance().updateMatches(this, date);
-		} catch (Exception e){
-			Toast.makeText(getActivity(), "Prob", Toast.LENGTH_SHORT).show();
-		}
-	}
 	
 	public void addMatchSorted(Match match) {
-    	synchronized (matches) {
-    		int i;
-    		int size = matches.size();
-			for (i = 0; i < size; ++i) {
-				// TODO: verify this
-				if (matches.get(i).getKickoff_time().compareTo(match.getKickoff_time()) > 0) {
-					break;
-				}
+		int i;
+		int size = matches.size();
+		for (i = 0; i < size; ++i) {
+			// TODO: verify this
+			if (matches.get(i).getKickoff_time().compareTo(match.getKickoff_time()) > 0) {
+				break;
 			}
 			matches.add(i, match);
 		}
-		if (matchAdapter != null) {
+	}
+	
+	public void notifyDataSetChanged() {
+    	if (matchAdapter != null) {
     		matchAdapter.notifyDataSetChanged();
 		}
 	}

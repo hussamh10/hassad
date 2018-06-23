@@ -15,9 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hush.hassad.R;
-import com.hush.hassad.ui.activities.MainActivity;
+import com.hush.hassad.controller.Manager;
+import com.hush.hassad.controller.Utils;
+import com.hush.hassad.controller.competition.Match;
 import com.hush.hassad.ui.activities.ScheduleActivity;
-import com.hush.hassad.ui.activities.TournamentPredictionActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,24 +27,33 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements Manager.IMatchObserver {
 
- 	private ArrayList<DayFragment> days;
+ 	private ArrayList<DayFragment> dayFragments;
 
-	public HomeFragment(){
-		update();
+	public HomeFragment() {
+		Manager.getInstance().notifyMeWhenMatchesLoaded(this);
 	}
 
-	public void update(){
+	public void setMatches(ArrayList<Match> matches) {
 		ArrayList<Date> dates = getDates(-2, 2);
-		days = new ArrayList<>();
-		for (Date d: dates) {
+		for (Date d : dates) {
 			DayFragment fragment = new DayFragment();
-			fragment.updateMatches(d);
-			days.add(fragment);
+			for (Match m : matches) {
+				if (Utils.isSameDay(m.getKickoff_time(), d)) {
+					fragment.addMatchSorted(m);
+				}
+			}
+			fragment.notifyDataSetChanged();
+			dayFragments.add(fragment);
 		}
 	}
-
+	
+	@Override
+	public void matchesLoaded(ArrayList<Match> m) {
+		setMatches(m);
+	}
+	
 	//FIXME
 	public static ArrayList<Date> getDates(int min, int max){
 		ArrayList<Date> dates = new ArrayList<>();
@@ -91,7 +101,7 @@ public class HomeFragment extends Fragment {
 
 		ViewPager viewPager = view.findViewById(R.id.viewpager);
 		homePagerAdapter = new HomePagerAdapter(generateDates(), getChildFragmentManager());
-		homePagerAdapter.days = days;
+		homePagerAdapter.days = dayFragments;
 		viewPager.setAdapter(homePagerAdapter);
 		viewPager.setCurrentItem(2);
 

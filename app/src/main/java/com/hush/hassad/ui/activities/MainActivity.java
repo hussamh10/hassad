@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity
 
 	public void loadHomeFragment(){
 		home_fragment = new HomeFragment();
-		home_fragment.update();
 	}
 
     @Override
