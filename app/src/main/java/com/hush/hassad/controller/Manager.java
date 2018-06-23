@@ -48,6 +48,12 @@ public class Manager {
         }
 		return instance;
     }
+    
+    
+    // call this method when done loading everything
+    private void setLoaded() {
+		loaded = true;
+	}
 
 	public void loading(){
 		loadUsers();
@@ -104,7 +110,7 @@ public class Manager {
 			public void callback(Object o) {
 				user_predictions = (ArrayList<MatchPrediction>) o;
 				Log.i("Loading", "callback: Predictions loaded");
-				loaded = true;
+				setLoaded();
 				loadTournamentResults();
 				calculatePredictions();
 			}
