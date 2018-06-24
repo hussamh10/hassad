@@ -15,11 +15,11 @@
 
 	<style name="AppTheme.WCTheme" parent="AppTheme.NoActionBar">
 		<item name="colorPrimary">@color/wc_gold</item>
-		<item name="colorPrimaryDark">@color/wc_red_dark</item>
+		<item name="colorPrimaryDark">@android:color/black</item>
 		<item name="colorAccent">@color/wc_gold</item>
 	</style>
 
-	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
