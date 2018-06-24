@@ -2,6 +2,10 @@ package com.hush.hassad.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,10 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Task;
 import com.hush.hassad.R;
 import com.hush.hassad.controller.player.User;
+import com.hush.hassad.util.BatchDownloadImageTask;
 import com.hush.hassad.util.DownloadImageTask;
 
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +31,7 @@ public class LeaderboardAdapter extends ArrayAdapter {
     Activity activity;
     int resource;
     ArrayList<User> users;
+    private ArrayList<Bitmap> userImages;
     ViewHolder mHolder;
 
     static class ViewHolder{
@@ -32,11 +41,19 @@ public class LeaderboardAdapter extends ArrayAdapter {
         CircleImageView imgProfile;
     }
 
-    public LeaderboardAdapter(Activity activity, int resource, ArrayList<User> users){
+    public LeaderboardAdapter(Activity activity, int resource, ArrayList<User> users) {
         super(activity, resource, users);
         this.activity = activity;
         this.resource = resource;
         this.users = users;
+        
+        new BatchDownloadImageTask(new BatchDownloadImageTask.IDownloaded() {
+            @Override
+            public void downloaded(ArrayList<Bitmap> result) {
+                userImages = result;
+                notifyDataSetChanged();
+            }
+        }).execute(users);
     }
 
     @NonNull
@@ -62,11 +79,18 @@ public class LeaderboardAdapter extends ArrayAdapter {
         User user = users.get(position);
 
         mHolder.name.setText(user.getInfo().getName());
-        mHolder.rank.setText("" + (position + 1));
+        mHolder.rank.setText(Integer.toString(position + 1));
         mHolder.points.setText(Integer.toString(user.getPoints()));
-        String photoUrl = user.getInfo().getPhotoUrl();
-        new DownloadImageTask(mHolder.imgProfile).execute(photoUrl);
-
+        
+        
+        if (userImages == null) {
+            mHolder.imgProfile.setImageResource(R.drawable.profile);
+        } else {
+            mHolder.imgProfile.setImageBitmap(userImages.get(position));
+        }
+        
         return convertView;
     }
+    
+    
 }
