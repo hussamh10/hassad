@@ -424,7 +424,7 @@ public class Manager {
 
 	public Team getTeamCached(String name) {
 		for (Team team : teams){
-			if(team.getName().toLowerCase() == name.toLowerCase()){
+			if(team.getName().toLowerCase().equals(name.toLowerCase())){
 				return team;
 			}
 		}

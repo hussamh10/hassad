@@ -44,6 +44,7 @@ import com.hush.hassad.controller.player.Info;
 import com.hush.hassad.controller.player.User;
 import com.hush.hassad.controller.predictions.MatchPrediction;
 import com.hush.hassad.controller.predictions.Prediction;
+import com.hush.hassad.controller.predictions.TournamentPrediction;
 import com.hush.hassad.dal.DAL;
 import com.hush.hassad.receiver.AlarmReceiver;
 import com.hush.hassad.ui.fragments.profile.ProfileFragment;
@@ -111,18 +112,27 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	public void submitTournamentPrediction(Intent intent){
-    	// Make sure to call this after the loading is completed
-
-		// Also check if prediction is already made
-
-		String gold = intent.getStringExtra("gold");
-		String silver = intent.getStringExtra("silver");
-		String bronze = intent.getStringExtra("bronze");
+		final String gold = intent.getStringExtra("gold");
+		final String silver = intent.getStringExtra("silver");
+		final String bronze = intent.getStringExtra("bronze");
 
 		Random rand = new Random();
-		int id = rand.nextInt(1000000) + 1;
+		final int id = rand.nextInt(1000000) + 1;
+		Log.i("tournament", "waiting");
 
-		TournamentResult result = new TournamentResult(id, Manager.getInstance().getTeamCached(gold), Manager.getInstance().getTeamCached(silver), Manager.getInstance().getTeamCached(bronze));
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(!Manager.getInstance().isLoaded()){
+					Log.i("tournament", "waiting");
+				}
+				TournamentResult result = new TournamentResult(id, Manager.getInstance().getTeamCached(gold), Manager.getInstance().getTeamCached(silver), Manager.getInstance().getTeamCached(bronze));
+				TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), result, Manager.getInstance().getPlayingUser());
+				Log.i("tournament", "DONE _____________________________________________________________________");
+				DAL.getInstance().submitTournamentPrediction(prediction);
+			}
+		}).run();
+
 	}
 
     @Override
@@ -137,6 +147,8 @@ public class MainActivity extends AppCompatActivity
 		loadProfile();
 
 		boolean prediction_made = getIntent().getBooleanExtra("prediction", false);
+
+		submitTournamentPrediction(getIntent());
 
         //TODO change notification to match timings
 		/*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -202,9 +214,11 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, home_fragment).commit();
-        } else if (id == R.id.nav_friends) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
-        } else if (id == R.id.nav_leaderboard) {
+        }
+        ///else if (id == R.id.nav_friends) {
+           /// fragmentManager.beginTransaction().replace(R.id.content_frame,friends_fragment).commit();
+			///}
+        else if (id == R.id.nav_leaderboard) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,leaderboard_fragment).commit();
         }  else if (id == R.id.nav_profile) {
         	profile_fragment.update(Manager.getInstance().getPlayingUser());

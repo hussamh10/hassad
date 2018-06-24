@@ -433,6 +433,7 @@ public class DAL {
 
 		callback.callback(new TournamentPrediction(UUID.randomUUID(), null, null));
 		// HUSSAM FIX THIS, SO THIS IS NOT CALLED IF TOURNAMENT PRED IS NOT MADE
+		// BTW this will not be needed since everyone will have created a tournament prediction the first time they login
 		/*
 
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -452,6 +453,33 @@ public class DAL {
 		});
 		*/
 
+	}
+
+	public void submitTournamentResult(TournamentResult result){
+
+		Map<String, Object> doc = new HashMap<>();
+
+		doc.put("id", result.getId());
+		doc.put("gold", result.getGold().getId());
+		doc.put("silver", result.getSilver().getId());
+		doc.put("bronze", result.getBronze().getId());
+
+		Log.i("DAL", "Added TOURNAMENT result");
+		tournament_results.add(doc);
+
+	}
+
+	public void submitTournamentPrediction(TournamentPrediction prediction){
+    	submitTournamentResult(prediction.getPredicted_result());
+
+		Map<String, Object> doc = new HashMap<>();
+		doc.put("result_id", prediction.getPredicted_result().getId());
+		doc.put("calculated", prediction.getCalculated());
+		doc.put("score", prediction.getScore());
+		doc.put("user_id", Manager.getInstance().getPlayingUser().getId());
+
+		Log.i("DAL", "Added TOURNAMENT predictions");
+		tournament_predictions.add(doc);
 	}
 
 	public void getPredictions(final String user_id, final Callback callback){
