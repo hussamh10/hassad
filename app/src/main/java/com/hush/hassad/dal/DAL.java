@@ -1,7 +1,6 @@
 package com.hush.hassad.dal;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -72,7 +71,13 @@ import static android.content.ContentValues.TAG;
 public class DAL {
 
     private static DAL instance = null;
-    
+
+    private ArrayList<Match> matches;
+	private ArrayList<Team> teams;
+	private ArrayList<MatchPrediction> mp;
+
+	private Object temp;
+
 	FirebaseFirestore db = FirebaseFirestore.getInstance();
 	CollectionReference users_doc = db.collection("users");
 	CollectionReference predictions_doc = db.collection("predictions_test");
@@ -80,13 +85,9 @@ public class DAL {
 	CollectionReference match_results_doc = db.collection("match_results");
 	CollectionReference team_doc = db.collection("teams");
 	CollectionReference tournament_predictions = db.collection("tournament_predictions");
-	
-	private ArrayList<Team> teams;
-	private ArrayList<Match> matches;
-	
-	private DAL() {
-		teams = new ArrayList<>();
-		matches = new ArrayList<>();
+	CollectionReference tournament_results = db.collection("tournament_results");
+
+    private DAL(){
 	}
 
 	public User createUser(FirebaseUser user){
@@ -107,11 +108,31 @@ public class DAL {
 
 		return u;
 	}
-	
+
+
+	public void getTeamAsync(final int id, final Callback callback){
+		//TODO change the following vals to a default value
+		final Team temp = new Team(0, null, null);
+		Query q = team_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				String name = u.getString("name");
+				String image_url = u.getString("image_url");
+				temp.setId(id);
+				temp.setName(name);
+				callback.callback(temp);
+			}
+		});
+	}
+
 	public void getAllTeams(final Callback callback){
     	team_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				ArrayList<Team> teams = new ArrayList<>();
 				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()) {
 					Team temp = new Team();
 					int id = u.getLong("id").intValue();
@@ -157,6 +178,7 @@ public class DAL {
 		matches_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				ArrayList<Match> matches = new ArrayList<>();
 				for (DocumentSnapshot u : queryDocumentSnapshots.getDocuments()){
 					final Match match = new Match();
 
@@ -188,6 +210,92 @@ public class DAL {
 					matches.add(match);
 				}
 				callback.callback(matches);
+			}
+		});
+	}
+
+	public void getMatchAsync(int id, final Callback callback){
+		final Match match = new Match(0, null, null, null, null, null, false, 0, false);
+		Query q = matches_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				final int id = u.getLong("id").intValue();
+				final Boolean ended = u.getBoolean("ended");
+				final Boolean started = u.getBoolean("started");
+				com.google.firebase.Timestamp temp = u.getTimestamp("kickoff_time");
+				final String k = temp.toString();
+				//TODO fix this date stuff
+				//String kickoff_time = u.getString("kickoff_time");
+				final String venue = u.getString("venue");
+				final int home_team_id = u.getLong("home_team_id").intValue();
+				final int away_team_id = u.getLong("away_team_id").intValue();
+				final int stage = u.getLong("stage").intValue();
+				final int result_id = u.getLong("match_result_id").intValue();
+
+				getTeamAsync(home_team_id, new Callback() {
+					@Override
+					public void callback(final Object home_obj) {
+						getTeamAsync(away_team_id, new Callback() {
+							@Override
+							public void callback(final Object away_obj) {
+								getMatchResultAsync(result_id, new Callback() {
+									@Override
+									public void callback(Object result_obj) {
+										MatchResult result = (MatchResult)  result_obj;
+										Team away = (Team) away_obj;
+										Team home = (Team) home_obj;
+
+										match.setId(id);
+										match.setEnded(ended);
+										match.setStarted(started);
+										match.setAway(away);
+										match.setHome(home);
+										match.setKickoff_time(new Date());
+										match.setStage(stage);
+										match.setVenue(venue);
+										match.setResult(result);
+										callback.callback(match);
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	public void getMatchResultAsync(final int id, final Callback callback){
+		final MatchResult matchResult = new MatchResult(0, 0, null, 0);
+		Query q = match_results_doc.whereEqualTo("id", id);
+
+		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				DocumentSnapshot u = queryDocumentSnapshots.getDocuments().get(0);
+				int id = u.getLong("id").intValue();
+				int home_score = u.getLong("home_score").intValue();
+				int away_score = u.getLong("away_score").intValue();
+				int match_id = u.getLong("match_id").intValue();
+				int winner_id = u.getLong("winner").intValue();
+				Team winner = null;
+
+				getTeamAsync(winner_id, new Callback() {
+					@Override
+					public void callback(Object team_obj) {
+						Team winner = (Team) team_obj;
+					}
+				});
+
+				matchResult.setId(id);
+				matchResult.setHome_score(home_score);
+				matchResult.setAway_score(away_score);
+				matchResult.setWinner(winner);
+				matchResult.setMatch(match_id);
+				callback.callback(matchResult);
 			}
 		});
 	}
@@ -296,7 +404,7 @@ public class DAL {
 	}
 
 	public void getAllTournamentResults(final Callback callback){
-		users_doc.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+		tournament_results.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 				ArrayList<TournamentResult> results = new ArrayList<>();
@@ -323,6 +431,10 @@ public class DAL {
 		final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), null, null);
 		final Query q = tournament_predictions.whereEqualTo("user_id", user_id);
 
+		callback.callback(new TournamentPrediction(UUID.randomUUID(), null, null));
+		// HUSSAM FIX THIS, SO THIS IS NOT CALLED IF TOURNAMENT PRED IS NOT MADE
+		/*
+
 		q.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 			@Override
 			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -336,10 +448,10 @@ public class DAL {
 				User user = Manager.getInstance().getUserCached(user_id);
 
 				final TournamentPrediction prediction = new TournamentPrediction(UUID.randomUUID(), tr, user, calculated, score);
-				Log.i("DAL", "onSuccess: predictions sent");
-				callback.callback(prediction);
 			}
 		});
+		*/
+
 	}
 
 	public void getPredictions(final String user_id, final Callback callback){
@@ -424,7 +536,116 @@ public class DAL {
     	cal.add(Calendar.DAY_OF_MONTH, 1);
     	return new com.google.firebase.Timestamp(cal.getTime());
 	}
-	
+
+    public void updateMatches(final DayFragment dayFragment, Date date) throws Exception {
+		com.google.firebase.Timestamp start = new com.google.firebase.Timestamp(date);
+		com.google.firebase.Timestamp end = getNextDay(date);
+		Log.i("DAL", "Started Matches");
+
+		final Executor executor = new Executor() {
+			@Override
+			public void execute(@NonNull Runnable command) {
+				command.run();
+			}
+		};
+		
+		Query query = matches_doc.whereGreaterThanOrEqualTo("kickoff_time",start).whereLessThanOrEqualTo("kickoff_time",end);
+		Task<QuerySnapshot> matchTask = query.get();
+
+		matchTask.addOnSuccessListener(executor, new OnSuccessListener<QuerySnapshot>() {
+			@Override
+			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+				List<DocumentSnapshot> matchDocs = queryDocumentSnapshots.getDocuments();
+
+				final ArrayList<Match> matches = new ArrayList<>();
+
+				for (DocumentSnapshot m : matchDocs) {
+					final int match_id = m.getLong("id").intValue();
+					final int away_team_id = Integer.parseInt(m.get("away_team_id").toString());
+					final int home_team_id = Integer.parseInt(m.get("home_team_id").toString());
+					final boolean ended = Boolean.parseBoolean(m.get("ended").toString());
+					final boolean started = Boolean.parseBoolean(m.get("started").toString());
+					final Date kickoffTime = m.getDate("kickoff_time");
+					final int result_id = Integer.parseInt(m.get("match_result_id").toString());
+					final int stage = Integer.parseInt(m.get("stage").toString());
+					final String venue = m.getString("venue");
+
+					try {
+						final Match match = new Match();
+						match.setId(match_id);
+						match.setHome(new Team());
+						match.setAway(new Team());
+						match.setResult(new MatchResult());
+						match.setStage(stage);
+						match.setKickoff_time(kickoffTime);
+						match.setEnded(ended);
+						match.setStarted(started);
+						match.setVenue(venue);
+
+						Task<QuerySnapshot> initialTask = team_doc.whereEqualTo("id", home_team_id).get();
+
+						initialTask.continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
+							@Override
+							public Task<QuerySnapshot> then(@NonNull Task<QuerySnapshot> task) {
+								DocumentSnapshot homeDoc = task.getResult().getDocuments().get(0);
+
+								Team homeTeam = match.getHome();
+								homeTeam.setId(home_team_id);
+								homeTeam.setName(homeDoc.getString("name"));
+								//homeTeam.setImage_url(homeDoc.getString("image_url"));
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(homeDoc.getString("image_url"));
+								homeTeam.setImage_url(bytes);
+								return team_doc.whereEqualTo("id", away_team_id).get();
+							}
+						}).continueWithTask(executor, new Continuation<QuerySnapshot, Task<QuerySnapshot>>() {
+							@Override
+							public Task<QuerySnapshot> then(@NonNull Task<QuerySnapshot> task) {
+								DocumentSnapshot awayDoc = task.getResult().getDocuments().get(0);
+
+								Team awayTeam = match.getAway();
+								awayTeam.setId(away_team_id);
+								awayTeam.setName(awayDoc.getString("name"));
+								//awayTeam.setImage_url(awayDoc.getString("image_url"));
+								byte [] bytes = GetByteArrayFromURL.getByteArrayFromURL(awayDoc.getString("image_url"));
+								awayTeam.setImage_url(bytes);
+
+								return match_results_doc.whereEqualTo("match_id", match_id).get();
+							}
+						}).continueWith(executor, new Continuation<QuerySnapshot, Match>() {
+							@Override
+							public Match then(@NonNull Task<QuerySnapshot> task) {
+								DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+								MatchResult matchResult = match.getResult();
+								matchResult.setId(result_id);
+								matchResult.setHome_score(ds.getLong("home_score").intValue());
+								matchResult.setAway_score(ds.getLong("away_score").intValue());
+
+								int winnerId = ds.getLong("winner").intValue();
+
+								if (winnerId == home_team_id) {
+									match.getResult().setWinner(match.getHome());
+								} else {
+									match.getResult().setWinner(match.getAway());
+								}
+
+								return match;
+							}
+						}).addOnSuccessListener(new OnSuccessListener<Match>() {
+							@Override
+							public void onSuccess(Match match) {
+								dayFragment.addMatchSorted(match);
+								Log.i("DAL", "onSuccess: sorted matches" + match.getHome().getName());
+							}
+						});
+
+					} catch (Exception e) {
+						Log.i("DAL", "failed to load matches");
+					}
+				}
+			}
+		});
+	}
+
 	public void updateSchedule(final ScheduleActivity scheduleActivity){
 		Log.i("DAL", "Started Matches");
 		Query q = matches_doc.whereEqualTo("ended",false);
