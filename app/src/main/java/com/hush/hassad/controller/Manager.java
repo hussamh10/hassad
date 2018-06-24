@@ -475,6 +475,11 @@ public class Manager {
 		}
 		
 		// call other observers here if need be
+		
+		// collect garbage
+		matchObservers.clear();
+		matchObservers = null;
+		
 	}
 	
 	public interface IMatchObserver {
