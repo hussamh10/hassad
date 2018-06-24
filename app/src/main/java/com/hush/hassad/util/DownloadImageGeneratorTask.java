@@ -10,16 +10,15 @@ import com.hush.hassad.controller.player.User;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class BatchDownloadImageTask extends AsyncTask<ArrayList<User>, Void, ArrayList<Bitmap>> {
+public class DownloadImageGeneratorTask extends AsyncTask<User, Bitmap, Void> {
 	private IDownloaded cback;
-	public BatchDownloadImageTask(IDownloaded cback) {
+	public DownloadImageGeneratorTask(IDownloaded cback) {
 		this.cback = cback;
 	}
 	
-	protected ArrayList<Bitmap> doInBackground(ArrayList<User>... users) {
+	protected Void doInBackground(User... users) {
 		
-		ArrayList<Bitmap> userImg = new ArrayList<>();
-		for (User u : users[0]) {
+		for (User u : users) {
 			Bitmap bmp = null;
 			try {
 				bmp = BitmapFactory.decodeStream(new java.net.URL(u.getInfo().getPhotoUrl()).openStream());
@@ -27,18 +26,19 @@ public class BatchDownloadImageTask extends AsyncTask<ArrayList<User>, Void, Arr
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			} finally {
-				userImg.add(bmp);
+				publishProgress(bmp);
 			}
 		}
-		return userImg;
+		return null;
 	}
 	
-	protected void onPostExecute(ArrayList<Bitmap> result) {
-		cback.downloaded(result);
+	@Override
+	protected void onProgressUpdate(Bitmap... values) {
+		cback.downloaded(values[0]);
 	}
 	
 	public interface IDownloaded {
-		void downloaded(ArrayList<Bitmap> result);
+		void downloaded(Bitmap bmp);
 	}
 	
 }
