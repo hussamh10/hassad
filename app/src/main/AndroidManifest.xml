@@ -15,7 +15,7 @@
 		<activity
 			android:name=".ui.activities.MainActivity"
 			android:label="Hassad"
-			android:theme="@style/AppTheme.WCTheme">
+			android:theme="@style/WCTheme">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>

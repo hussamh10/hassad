@@ -13,10 +13,16 @@
 		<item name="windowNoTitle">true</item>
 	</style>
 
-	<style name="AppTheme.WCTheme" parent="AppTheme.NoActionBar">
-		<item name="colorPrimary">@color/wc_gold</item>
+	<style name="WCTheme" parent="AppTheme.NoActionBar">
 		<item name="colorPrimaryDark">@android:color/black</item>
 		<item name="colorAccent">@color/wc_gold</item>
+		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+	</style>
+
+
+	<style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+		<item name="spinBars">true</item>
+		<item name="color">@color/wc_gold</item>
 	</style>
 
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
