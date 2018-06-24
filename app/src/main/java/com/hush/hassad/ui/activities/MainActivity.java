@@ -148,7 +148,9 @@ public class MainActivity extends AppCompatActivity
 
 		boolean prediction_made = getIntent().getBooleanExtra("prediction", false);
 
-		submitTournamentPrediction(getIntent());
+		if (prediction_made){
+			submitTournamentPrediction(getIntent());
+		}
 
         //TODO change notification to match timings
 		/*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
