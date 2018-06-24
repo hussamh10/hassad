@@ -85,8 +85,8 @@ public class DayFragment extends Fragment {
 			if (matches.get(i).getKickoff_time().compareTo(match.getKickoff_time()) > 0) {
 				break;
 			}
-			matches.add(i, match);
 		}
+		matches.add(i, match);
 	}
 	
 	public void notifyDataSetChanged() {
