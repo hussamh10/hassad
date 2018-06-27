@@ -14,15 +14,16 @@
         android:paddingLeft="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
+        android:fontFamily="@font/dusha"
         android:textAlignment="center"
+        android:textSize="20sp"
         android:text="1"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
         android:id="@+id/profile_img"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
         android:padding="5dp"
         android:src="@drawable/profile" />
 
@@ -32,7 +33,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
+        android:fontFamily="@font/dusha"
         android:layout_gravity="center"
+        android:textSize="18sp"
         android:text="Saad"/>
 
     <TextView
@@ -42,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAlignment="center"
+        android:fontFamily="@font/dusha"
         android:text="1000"/>
 
 </LinearLayout>

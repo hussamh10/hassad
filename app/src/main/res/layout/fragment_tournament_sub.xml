@@ -28,6 +28,7 @@
 			android:id="@+id/gold"
 			android:gravity="center"
 			android:textAlignment="textStart"
+			android:fontFamily="@font/dusha"
 			android:textSize="15dp"
 			android:text="Brazil"/>
 	</LinearLayout>
@@ -55,6 +56,7 @@
 			android:id="@+id/silver"
 			android:gravity="center"
 			android:textAlignment="textStart"
+			android:fontFamily="@font/dusha"
 			android:textSize="15dp"
 			android:text="France"/>
 	</LinearLayout>
@@ -81,6 +83,7 @@
 			android:id="@+id/bronze"
 			android:gravity="center"
 			android:textAlignment="textStart"
+			android:fontFamily="@font/dusha"
 			android:textSize="15dp"
 			android:text="Belgium"/>
 	</LinearLayout>

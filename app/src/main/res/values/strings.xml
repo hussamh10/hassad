@@ -13,6 +13,7 @@
 	<string name="title_activity_sign_in">SignInActivity</string>
 	<string name="dummy_button">Dummy Button</string>
 	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="how_to_play">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla ornare imperdiet. Vestibulum eu maximus enim, quis condimentum felis. Aenean rhoncus dolor id pharetra auctor. Phasellus ligula diam, tincidunt nec urna quis, tempus vulputate est. Nam vitae finibus quam. Aenean imperdiet enim id magna porttitor tincidunt. Ut in viverra elit, quis sagittis purus. Pellentesque ornare sed arcu porta dictum. Curabitur dictum turpis quis facilisis volutpat. Nunc eu tempus augue, non iaculis ligula. Phasellus porttitor purus sit amet lacus mollis mattis. Maecenas faucibus nec purus in efficitur.</string>
 
 	<string-array name="countries">
 		<item>Argentina</item>

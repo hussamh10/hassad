@@ -56,7 +56,7 @@
 			</intent-filter>
 		</service>
 
-		<activity android:name=".ui.activities.NoConnectionActivity"></activity>
+		<activity android:name=".ui.activities.NoConnectionActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
 	</application>
 
 </manifest>

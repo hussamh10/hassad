@@ -39,8 +39,8 @@ public class MatchAdapter extends ArrayAdapter {
 		TextView away_team_name;
 		TextView pred_away_score;
 		TextView away_score;
-
 		TextView match_time;
+		TextView match_status;
 
 		LinearLayout result;
 	}
@@ -78,6 +78,7 @@ public class MatchAdapter extends ArrayAdapter {
 
 			matchHolder.match_time = (TextView) convertView.findViewById(R.id.match_time);
 			matchHolder.result = (LinearLayout) convertView.findViewById(R.id.result);
+			matchHolder.match_status = convertView.findViewById(R.id.match_status);
 			convertView.setTag(matchHolder);
 		} else {
 			matchHolder = (MatchHolder) convertView.getTag();
@@ -131,9 +132,10 @@ public class MatchAdapter extends ArrayAdapter {
 		if(!match.isEnded()) {
 			matchHolder.match_time.setVisibility(View.VISIBLE);
 			matchHolder.result.setVisibility(View.GONE);
-
+			
 			String time = Utils.getTimeString(match.getKickoff_time());
 			matchHolder.match_time.setText(time);
+			matchHolder.match_status.setText("Scheduled");
 		}
 		else {
 			matchHolder.match_time.setVisibility(View.GONE);
@@ -141,6 +143,7 @@ public class MatchAdapter extends ArrayAdapter {
 
 			matchHolder.home_score.setText(Integer.toString(match.getResult().getHome_score()));
 			matchHolder.away_score.setText(Integer.toString(match.getResult().getAway_score()));
+			matchHolder.match_status.setText("Ended");
 		}
 
 		return convertView;
