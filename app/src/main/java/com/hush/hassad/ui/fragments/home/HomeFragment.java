@@ -56,8 +56,7 @@ public class HomeFragment extends Fragment implements Manager.IMatchObserver {
 	
 	@Override
 	public void matchesLoaded(ArrayList<Match> m) {
-		// TODO: uncomment the next line when image-url is fixed
-		// setMatches(m);
+		setMatches(m);
 		Log.i("HomeFragment", "All matches set in fragments");
 	}
 	
